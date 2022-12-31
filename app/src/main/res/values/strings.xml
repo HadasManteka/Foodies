@@ -1,0 +1,16 @@
+<resources>
+        <string name="app_name">dropDowns</string>
+        <string-array name="Categories">
+            <item>Bake</item>
+            <item>Cook</item>
+            <item>Salad</item>
+            <item>Drink</item>
+        </string-array>
+
+        <string-array name="Time">
+            <item>5-10 min</item>
+            <item>10-30 min</item>
+            <item>30-60 min</item>
+            <item>60+ min</item>
+        </string-array>
+</resources>
