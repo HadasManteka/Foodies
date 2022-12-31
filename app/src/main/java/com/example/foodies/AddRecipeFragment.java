@@ -14,18 +14,18 @@ import android.widget.Spinner;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RecipeFragment#newInstance} factory method to
+ * Use the {@link AddRecipeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecipeFragment extends Fragment {
+public class AddRecipeFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
 
-    public static RecipeFragment newInstance(String param1, String param2) {
-        RecipeFragment fragment = new RecipeFragment();
+    public static AddRecipeFragment newInstance(String param1, String param2) {
+        AddRecipeFragment fragment = new AddRecipeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -46,7 +46,7 @@ public class RecipeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recipe, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_recipe, container, false);
         Spinner spinnerCategories= view.findViewById(R.id.recipe_category);
         ArrayAdapter<CharSequence> categoryAdapter= ArrayAdapter.createFromResource(this.getContext(), R.array.Categories, android.R.layout.simple_spinner_item);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);

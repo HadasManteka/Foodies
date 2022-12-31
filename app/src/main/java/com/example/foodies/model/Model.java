@@ -27,7 +27,7 @@ public class Model {
     }
     public void getAllRecipes(GetAllRecipeListener callback){
         executor.execute(()->{
-            List<Recipe> data = localDb.studentDao().getAll();
+            List<Recipe> data = localDb.recipeDao().getAll();
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
@@ -44,7 +44,7 @@ public class Model {
     }
     public void addRecipe(Recipe recipe, AddRecipeListener listener){
         executor.execute(()->{
-            localDb.studentDao().insertAll(recipe);
+            localDb.recipeDao().insertAll(recipe);
 //            try {
 //                Thread.sleep(5000);
 //            } catch (InterruptedException e) {

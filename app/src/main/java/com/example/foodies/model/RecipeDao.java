@@ -14,12 +14,12 @@ public interface RecipeDao {
     List<Recipe> getAll();
 
     @Query("select * from Recipe where id = :recipeId")
-    Recipe getStudentById(String recipeId);
+    Recipe getRecipeById(String recipeId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(Recipe... students);
+    void insertAll(Recipe... recipes);
 
     @Delete
-    void delete(String student);
+    void delete(Recipe recipe);
 }
 

@@ -8,7 +8,7 @@ import com.example.foodies.MyApplication;
 
 @Database(entities = {Recipe.class}, version = 55)
 abstract class AppLocalDbRepository extends RoomDatabase {
-    public abstract RecipeDao studentDao();
+    public abstract RecipeDao recipeDao();
 }
 
 public class AppLocalDb{
