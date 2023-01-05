@@ -26,6 +26,7 @@ public class Model {
         void onComplete(List<Recipe> data);
     }
     public void getAllRecipes(GetAllRecipeListener callback){
+        //
         executor.execute(()->{
             List<Recipe> data = localDb.recipeDao().getAll();
             try {
@@ -42,6 +43,7 @@ public class Model {
     public interface AddRecipeListener {
         void onComplete();
     }
+
     public void addRecipe(Recipe recipe, AddRecipeListener listener){
         executor.execute(()->{
             localDb.recipeDao().insertAll(recipe);
@@ -54,5 +56,14 @@ public class Model {
         });
     }
 
+//    public void getRecipeFromApi(){
+//        AppExecutors.getInstance().networkIO().execute(()->{
+//            try {
+//                recipesFromApi = new ServiceGenerator(Constants.BASE_URL).getData().getRecipes();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//    }
 
 }
