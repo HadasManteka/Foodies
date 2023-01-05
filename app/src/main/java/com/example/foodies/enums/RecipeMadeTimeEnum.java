@@ -35,4 +35,9 @@ public enum RecipeMadeTimeEnum {
             return SIXTY_PLUS.timeByText;
         }
     }
+
+    @Override
+    public String toString() {
+        return timeByText;
+    }
 }

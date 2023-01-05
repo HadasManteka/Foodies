@@ -12,6 +12,8 @@ import android.widget.Spinner;
 
 import com.example.foodies.databinding.FragmentAddRecipeBinding;
 import com.example.foodies.databinding.FragmentBaseRecipeBinding;
+import com.example.foodies.enums.RecipeCategoryEnum;
+import com.example.foodies.enums.RecipeMadeTimeEnum;
 
 public class BaseRecipeFragment extends Fragment{
 
@@ -36,9 +38,7 @@ public class BaseRecipeFragment extends Fragment{
         View view = binding.getRoot();
 
         Spinner spinnerCategories = view.findViewById(R.id.recipe_category);
-        ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.Categories, android.R.layout.simple_spinner_item);
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerCategories.setAdapter(categoryAdapter);
+        spinnerCategories.setAdapter(new ArrayAdapter<RecipeCategoryEnum>(this.getContext(), android.R.layout.simple_spinner_item, RecipeCategoryEnum.values()));
 
 //        spinnerCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
@@ -52,12 +52,10 @@ public class BaseRecipeFragment extends Fragment{
 //            }
 //        });
 
-        Spinner spinnerTime = view.findViewById(R.id.recipe_time);
-        ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.Time, android.R.layout.simple_spinner_item);
-        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerTime.setAdapter(timeAdapter);
+        Spinner spinnerMadeTime = view.findViewById(R.id.recipe_time);
+        spinnerMadeTime.setAdapter(new ArrayAdapter<RecipeMadeTimeEnum>(this.getContext(), android.R.layout.simple_spinner_item, RecipeMadeTimeEnum.values()));
 
-//        spinnerTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//        spinnerMadeTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
 //            public void onItemSelected(AdapterView<?> parent, View view,
 //                                       int position, long id) {

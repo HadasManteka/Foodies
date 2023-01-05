@@ -24,4 +24,9 @@ public enum RecipeCategoryEnum {
             return OTHER;
         }
     }
+
+    @Override
+    public String toString() {
+        return category;
+    }
 }

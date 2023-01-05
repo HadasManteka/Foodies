@@ -6,14 +6,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.foodies.enums.RecipeCategory;
-import com.example.foodies.enums.RecipeMadeTime;
+import com.example.foodies.enums.RecipeCategoryEnum;
+import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.Recipe;
 import com.example.foodies.util.Constants;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,8 +46,8 @@ public class ApiRecipeModel {
                     Arrays.stream(recipes).forEach(recipe -> {
                         String ingredients = createIngredientsList(recipe);
                         String category = (recipe.getDishTypes().size() != 0) ? recipe.getDishTypes().get(0) : null;
-                        category = RecipeCategory.getCategoryByText(category).getCategory();
-                        String time = RecipeMadeTime.getTextByTime( recipe.getPreparationMinutes());
+                        category = RecipeCategoryEnum.getCategoryByText(category).getCategory();
+                        String time = RecipeMadeTimeEnum.getTextByTime( recipe.getPreparationMinutes());
 
                         recipesFromApi.add(new Recipe(recipe.getTitle(), category, time,
                                 ingredients, recipe.getSummary(), recipe.getImage()));
