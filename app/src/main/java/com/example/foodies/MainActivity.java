@@ -2,7 +2,9 @@ package com.example.foodies;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -15,6 +17,7 @@ import androidx.navigation.ui.NavigationUI;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 
@@ -38,16 +41,10 @@ public class MainActivity extends AppCompatActivity {
         userProfileFragment = new UserProfileFragment();
         homePageFragment = new HomePageFragment();
 
-        Button user_btn = findViewById(R.id.user_btn);
-        Button home_btn = findViewById(R.id.home_btn);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_hamburger_foreground));
+        setSupportActionBar(toolbar);
 
-        user_btn.setOnClickListener((view) -> {
-            displayFragment(userProfileFragment);
-        });
-
-        home_btn.setOnClickListener((view) -> {
-            displayFragment(homePageFragment);
-        });
 
         displayFragment(homePageFragment);
     }
@@ -55,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
     private void displayFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction tran = manager.beginTransaction();
-        tran.add(R.id.main_frag_container, fragment);
         if(inDisplay != null) tran.remove(inDisplay);
+        tran.add(R.id.main_frag_container, fragment);
+        tran.addToBackStack(String.valueOf(fragment.getId()));
         tran.commit();
         inDisplay = fragment;
     }
@@ -64,5 +62,37 @@ public class MainActivity extends AppCompatActivity {
     public void getApiRecipes() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(ApiRecipeModel.instance().getJsonObjectRequest());
+    }
+
+    @SuppressLint("RestrictedApi")
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        if(menu instanceof MenuBuilder){
+            MenuBuilder m = (MenuBuilder) menu;
+            m.setOptionalIconsVisible(true);
+        }
+
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.home_page_option:
+                displayFragment(homePageFragment);
+                break;
+            case R.id.user_profile_option:
+                displayFragment(userProfileFragment);
+                break;
+            case R.id.logout_option:
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+        return true;
     }
 }

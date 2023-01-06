@@ -2,19 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="HardcodedText">
+    tools:ignore="HardcodedText"
+    >
 
     <item
-        android:id="@+id/home_page"
+        android:id="@+id/home_page_option"
         android:title="Home"
-        android:name="com.example.foodies.HomePageFragment"/>
+        android:name="com.example.foodies.HomePageFragment"
+        android:icon="@drawable/ic_home_foreground"/>
     <item
-        android:id="@+id/user_profile"
+        android:id="@+id/user_profile_option"
+        android:name="com.example.foodies.userProfile.UserProfileFragment"
         android:title="User Profile"
-        android:name="com.example.foodies.userProfile.UserProfileFragment"/>
+        android:icon="@drawable/ic_user_profile_foreground"/>
 
     <item
-        android:id="@+id/logout"
-        android:title="Logout" ></item>
+        android:id="@+id/logout_option"
+        android:title="Logout"
+        android:icon="@drawable/ic_logout_foreground"/>
+
 
 </menu>
