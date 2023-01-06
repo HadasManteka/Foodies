@@ -3,13 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/addRecipeFragment">
+    app:startDestination="@id/homePageFragment">
 
     <fragment
         android:id="@+id/addRecipeFragment"
         android:name="com.example.foodies.AddRecipeFragment"
         android:label="fragment_add_recipe"
-        tools:layout="@layout/fragment_add_recipe" />
+        tools:layout="@layout/fragment_add_recipe" >
+        <action
+            android:id="@+id/action_addRecipeFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment" />
+        <action
+            android:id="@+id/action_addRecipeFragment_to_baseRecipeFragment"
+            app:destination="@id/baseRecipeFragment" />
+    </fragment>
     <action
         android:id="@+id/addRecipeFragment_to_recipeDetailsFragment"
         app:destination="@id/recipeDetailsFragment" />
@@ -24,4 +31,19 @@
         android:id="@+id/baseRecipeFragment"
         android:name="com.example.foodies.BaseRecipeFragment"
         android:label="BaseRecipeFragment" />
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.foodies.UserProfileFragment"
+        android:label="UserProfileFragment" />
+    <fragment
+        android:id="@+id/homePageFragment"
+        android:name="com.example.foodies.HomePageFragment"
+        android:label="HomePageFragment" >
+        <action
+            android:id="@+id/action_homePageFragment_to_addRecipeFragment"
+            app:destination="@id/addRecipeFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
 </navigation>

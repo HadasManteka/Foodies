@@ -6,24 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/main_navhost"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/main_bottomNavigationView"
+    <FrameLayout
+        android:id="@+id/main_frag_container"
+        android:layout_width="421dp"
+        android:layout_height="728dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/nav_graph" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/main_bottomNavigationView"
-        android:layout_width="match_parent"
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/user_btn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="user"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/home_btn" />
+
+    <Button
+        android:id="@+id/home_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/user_btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

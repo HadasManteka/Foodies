@@ -3,6 +3,9 @@ package com.example.foodies;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -13,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -21,6 +25,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     NavController navController;
+    UserProfileFragment userProfileFragment;
+    HomePageFragment homePageFragment;
+    Fragment inDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,35 +35,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getApiRecipes();
 
-        NavHostFragment navHostFragment = (NavHostFragment)getSupportFragmentManager().findFragmentById(R.id.main_navhost);
-        navController = navHostFragment.getNavController();
-        NavigationUI.setupActionBarWithNavController(this,navController);
+        userProfileFragment = new UserProfileFragment();
+        homePageFragment = new HomePageFragment();
 
-        BottomNavigationView navView = findViewById(R.id.main_bottomNavigationView);
-        NavigationUI.setupWithNavController(navView,navController);
+        Button user_btn = findViewById(R.id.user_btn);
+        Button home_btn = findViewById(R.id.home_btn);
+
+        user_btn.setOnClickListener((view) -> {
+            displayFragment(userProfileFragment);
+        });
+
+        home_btn.setOnClickListener((view) -> {
+            displayFragment(homePageFragment);
+        });
+
+        displayFragment(homePageFragment);
     }
 
-    int fragmentMenuId = 0;
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
-        if (fragmentMenuId != 0){
-            menu.removeItem(fragmentMenuId);
-        }
-        fragmentMenuId = 0;
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home){
-            navController.popBackStack();
-        }else{
-            fragmentMenuId = item.getItemId();
-            return NavigationUI.onNavDestinationSelected(item,navController);
-        }
-        return super.onOptionsItemSelected(item);
+    private void displayFragment(Fragment fragment) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction tran = manager.beginTransaction();
+        tran.add(R.id.main_frag_container, fragment);
+        if(inDisplay != null) tran.remove(inDisplay);
+        tran.commit();
+        inDisplay = fragment;
     }
 
     public void getApiRecipes() {
