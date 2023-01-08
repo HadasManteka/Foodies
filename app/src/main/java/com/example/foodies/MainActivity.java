@@ -1,5 +1,11 @@
 package com.example.foodies;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -8,26 +14,12 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Button;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.foodies.model.request.ApiRecipeModel;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-    NavController navController;
     UserProfileFragment userProfileFragment;
     HomePageFragment homePageFragment;
     Fragment inDisplay;
@@ -52,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private void displayFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction tran = manager.beginTransaction();
-        if(inDisplay != null) tran.remove(inDisplay);
+        if (inDisplay != null) tran.remove(inDisplay);
         tran.add(R.id.main_frag_container, fragment);
         tran.addToBackStack(String.valueOf(fragment.getId()));
         tran.commit();
@@ -64,11 +56,11 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(ApiRecipeModel.instance().getJsonObjectRequest());
     }
 
-    @SuppressLint("RestrictedApi")
     @Override
+    @SuppressLint("RestrictedApi")
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        if(menu instanceof MenuBuilder){
+        if (menu instanceof MenuBuilder) {
             MenuBuilder m = (MenuBuilder) menu;
             m.setOptionalIconsVisible(true);
         }
@@ -77,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
+    @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.home_page_option:
