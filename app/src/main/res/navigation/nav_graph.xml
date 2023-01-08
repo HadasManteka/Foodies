@@ -2,9 +2,17 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/homePageFragment">
+    android:id="@+id/nav_graph">
 
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.foodies.UserProfileFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_userProfileFragment_to_addRecipeFragment"
+            app:destination="@id/addRecipeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/addRecipeFragment"
         android:name="com.example.foodies.AddRecipeFragment"
@@ -13,37 +21,10 @@
         <action
             android:id="@+id/action_addRecipeFragment_to_recipeDetailsFragment"
             app:destination="@id/recipeDetailsFragment" />
-        <action
-            android:id="@+id/action_addRecipeFragment_to_baseRecipeFragment"
-            app:destination="@id/baseRecipeFragment" />
     </fragment>
-    <action
-        android:id="@+id/addRecipeFragment_to_recipeDetailsFragment"
-        app:destination="@id/recipeDetailsFragment" />
-
     <fragment
         android:id="@+id/recipeDetailsFragment"
         android:name="com.example.foodies.RecipeDetailsFragment"
         android:label="fragment_recipe_details"
         tools:layout="@layout/fragment_recipe_details" />
-
-    <fragment
-        android:id="@+id/baseRecipeFragment"
-        android:name="com.example.foodies.BaseRecipeFragment"
-        android:label="BaseRecipeFragment" />
-    <fragment
-        android:id="@+id/userProfileFragment"
-        android:name="com.example.foodies.UserProfileFragment"
-        android:label="UserProfileFragment" />
-    <fragment
-        android:id="@+id/homePageFragment"
-        android:name="com.example.foodies.HomePageFragment"
-        android:label="HomePageFragment" >
-        <action
-            android:id="@+id/action_homePageFragment_to_addRecipeFragment"
-            app:destination="@id/addRecipeFragment" />
-        <action
-            android:id="@+id/action_homePageFragment_to_userProfileFragment"
-            app:destination="@id/userProfileFragment" />
-    </fragment>
 </navigation>
