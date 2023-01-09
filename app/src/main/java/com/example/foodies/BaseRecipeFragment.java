@@ -1,80 +1,106 @@
 package com.example.foodies;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.Button;
 
-import com.example.foodies.databinding.FragmentAddRecipeBinding;
+import androidx.fragment.app.Fragment;
+
 import com.example.foodies.databinding.FragmentBaseRecipeBinding;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 
-public class BaseRecipeFragment extends Fragment{
+abstract class BaseRecipeFragment extends Fragment {
 
-    FragmentBaseRecipeBinding binding;
+    protected FragmentBaseRecipeBinding baseBinding;
     String title;
     String category;
     String time;
     String ingredients;
     String description;
     String recipeImgUrl;
+    private ImageListener mListener;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null){
+            title = bundle.getString("title");
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        baseBinding = FragmentBaseRecipeBinding.inflate(inflater, container, false);
+        View view = baseBinding.getRoot();
 
-        binding = FragmentBaseRecipeBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
+        // Spinners
+        baseBinding.recipeCategory.setAdapter(new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, RecipeCategoryEnum.values()));
+        baseBinding.recipeTime.setAdapter(new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, RecipeMadeTimeEnum.values()));
 
-        Spinner spinnerCategories = view.findViewById(R.id.recipe_category);
-        spinnerCategories.setAdapter(new ArrayAdapter<RecipeCategoryEnum>(this.getContext(), android.R.layout.simple_spinner_item, RecipeCategoryEnum.values()));
+        baseBinding.recipeAddPicBt.setOnClickListener(v -> {
+            if (mListener != null)
+                mListener.onSelectImage();
+        });
 
-//        spinnerCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view,
-//                                       int position, long id) {
-//                Log.v("item", (String) parent.getItemAtPosition(position));
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
+        baseBinding.recipeActionBtn.setOnClickListener(v -> {
+            onClickAction();
+        });
 
-        Spinner spinnerMadeTime = view.findViewById(R.id.recipe_time);
-        spinnerMadeTime.setAdapter(new ArrayAdapter<RecipeMadeTimeEnum>(this.getContext(), android.R.layout.simple_spinner_item, RecipeMadeTimeEnum.values()));
-
-//        spinnerMadeTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view,
-//                                       int position, long id) {
-//                Log.v("item", (String) parent.getItemAtPosition(position));
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
-
+        setRecipeViewField();
         return view;
     }
 
-    public void clickButton() {
-        title = binding.recipeTitle.toString();
-        category = binding.recipeCategory.getSelectedItem().toString();
-        time = binding.recipeTime.getSelectedItem().toString();
-        ingredients = binding.recipeIngredients.toString();
-        description = binding.recipeDescription.toString();
+    public interface ImageListener {
+        void onSelectImage();
     }
+
+    public void onImageSelected(Bitmap thumbnail) {
+        baseBinding.imageView2.setImageBitmap(thumbnail);
+    }
+
+    @Override
+        public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (ImageListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context
+                    + " must implement ImageListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public void setEditMode(boolean enabled) {
+        baseBinding.recipeTitle.setEnabled(enabled);
+        baseBinding.recipeCategory.setEnabled(enabled);
+        baseBinding.recipeTime.setEnabled(enabled);
+        baseBinding.recipeIngredients.setEnabled(enabled);
+        baseBinding.recipeDescription.setEnabled(enabled);
+        baseBinding.imageView2.setEnabled(enabled);
+    }
+
+    public void setAddImgBtInvisible() {
+        baseBinding.recipeAddPicBt.setVisibility(View.INVISIBLE);
+    }
+
+    abstract void onClickAction();
+    abstract void setRecipeViewField();
+
 }
