@@ -48,9 +48,9 @@ public class ApiRecipeModel {
                         String category = (recipe.getDishTypes().size() != 0) ? recipe.getDishTypes().get(0) : null;
                         category = RecipeCategoryEnum.getCategoryByText(category).getCategory();
                         String time = RecipeMadeTimeEnum.getTextByTime( recipe.getPreparationMinutes());
-
-                        recipesFromApi.add(new Recipe(recipe.getTitle(), category, time,
-                                ingredients, recipe.getSummary(), recipe.getImage()));
+                        Recipe re = new Recipe(recipe.getTitle(), category, time,
+                                ingredients, recipe.getSummary(), recipe.getImage());
+                        recipesFromApi.add(re);
                     });
                 } catch (JSONException e) {
                     e.printStackTrace();

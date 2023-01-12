@@ -1,5 +1,7 @@
 package com.example.foodies.enums;
 
+import java.util.Arrays;
+
 public enum RecipeMadeTimeEnum {
     FIVE_TEN(5, 10, "5-10 min"),
     TEN_TWENTY(10, 30, "10-30 min"),
@@ -34,6 +36,12 @@ public enum RecipeMadeTimeEnum {
         } else {
             return SIXTY_PLUS.timeByText;
         }
+    }
+
+    public static RecipeMadeTimeEnum getEnumByValue(String value) {
+        return Arrays.stream(RecipeMadeTimeEnum.values())
+                .filter(e -> e.timeByText.equals(value))
+                .findFirst().get();
     }
 
     @Override

@@ -40,11 +40,11 @@ public class Model {
         });
     }
 
-    public interface AddRecipeListener {
+    public interface RecipeDBActionListener {
         void onComplete();
     }
 
-    public void addRecipe(Recipe recipe, AddRecipeListener listener){
+    public void addRecipe(Recipe recipe, RecipeDBActionListener listener){
         executor.execute(()->{
             localDb.recipeDao().insertAll(recipe);
 //            try {
@@ -56,14 +56,15 @@ public class Model {
         });
     }
 
-//    public void getRecipeFromApi(){
-//        AppExecutors.getInstance().networkIO().execute(()->{
+    public void updateRecipe(Recipe recipe, RecipeDBActionListener listener){
+        executor.execute(()->{
+            localDb.recipeDao().update(recipe);
 //            try {
-//                recipesFromApi = new ServiceGenerator(Constants.BASE_URL).getData().getRecipes();
-//            } catch (IOException e) {
+//                Thread.sleep(5000);
+//            } catch (InterruptedException e) {
 //                e.printStackTrace();
 //            }
-//        });
-//    }
-
+            mainHandler.post(listener::onComplete);
+        });
+    }
 }
