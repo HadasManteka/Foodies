@@ -5,6 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_recipe_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -12,6 +20,8 @@
         android:layout_marginStart="172dp"
         android:layout_marginTop="391dp"
         android:text="homepage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/home_recipe_view"
+        app:layout_constraintTop_toBottomOf="@+id/home_recipe_view" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

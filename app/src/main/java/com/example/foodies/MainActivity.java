@@ -17,7 +17,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.foodies.model.Recipe;
 import com.example.foodies.model.request.ApiRecipeModel;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     UserProfileFragment userProfileFragment;
@@ -53,7 +56,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void getApiRecipes() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(ApiRecipeModel.instance().getJsonObjectRequest());
+        requestQueue.add(ApiRecipeModel.instance().getJsonObjectRequest(
+                new IRecipeApiListener() {
+                    @Override
+                    public void onSuccess(List<Recipe> response) {
+                        homePageFragment.adapter.setData(response);
+                    }
+                }
+        ));
     }
 
     @Override
