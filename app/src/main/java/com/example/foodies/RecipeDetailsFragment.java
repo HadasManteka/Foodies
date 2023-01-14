@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
-import androidx.fragment.app.Fragment;
-
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
-import com.example.foodies.model.Recipe;
+import com.example.foodies.model.recipe.Recipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;

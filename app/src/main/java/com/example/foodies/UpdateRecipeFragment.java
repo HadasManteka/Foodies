@@ -8,11 +8,10 @@ import android.widget.ArrayAdapter;
 
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
-import com.example.foodies.model.Model;
-import com.example.foodies.model.Recipe;
+import com.example.foodies.model.recipe.RecipeModel;
+import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.util.FileActions;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,9 +62,9 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
     void onClickAction() {
         Bitmap chosenPhoto = ((BitmapDrawable)baseBinding.imageView2.getDrawable()).getBitmap();
         Recipe recipe = new Recipe(title, category, time, ingredients, description, chosenPhoto == null ? null : FileActions.getBitmapAsByteArray(chosenPhoto));
-        Model.instance().updateRecipe(recipe, () -> {
+        RecipeModel.instance().updateRecipe(recipe, () -> {
             System.out.println("success");
-            Model.instance().getAllRecipes((stList)->{
+            RecipeModel.instance().getAllRecipes((stList)->{
                 System.out.println(stList);
 //                binding.progressBar.setVisibility(View.GONE);
             });

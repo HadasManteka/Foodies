@@ -1,6 +1,5 @@
 package com.example.foodies;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,8 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.foodies.model.Model;
-import com.example.foodies.model.Recipe;
+import com.example.foodies.model.recipe.RecipeModel;
+import com.example.foodies.model.recipe.Recipe;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -82,11 +81,11 @@ public class CreateRecipeActivity extends AppCompatActivity implements
 //    @Override
     public void onStepsFinished() {
         if (isUpdating) {
-            Model.instance().addRecipe(currentRecipe, () -> {
+            RecipeModel.instance().addRecipe(currentRecipe, () -> {
                 System.out.println("success");
             });
         } else {
-            Model.instance().addRecipe(currentRecipe, () -> {
+            RecipeModel.instance().addRecipe(currentRecipe, () -> {
                 System.out.println("success");
             });
         }

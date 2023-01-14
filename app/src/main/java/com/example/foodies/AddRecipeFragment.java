@@ -3,8 +3,8 @@ package com.example.foodies;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import com.example.foodies.model.Model;
-import com.example.foodies.model.Recipe;
+import com.example.foodies.model.recipe.RecipeModel;
+import com.example.foodies.model.recipe.Recipe;
 
 import java.io.ByteArrayOutputStream;
 
@@ -35,9 +35,9 @@ public class AddRecipeFragment extends BaseRecipeFragment {
 //        } else {
             Bitmap chosenPhoto = ((BitmapDrawable)baseBinding.imageView2.getDrawable()).getBitmap();
             Recipe recipe = new Recipe(title, category, time, ingredients, description, chosenPhoto == null ? null :getBitmapAsByteArray(chosenPhoto));
-            Model.instance().addRecipe(recipe, () -> {
+            RecipeModel.instance().addRecipe(recipe, () -> {
                 System.out.println("success");
-                Model.instance().getAllRecipes((stList)->{
+                RecipeModel.instance().getAllRecipes((stList)->{
                     System.out.println(stList);
 //                binding.progressBar.setVisibility(View.GONE);
                 });
