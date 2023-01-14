@@ -46,7 +46,7 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         baseBinding.recipeTitle.setText(recipe.title);
         baseBinding.recipeIngredients.setText(recipe.ingredients);
         baseBinding.recipeDescription.setText(recipe.description);
-        baseBinding.imageView2.setImageBitmap(BitmapFactory.decodeByteArray(recipe.recipeImgBytes, 0, recipe.recipeImgBytes.length));
+        baseBinding.recipeImg.setImageBitmap(BitmapFactory.decodeByteArray(recipe.recipeImgBytes, 0, recipe.recipeImgBytes.length));
 
         List<RecipeCategoryEnum> lstCat = new ArrayList<>(Arrays.asList(RecipeCategoryEnum.values().clone()));
         lstCat.add(0, RecipeCategoryEnum.getCategoryByText(recipe.category));
@@ -61,8 +61,8 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         setAddImgBtInvisible();
         setEditMode(false);
         baseBinding.recipeActionBtn.setText("Edit");
-        baseBinding.recipeAddPicBt.setVisibility(View.INVISIBLE);
-
+        baseBinding.galleryButton.setVisibility(View.INVISIBLE);
+        baseBinding.cameraButton.setVisibility(View.INVISIBLE);
     }
 
     @Override

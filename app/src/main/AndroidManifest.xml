@@ -38,7 +38,7 @@
 <!--        </provider>-->
 
         <activity
-            android:name=".CreateRecipeActivity"
+            android:name=".DisplayActivity"
             android:exported="true">
 
             <intent-filter>

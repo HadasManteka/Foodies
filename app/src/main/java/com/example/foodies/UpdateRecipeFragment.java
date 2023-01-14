@@ -43,7 +43,7 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
         baseBinding.recipeTitle.setText(recipe.title);
         baseBinding.recipeIngredients.setText(recipe.ingredients);
         baseBinding.recipeDescription.setText(recipe.description);
-        baseBinding.imageView2.setImageBitmap(BitmapFactory.decodeByteArray(recipe.recipeImgBytes, 0, recipe.recipeImgBytes.length));
+        baseBinding.recipeImg.setImageBitmap(BitmapFactory.decodeByteArray(recipe.recipeImgBytes, 0, recipe.recipeImgBytes.length));
 
         List<RecipeCategoryEnum> lstCat = new ArrayList<>(Arrays.asList(RecipeCategoryEnum.values().clone()));
         lstCat.add(0, RecipeCategoryEnum.getCategoryByText(recipe.category));
@@ -60,7 +60,7 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
 
     @Override
     void onClickAction() {
-        Bitmap chosenPhoto = ((BitmapDrawable)baseBinding.imageView2.getDrawable()).getBitmap();
+        Bitmap chosenPhoto = ((BitmapDrawable)baseBinding.recipeImg.getDrawable()).getBitmap();
         Recipe recipe = new Recipe(title, category, time, ingredients, description, chosenPhoto == null ? null : FileActions.getBitmapAsByteArray(chosenPhoto));
         RecipeModel.instance().updateRecipe(recipe, () -> {
             System.out.println("success");
