@@ -37,12 +37,13 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         Bundle bundle = getArguments();
         if (bundle != null){
             recipe = (Recipe) bundle.getSerializable("recipe");
+            recipe = new Recipe("cookie", "bake", "5-10 min", "df", "sf", new byte[2]);
+
         }
     }
 
     @Override
     public void setRecipeViewField() {
-        Recipe recipe = new Recipe("cookie", "bake", "5-10 min", "df", "sf", new byte[2]);
         baseBinding.recipeTitle.setText(recipe.title);
         baseBinding.recipeIngredients.setText(recipe.ingredients);
         baseBinding.recipeDescription.setText(recipe.description);
