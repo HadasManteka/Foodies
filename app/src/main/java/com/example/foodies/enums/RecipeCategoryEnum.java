@@ -1,5 +1,7 @@
 package com.example.foodies.enums;
 
+import java.util.Arrays;
+
 public enum RecipeCategoryEnum {
     BAKE("Bake"),
     COOK("Cook"),
@@ -18,11 +20,9 @@ public enum RecipeCategoryEnum {
     }
 
     public static RecipeCategoryEnum getCategoryByText(String cat) {
-        try {
-            return RecipeCategoryEnum.valueOf(cat);
-        } catch (Exception e) {
-            return OTHER;
-        }
+        return Arrays.stream(RecipeCategoryEnum.values())
+                    .filter(e -> e.category.equals(cat))
+                    .findFirst().orElse(OTHER);
     }
 
     @Override

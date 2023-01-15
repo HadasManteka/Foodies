@@ -1,40 +1,55 @@
 package com.example.foodies.model;
 
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+import java.sql.Blob;
+
 @Entity
-public class Recipe {
-    @PrimaryKey
+public class Recipe implements Serializable {
+    @PrimaryKey(autoGenerate = true)
     @NonNull
-    public String id="";
+    public Integer id;
     public String title;
     public String category;
     public String time;
     public String ingredients;
     public String description;
-    public String recipeImgUrl;
+    @Ignore
+    public String imgUrl;
+    public byte[] recipeImgBytes;
+
     @Ignore
     public Recipe(){
     }
-    public Recipe(String title, String category, String time,
-                  String ingredients, String description, String recipeImgUrl) {
+    @Ignore
+    public Recipe(String title, String category, String time, String ingredients,
+                  String description, String imgUrl) {
         this.title = title;
         this. category = category;
         this.time = time;
         this.ingredients = ingredients;
         this.description = description;
-        this.recipeImgUrl = recipeImgUrl;
+        this.imgUrl = imgUrl;
     }
 
-    public void setId(@NonNull String id) {
-        this.id = id;
+    public Recipe(String title, String category, String time, String ingredients,
+                  String description, byte[] recipeImgBytes) {
+        this.title = title;
+        this. category = category;
+        this.time = time;
+        this.ingredients = ingredients;
+        this.description = description;
+        this.recipeImgBytes = recipeImgBytes;
     }
 
     @NonNull
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -78,11 +93,19 @@ public class Recipe {
         this.description = description;
     }
 
-    public String getRecipeImgUrl() {
-        return recipeImgUrl;
+    public byte[] getRecipeImgBytes() {
+        return recipeImgBytes;
     }
 
-    public void setRecipeImgUrl(String recipeImgUrl) {
-        this.recipeImgUrl = recipeImgUrl;
+    public void setRecipeImgBytes(byte[] recipeImgUrl) {
+        this.recipeImgBytes = recipeImgUrl;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }
