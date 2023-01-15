@@ -1,16 +1,14 @@
 package com.example.foodies;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
-import com.example.foodies.model.recipe.RecipeModel;
 import com.example.foodies.model.recipe.Recipe;
-import com.example.foodies.util.FileActions;
+import com.example.foodies.model.recipe.RecipeModel;
+import com.example.foodies.util.ProgressDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,12 +32,13 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
         Bundle bundle = getArguments();
         if (bundle != null){
             recipe = (Recipe) bundle.getSerializable("recipe");
+            recipe = new Recipe("cookie", "bake", "5-10 min", "df", "sf", new byte[2]);
+
         }
     }
 
     @Override
     public void setRecipeViewField() {
-        Recipe recipe = new Recipe("cookie", "bake", "5-10 min", "df", "sf", new byte[2]);
         baseBinding.recipeTitle.setText(recipe.title);
         baseBinding.recipeIngredients.setText(recipe.ingredients);
         baseBinding.recipeDescription.setText(recipe.description);
@@ -60,14 +59,20 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
 
     @Override
     void onClickAction() {
-        Bitmap chosenPhoto = ((BitmapDrawable)baseBinding.recipeImg.getDrawable()).getBitmap();
-        Recipe recipe = new Recipe(title, category, time, ingredients, description, chosenPhoto == null ? null : FileActions.getBitmapAsByteArray(chosenPhoto));
-        RecipeModel.instance().updateRecipe(recipe, () -> {
+
+        if(!validateLinkForm()) {
+            return;
+        }
+
+        ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
+
+        RecipeModel.instance().updateRecipe(getRecipe(), () -> {
             System.out.println("success");
-            RecipeModel.instance().getAllRecipes((stList)->{
-                System.out.println(stList);
-//                binding.progressBar.setVisibility(View.GONE);
-            });
+//            RecipeModel.instance().getAllRecipes((stList)->{
+//                ProgressDialog.hideProgressDialog();
+//                System.out.println(stList);
+////                binding.progressBar.setVisibility(View.GONE);
+//            });
         });
     }
 

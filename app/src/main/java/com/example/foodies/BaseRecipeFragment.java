@@ -1,5 +1,7 @@
 package com.example.foodies;
 
+import static com.example.foodies.util.FileActions.getBitmapAsByteArray;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import com.example.foodies.databinding.FragmentBaseRecipeBinding;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
+import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.user.User;
 import com.example.foodies.model.user.UserModel;
 import com.example.foodies.util.ProgressDialog;
@@ -93,12 +96,12 @@ abstract class BaseRecipeFragment extends Fragment {
 //    public interface ImageListener {
 //        void onSelectImage();
 //    }
+//
+//    public void onImageSelected(Bitmap thumbnail) {
+//        baseBinding.recipeImg.setImageBitmap(thumbnail);
+//    }
 
-    public void onImageSelected(Bitmap thumbnail) {
-        baseBinding.recipeImg.setImageBitmap(thumbnail);
-    }
-
-    public void setEditMode(boolean enabled) {
+    protected void setEditMode(boolean enabled) {
         baseBinding.recipeTitle.setEnabled(enabled);
         baseBinding.recipeCategory.setEnabled(enabled);
         baseBinding.recipeTime.setEnabled(enabled);
@@ -107,7 +110,7 @@ abstract class BaseRecipeFragment extends Fragment {
         baseBinding.recipeImg.setEnabled(enabled);
     }
 
-    public void setAddImgBtInvisible() {
+    protected void setAddImgBtInvisible() {
         baseBinding.recipeImg.setVisibility(View.INVISIBLE);
     }
 
@@ -130,6 +133,20 @@ abstract class BaseRecipeFragment extends Fragment {
         } else {
             return true;
         }
+    }
+
+    protected Recipe getRecipe() {
+        String title = baseBinding.recipeTitle.getText().toString();
+        String time = baseBinding.recipeTime.toString();
+        String category = baseBinding.recipeCategory.toString();
+        String ingredients = baseBinding.recipeIngredients.toString();
+        String desc = baseBinding.recipeDescription.toString();
+
+        baseBinding.recipeImg.setDrawingCacheEnabled(true);
+        baseBinding.recipeImg.buildDrawingCache();
+        Bitmap chosenPhotoBm = ((BitmapDrawable)baseBinding.recipeImg.getDrawable()).getBitmap();
+        // binding
+        return new Recipe(title, category, time, ingredients, desc, getBitmapAsByteArray(chosenPhotoBm));
     }
 
     abstract void onClickAction();
