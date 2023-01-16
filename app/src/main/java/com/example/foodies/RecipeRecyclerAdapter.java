@@ -42,7 +42,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         timeTv.setText(recipe.time);
 
         imgView.setImageResource(R.drawable.img);
-        ImageRequest ir = new ImageRequest(recipe.recipeImgUrl, response -> {
+        ImageRequest ir = new ImageRequest(recipe.imgUrl, response -> {
             imgView.setImageBitmap(response);
         },
                 imgView.getMeasuredWidth(), imgView.getMeasuredHeight(), null, null);
@@ -65,6 +65,10 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder
     public void setData(List<Recipe> data) {
         this.data = data;
         notifyDataSetChanged();
+    }
+
+    public List<Recipe> getRecipes() {
+        return this.data;
     }
 
     public RecipeRecyclerAdapter(LayoutInflater inflater, List<Recipe> data) {

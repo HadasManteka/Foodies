@@ -1,32 +1,30 @@
 package com.example.foodies;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
+import com.example.foodies.model.Model;
 import com.example.foodies.model.Recipe;
+import com.example.foodies.util.FileActions;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Display the selected recipe details
- */
-public class RecipeDetailsFragment extends BaseRecipeFragment {
 
+public class UpdateRecipeFragment extends BaseRecipeFragment {
     private Recipe recipe;
 
-    public RecipeDetailsFragment() {
-    }
-
-    public static RecipeDetailsFragment newInstance(Recipe recipe) {
-        RecipeDetailsFragment frag = new RecipeDetailsFragment();
+    public static UpdateRecipeFragment newInstance(Recipe recipe){
+        UpdateRecipeFragment frag = new UpdateRecipeFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("recipe", recipe);
+        bundle.putSerializable("recipe",recipe);
         frag.setArguments(bundle);
         return frag;
     }
@@ -35,7 +33,7 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        if (bundle != null) {
+        if (bundle != null){
             recipe = (Recipe) bundle.getSerializable("recipe");
         }
     }
@@ -58,31 +56,21 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         baseBinding.recipeTime.setAdapter(new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, lstTime));
 
-        setAddImgBtInvisible();
-        setEditMode(false);
-        baseBinding.recipeActionBtn.setText("Edit");
-        baseBinding.recipeAddPicBt.setVisibility(View.INVISIBLE);
-
+        baseBinding.recipeActionBtn.setText("SAVE");
     }
 
     @Override
-    public void onClickAction() {
-        // Edit
+    void onClickAction() {
+        Bitmap chosenPhoto = ((BitmapDrawable)baseBinding.imageView2.getDrawable()).getBitmap();
+        Recipe recipe = new Recipe(title, category, time, ingredients, description, chosenPhoto == null ? null : FileActions.getBitmapAsByteArray(chosenPhoto));
+        Model.instance().updateRecipe(recipe, () -> {
+            System.out.println("success");
+            Model.instance().getAllRecipes((stList)->{
+                System.out.println(stList);
+//                binding.progressBar.setVisibility(View.GONE);
+            });
+        });
     }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        binding = FragmentRecipeDetailsBinding.inflate(inflater, container, false);
-//        View view = binding.getRoot();
-//
-////        Recipe re = new Recipe("cookie", "bake", "df", "df", "sf", new byte[2]);
-////        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-////        BaseRecipeFragment recipeFrag = BaseRecipeFragment.newInstance(re, false);
-//////            recipeFrag.setEditMode(false);
-//////            recipeFrag.setAddImgBtInvisible();
-////        ft.replace(binding.fragmentBaseRecipe2.getId(), recipeFrag);
-////        ft.commit();
-//        return view;
-//    }
+
 }
