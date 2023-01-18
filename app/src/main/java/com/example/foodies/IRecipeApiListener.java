@@ -1,6 +1,6 @@
 package com.example.foodies;
 
-import com.example.foodies.model.Recipe;
+import com.example.foodies.model.recipe.Recipe;
 
 import java.util.List;
 

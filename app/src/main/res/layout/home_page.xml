@@ -61,8 +61,8 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
                 app:srcCompat="@drawable/clock_foreground" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -81,6 +81,12 @@
             app:strokeColor="#33000000"
             app:strokeWidth="1dp"
             tools:layout_editor_absoluteY="0dp">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                app:srcCompat="@drawable/clock_foreground" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -107,6 +113,12 @@
             app:strokeWidth="1dp"
             tools:layout_editor_absoluteY="0dp">
 
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                app:srcCompat="@drawable/clock_foreground" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -131,6 +143,12 @@
             app:strokeColor="#33000000"
             app:strokeWidth="1dp"
             tools:layout_editor_absoluteY="0dp">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                app:srcCompat="@drawable/clock_foreground" />
 
             <TextView
                 android:layout_width="match_parent"

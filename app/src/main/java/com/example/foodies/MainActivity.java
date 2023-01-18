@@ -17,7 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.foodies.model.Recipe;
+import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.request.ApiRecipeModel;
 
 import java.util.List;

@@ -17,7 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.foodies.model.Recipe;
+import com.example.foodies.model.recipe.Recipe;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -41,7 +41,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         titleTv.setText(recipe.title);
         timeTv.setText(recipe.time);
 
-        imgView.setImageResource(R.drawable.img);
+        imgView.setImageResource(R.drawable.camera_img);
         ImageRequest ir = new ImageRequest(recipe.imgUrl, response -> {
             imgView.setImageBitmap(response);
         },

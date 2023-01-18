@@ -1,24 +1,25 @@
-package com.example.foodies.model;
+package com.example.foodies.model.recipe;
 
 import android.os.Handler;
 import android.os.Looper;
 
 import androidx.core.os.HandlerCompat;
 
+
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class Model {
-    private static final Model _instance = new Model();
+public class RecipeModel {
+    private static final RecipeModel _instance = new RecipeModel();
 
     private final Executor executor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
 
-    public static Model instance(){
+    public static RecipeModel instance(){
         return _instance;
     }
-    private Model(){
+    private RecipeModel(){
     }
 
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();

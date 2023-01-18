@@ -1,4 +1,4 @@
-package com.example.foodies.model;
+package com.example.foodies.model.recipe;
 
 import androidx.room.Database;
 import androidx.room.Room;

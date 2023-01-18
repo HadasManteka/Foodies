@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodies.databinding.HomePageBinding;
-import com.example.foodies.model.Recipe;
+import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.request.ApiRecipeModel;
 
 import java.util.ArrayList;
