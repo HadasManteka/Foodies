@@ -8,7 +8,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
-import com.example.foodies.model.Recipe;
+import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.util.Constants;
 import com.google.gson.Gson;
 

@@ -1,10 +1,14 @@
 package com.example.foodies;
 
+import static com.example.foodies.util.FileActions.getBitmapAsByteArray;
+
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import com.example.foodies.model.Model;
-import com.example.foodies.model.Recipe;
+import com.example.foodies.model.recipe.RecipeModel;
+import com.example.foodies.model.recipe.Recipe;
+import com.example.foodies.model.user.User;
+import com.example.foodies.util.ProgressDialog;
 
 import java.io.ByteArrayOutputStream;
 
@@ -22,27 +26,24 @@ public class AddRecipeFragment extends BaseRecipeFragment {
 
     }
 
-    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-        return outputStream.toByteArray();
-    }
-
     @Override
     void onClickAction() {
-//        if (recipeImgUrl.length() == 0) {
-//            System.out.println("must upload photo");
-//        } else {
-            Bitmap chosenPhoto = ((BitmapDrawable)baseBinding.imageView2.getDrawable()).getBitmap();
-            Recipe recipe = new Recipe(title, category, time, ingredients, description, chosenPhoto == null ? null :getBitmapAsByteArray(chosenPhoto));
-            Model.instance().addRecipe(recipe, () -> {
-                System.out.println("success");
-                Model.instance().getAllRecipes((stList)->{
-                    System.out.println(stList);
-//                binding.progressBar.setVisibility(View.GONE);
-                });
-            });
-//                Navigation.findNavController(view1).popBackStack();
+        if(!validateLinkForm()) {
+            return;
+        }
+
+        ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
+
+
+        RecipeModel.instance().addRecipe(getRecipe(), () -> {
+            System.out.println("success");
+            ProgressDialog.hideProgressDialog();
+//            RecipeModel.instance().getAllRecipes((stList)->{
+//                System.out.println(stList);
+////                binding.progressBar.setVisibility(View.GONE);
+//            });
+        });
+//              Navigation.findNavController(view1).popBackStack();
 //        }
     }
 

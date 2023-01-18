@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
-import androidx.fragment.app.Fragment;
-
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
-import com.example.foodies.model.Recipe;
+import com.example.foodies.model.recipe.Recipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,16 +37,17 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         Bundle bundle = getArguments();
         if (bundle != null){
             recipe = (Recipe) bundle.getSerializable("recipe");
+            recipe = new Recipe("cookie", "bake", "5-10 min", "df", "sf", new byte[2]);
+
         }
     }
 
     @Override
     public void setRecipeViewField() {
-        Recipe recipe = new Recipe("cookie", "bake", "5-10 min", "df", "sf", new byte[2]);
         baseBinding.recipeTitle.setText(recipe.title);
         baseBinding.recipeIngredients.setText(recipe.ingredients);
         baseBinding.recipeDescription.setText(recipe.description);
-        baseBinding.imageView2.setImageBitmap(BitmapFactory.decodeByteArray(recipe.recipeImgBytes, 0, recipe.recipeImgBytes.length));
+        baseBinding.recipeImg.setImageBitmap(BitmapFactory.decodeByteArray(recipe.recipeImgBytes, 0, recipe.recipeImgBytes.length));
 
         List<RecipeCategoryEnum> lstCat = new ArrayList<>(Arrays.asList(RecipeCategoryEnum.values().clone()));
         lstCat.add(0, RecipeCategoryEnum.getCategoryByText(recipe.category));
@@ -63,8 +62,8 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         setAddImgBtInvisible();
         setEditMode(false);
         baseBinding.recipeActionBtn.setText("Edit");
-        baseBinding.recipeAddPicBt.setVisibility(View.INVISIBLE);
-
+        baseBinding.galleryButton.setVisibility(View.INVISIBLE);
+        baseBinding.cameraButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
