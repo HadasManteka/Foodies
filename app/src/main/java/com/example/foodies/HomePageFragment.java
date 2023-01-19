@@ -9,15 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodies.databinding.HomePageBinding;
-import com.example.foodies.model.recipe.Recipe;
-import com.example.foodies.model.request.ApiRecipeModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class HomePageFragment extends Fragment {
     RecipeRecyclerAdapter adapter;
@@ -30,7 +25,7 @@ public class HomePageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new RecipeRecyclerAdapter(getLayoutInflater(),new ArrayList<>());
+        adapter = new RecipeRecyclerAdapter(getLayoutInflater(), new ArrayList<>());
     }
 
     private void initRecipeRecyclerView() {
