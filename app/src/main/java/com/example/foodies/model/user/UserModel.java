@@ -2,6 +2,7 @@ package com.example.foodies.model.user;
 
 import android.graphics.Bitmap;
 
+import com.example.foodies.enums.AuthenticationEnum;
 import com.example.foodies.model.FirebaseModel;
 import com.example.foodies.model.Listener;
 import java.util.concurrent.Executor;
@@ -21,11 +22,9 @@ public class UserModel {
     private UserModel(){
     }
 
-//    public void getUser(Recipe re, Listener<Void> listener){
-//        firebaseModel.getUser(re,(Void)->{
-//            listener.onComplete(null);
-//        });
-//    }
+    public void getUser(String email, Listener<User> listener){
+        firebaseModel.getUser(email, listener);
+    }
 
     public void addUser(User user, Listener<Void> listener){
         firebaseModel.addUser(user, listener);
@@ -37,5 +36,9 @@ public class UserModel {
 
     public void register(String name, String password, Listener<Void> listener) {
         firebaseModel.fireBaseRegister(name, password, listener);
+    }
+
+    public void login(String name, String password, Listener<AuthenticationEnum> listener) {
+        firebaseModel.fireBaseLogin(name, password, listener);
     }
 }

@@ -31,18 +31,6 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        FragmentActivity parentActivity = getActivity();
-//        parentActivity.addMenuProvider(new MenuProvider() {
-//            @Override
-//            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-//                menu.removeItem(R.id.addStudentFragment);
-//            }
-//
-//            @Override
-//            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-//                return false;
-//            }
-//        },this, Lifecycle.State.RESUMED);
 
         cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), result -> {
             if (result != null) {

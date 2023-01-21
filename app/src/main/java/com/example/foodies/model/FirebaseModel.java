@@ -1,10 +1,14 @@
 package com.example.foodies.model;
 
+import static android.content.ContentValues.TAG;
+
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.foodies.enums.AuthenticationEnum;
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.recipe.RecipeModel;
 import com.example.foodies.model.user.User;
@@ -19,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -123,19 +128,59 @@ public class FirebaseModel{
 
     public void fireBaseRegister(String email, String password, Listener<Void> listener) {
         FirebaseAuth.getInstance()
-                .createUserWithEmailAndPassword(email,password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            listener.onComplete(null);
+            .createUserWithEmailAndPassword(email,password)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        listener.onComplete(null);
 //                            mOnLoginListener.onSuccess(task.getResult().toString());
-                            // To login
-                        }
-                        else {
-//                            mOnLoginListener.onFailure(task.getException().toString());
-                        }
+                        // To login
                     }
-                });
+                    else {
+//                            mOnLoginListener.onFailure(task.getException().toString());
+                    }
+                }
+            });
+    }
+
+    public void fireBaseLogin(String email, String password, Listener<AuthenticationEnum> listener) {
+        FirebaseAuth.getInstance()
+            .signInWithEmailAndPassword(email,password)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        listener.onComplete(AuthenticationEnum.AUTHORIZED);
+                    }
+                    else {
+                       listener.onComplete(AuthenticationEnum.UNAUTHORIZED);
+                    }
+                }
+            });
+    }
+
+    public void getUser(String email, Listener<User> listener) {
+        // Not working yet
+        //TODO
+        db.collection(User.COLLECTION).whereEqualTo("email", email).get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    User user = null;
+                    if (task.isSuccessful()) {
+                        QuerySnapshot document = task.getResult();
+//                        if (document.exists()) {
+//                            user = User.fromJson(document.getData());
+//                        } else {
+//                            Log.d(TAG, "No such document");
+//                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+
+                    listener.onComplete(user);
+                }
+            });
     }
 }
