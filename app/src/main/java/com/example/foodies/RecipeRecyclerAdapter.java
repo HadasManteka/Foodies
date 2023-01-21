@@ -1,9 +1,5 @@
 package com.example.foodies;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.foodies.model.recipe.Recipe;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 
@@ -35,6 +27,11 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         titleTv = itemView.findViewById(R.id.recipe_item_title);
         timeTv = itemView.findViewById(R.id.recipe_item_time);
         imgView = itemView.findViewById(R.id.recipe_item_image);
+
+        itemView.setOnClickListener(view -> {
+            int pos = getAdapterPosition();
+            listener.onItemClick(pos);
+        });
     }
 
     public void bind(Recipe recipe) {
@@ -61,6 +58,7 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder
 
     LayoutInflater inflater;
     List<Recipe> data;
+    List<Recipe> allRecipes;
 
     public void setData(List<Recipe> data) {
         this.data = data;
@@ -69,6 +67,14 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder
 
     public List<Recipe> getRecipes() {
         return this.data;
+    }
+
+    public List<Recipe> getAllRecipes() {
+        return this.allRecipes;
+    }
+
+    public void setAllRecipes(List<Recipe> allRecipes) {
+        this.allRecipes = allRecipes;
     }
 
     public RecipeRecyclerAdapter(LayoutInflater inflater, List<Recipe> data) {
@@ -97,6 +103,4 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder
     public int getItemCount() {
         return data.size();
     }
-
 }
-

@@ -7,13 +7,26 @@
     <fragment
         android:id="@+id/homePageFragment"
         android:name="com.example.foodies.HomePageFragment"
-        android:label="HomePageFragment" >
+        android:label="HomePageFragment"
+        tools:layout="@layout/home_page">
         <action
             android:id="@+id/action_homePageFragment_to_recipeDetailsFragment"
             app:destination="@id/recipeDetailsFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/recipeDetailsFragment"
         android:name="com.example.foodies.RecipeDetailsFragment"
-        android:label="RecipeDetailsFragment" />
+        android:label="RecipeDetailsFragment" >
+        <argument
+            android:name="recipe"
+            app:argType="com.example.foodies.model.recipe.Recipe" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.foodies.UserProfileFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" />
 </navigation>

@@ -17,10 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.request.ApiRecipeModel;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     UserProfileFragment userProfileFragment;
@@ -32,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getApiRecipes();
+
 
         userProfileFragment = new UserProfileFragment();
         homePageFragment = new HomePageFragment();
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction tran = manager.beginTransaction();
         if (inDisplay != null) tran.remove(inDisplay);
-        tran.add(R.id.main_frag_container, fragment);
+        tran.add(R.id.nav_host_fragment, fragment);
         tran.addToBackStack(String.valueOf(fragment.getId()));
         tran.commit();
         inDisplay = fragment;
@@ -57,11 +55,9 @@ public class MainActivity extends AppCompatActivity {
     public void getApiRecipes() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(ApiRecipeModel.instance().getJsonObjectRequest(
-                new IRecipeApiListener() {
-                    @Override
-                    public void onSuccess(List<Recipe> response) {
-                        homePageFragment.adapter.setData(response);
-                    }
+                response -> {
+                    homePageFragment.adapter.setAllRecipes(response);
+                    homePageFragment.adapter.setData(response);
                 }
         ));
     }
