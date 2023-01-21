@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.foodies.model.FirebaseModel;
+import com.example.foodies.model.Listener;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -25,11 +26,6 @@ public class RecipeModel {
     }
     private RecipeModel(){
     }
-
-    public interface Listener<T>{
-        void onComplete(T data);
-    }
-
 
 //    public enum LoadingState{
 //        LOADING,
@@ -86,7 +82,7 @@ public class RecipeModel {
         addRecipe(re, listener);
     }
 
-    public void uploadImage(String name, Bitmap bitmap,Listener<String> listener) {
-        firebaseModel.uploadImage(name,bitmap,listener);
+    public void uploadImage(String id, Bitmap bitmap,Listener<String> listener) {
+        firebaseModel.uploadRecipeImage(id,bitmap,listener);
     }
 }

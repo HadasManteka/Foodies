@@ -147,6 +147,21 @@ abstract class BaseRecipeFragment extends Fragment {
         return recipe;
     }
 
+    protected Recipe getRecipe(Recipe recipe) {
+        String title = baseBinding.recipeTitle.getText().toString();
+        String time = baseBinding.recipeTime.getSelectedItem().toString();
+        String category = baseBinding.recipeCategory.getSelectedItem().toString();
+        String ingredients = baseBinding.recipeIngredients.getText().toString();
+        String description = baseBinding.recipeDescription.getText().toString();
+
+        recipe.setTitle(title);
+        recipe.setTime(time);
+        recipe.setCategory(category);
+        recipe.setDescription(description);
+        recipe.setIngredients(ingredients);
+        return recipe;
+    }
+
     abstract void onClickAction();
     abstract void setRecipeViewField();
 

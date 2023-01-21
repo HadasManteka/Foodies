@@ -78,17 +78,17 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
         }
 
         ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
-        Recipe recipe = getRecipe();
+        Recipe updatedRecipe = getRecipe(recipe);
         baseBinding.recipeImg.setDrawingCacheEnabled(true);
         baseBinding.recipeImg.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) baseBinding.recipeImg.getDrawable()).getBitmap();
-        RecipeModel.instance().uploadImage(baseBinding.recipeTitle.toString(), bitmap, url-> {
+        RecipeModel.instance().uploadImage(recipe.getId(), bitmap, url-> {
 
             if (url != null) {
-                recipe.setImgUrl(url);
+                updatedRecipe.setImgUrl(url);
             }
 
-            RecipeModel.instance().updateRecipe(getRecipe(), (unused) -> {
+            RecipeModel.instance().updateRecipe(updatedRecipe, (unused) -> {
                 System.out.println("success");
                 ProgressDialog.hideProgressDialog();
             });

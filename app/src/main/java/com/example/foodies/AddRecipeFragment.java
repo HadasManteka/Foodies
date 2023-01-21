@@ -34,7 +34,7 @@ public class AddRecipeFragment extends BaseRecipeFragment {
         baseBinding.recipeImg.setDrawingCacheEnabled(true);
         baseBinding.recipeImg.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) baseBinding.recipeImg.getDrawable()).getBitmap();
-        RecipeModel.instance().uploadImage(baseBinding.recipeTitle.toString(), bitmap, url-> {
+        RecipeModel.instance().uploadImage(recipe.getId(), bitmap, url-> {
 
             if (url != null) {
                 recipe.setImgUrl(url);

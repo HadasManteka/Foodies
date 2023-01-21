@@ -11,12 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.foodies.databinding.FragmentRegisterBinding;
 import com.example.foodies.model.user.User;
+import com.example.foodies.model.user.UserModel;
 import com.example.foodies.util.ProgressDialog;
 
 public class RegisterFragment extends Fragment {
@@ -70,23 +72,26 @@ public class RegisterFragment extends Fragment {
             }
 
             ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
-
-            String name = binding.nameEt.getText().toString();
-            String password = binding.passwordEt.getText().toString();
-            User user = new User(name,password,"");
             binding.avatarImg.setDrawingCacheEnabled(true);
             binding.avatarImg.buildDrawingCache();
+
+            String name = binding.nameEt.getText().toString();
+            String email = binding.emailEt.getText().toString();
+            String password = binding.passwordEt.getText().toString();
+            User user = new User(name,email,password,"");
+
             Bitmap bitmap = ((BitmapDrawable) binding.avatarImg.getDrawable()).getBitmap();
-//            RecipeModel.instance().uploadImage(name, bitmap, url->{
-//
-//                if (url != null) {
-//                    user.setImgUrl(url);
-//                }
-//                RecipeModel.instance().addUser(user, (unused) -> {
-//                    ProgressDialog.hideProgressDialog();
-////                        Navigation.findNavController(view1).popBackStack();
-//                });
-//            });
+            UserModel.instance().register(email, password, (Void) -> {
+                UserModel.instance().uploadProfileImage(email, bitmap, url -> {
+                    if (url != null) {
+                        user.setImgUrl(url);
+                    }
+                    UserModel.instance().addUser(user, (unused) -> {
+                        ProgressDialog.hideProgressDialog();
+//                        Navigation.findNavController(view1).popBackStack();
+                    });
+                });
+            });
         });
 
 //        binding.cancellBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).popBackStack(R.id.studentsListFragment,false));
@@ -102,14 +107,23 @@ public class RegisterFragment extends Fragment {
     }
 
     private boolean validateLinkForm() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         if (TextUtils.isEmpty(binding.nameEt.getText().toString())) {
             binding.nameEt.setError("Required.");
+            return false;
+        } else if (TextUtils.isEmpty(binding.emailEt.getText().toString())) {
+            binding.emailEt.setError("Required.");
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(binding.emailEt.getText().toString()).matches()) {
+            binding.emailEt.setError("Required an email.");
             return false;
         } else if (TextUtils.isEmpty(binding.passwordEt.getText().toString())) {
             binding.passwordEt.setError("Required.");
             return false;
+        }else if (binding.passwordEt.getText().toString().length() < 6){
+            binding.passwordEt.setError("Password must be >= 6 Characters");
+            return false;
         } else if (!isAvatarSelected) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             alertDialog.setTitle("Hi chef,");
             alertDialog.setMessage("Must select an image!");
             alertDialog.show();

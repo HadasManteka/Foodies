@@ -7,11 +7,15 @@ import androidx.annotation.NonNull;
 
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.recipe.RecipeModel;
+import com.example.foodies.model.user.User;
+import com.example.foodies.model.user.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -27,6 +31,7 @@ import java.util.List;
 public class FirebaseModel{
     FirebaseFirestore db;
     FirebaseStorage storage;
+    FirebaseAuth firebaseAuth;
 
     public FirebaseModel(){
         db = FirebaseFirestore.getInstance();
@@ -35,10 +40,11 @@ public class FirebaseModel{
                 .build();
         db.setFirestoreSettings(settings);
         storage = FirebaseStorage.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
     }
 
-    public void getAllRecipesSince(Long since, RecipeModel.Listener<List<Recipe>> callback){
+    public void getAllRecipesSince(Long since, Listener<List<Recipe>> callback){
         db.collection(Recipe.COLLECTION)
                 .whereGreaterThanOrEqualTo(Recipe.LAST_UPDATED, new Timestamp(since,0))
                 .get()
@@ -58,7 +64,7 @@ public class FirebaseModel{
                 });
     }
 
-    public void addRecipe(Recipe recipe, RecipeModel.Listener<Void> listener) {
+    public void addRecipe(Recipe recipe, Listener<Void> listener) {
         db.collection(Recipe.COLLECTION).document(recipe.getId()).set(recipe.toJson())
             .addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
@@ -68,9 +74,29 @@ public class FirebaseModel{
         });
     }
 
-    public void uploadImage(String name, Bitmap bitmap, RecipeModel.Listener<String> listener){
+    public void addUser(User user, Listener<Void> listener) {
+        db.collection(User.COLLECTION).document(user.getId()).set(user.toJson())
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    listener.onComplete(null);
+                }
+            });
+    }
+
+    public void uploadProfileImage(String id, Bitmap bitmap, Listener<String> listener) {
+        String ProfilePath = "profile/" + id;
+        uploadImage(ProfilePath, bitmap, listener);
+    }
+
+    public void uploadRecipeImage(String id, Bitmap bitmap, Listener<String> listener) {
+        String ProfilePath = "recipe/" + id;
+        uploadImage(ProfilePath, bitmap, listener);
+    }
+
+    private void uploadImage(String id, Bitmap bitmap, Listener<String> listener){
         StorageReference storageRef = storage.getReference();
-        StorageReference imagesRef = storageRef.child("images/" + name + ".jpg");
+        StorageReference imagesRef = storageRef.child("images/" + id + ".jpg");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
@@ -93,5 +119,23 @@ public class FirebaseModel{
             }
         });
 
+    }
+
+    public void fireBaseRegister(String email, String password, Listener<Void> listener) {
+        FirebaseAuth.getInstance()
+                .createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            listener.onComplete(null);
+//                            mOnLoginListener.onSuccess(task.getResult().toString());
+                            // To login
+                        }
+                        else {
+//                            mOnLoginListener.onFailure(task.getException().toString());
+                        }
+                    }
+                });
     }
 }
