@@ -5,8 +5,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toTopOf="parent" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/categoriesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="monospace"
+        android:text="categories"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/categoriesLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -15,7 +51,159 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/categoriesTitle">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bakingCard"
+            android:layout_width="0dp"
+            android:layout_height="71dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:contentDescription="bake"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:contentPadding="4dp"
+            app:layout_constraintEnd_toStartOf="@+id/cookCard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="#D9D9D9"
+            app:strokeWidth="1dp">
+
+            <ImageView
+                android:id="@+id/bakingIcon"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="top"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/baking" />
+
+            <TextView
+                android:id="@+id/bake"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|center|center_horizontal"
+                android:text="Bake"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cookCard"
+            android:layout_width="0dp"
+            android:layout_height="71dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:contentDescription="cook"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:contentPadding="4dp"
+            app:layout_constraintEnd_toStartOf="@+id/saladCard"
+            app:layout_constraintStart_toEndOf="@+id/bakingCard"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="#D9D9D9"
+            app:strokeWidth="1dp">
+
+            <ImageView
+                android:id="@+id/cookicon"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal|top"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/cookicon" />
+
+            <TextView
+                android:id="@+id/cook"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|center|center_horizontal"
+                android:text="Cook"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/saladCard"
+            android:layout_width="0dp"
+            android:layout_height="71dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:contentDescription="salad"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:contentPadding="4dp"
+            app:layout_constraintEnd_toStartOf="@+id/drinkCard"
+            app:layout_constraintStart_toEndOf="@id/cookCard"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="#D9D9D9"
+            app:strokeWidth="1dp">
+
+            <ImageView
+                android:id="@+id/saladIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                app:srcCompat="@drawable/saladicon" />
+
+            <TextView
+                android:id="@+id/salad"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|center|center_horizontal"
+                android:text="Salad"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/drinkCard"
+            android:layout_width="0dp"
+            android:layout_height="71dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:contentDescription="drink"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:contentPadding="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.862"
+            app:layout_constraintStart_toEndOf="@id/saladCard"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="#D9D9D9"
+            app:strokeWidth="1dp">
+
+            <ImageView
+                android:id="@+id/drinkIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                app:srcCompat="@drawable/drinkicon" />
+
+            <TextView
+                android:id="@+id/drink"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|center|center_horizontal"
+                android:text="Drink"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="5dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoriesLayout">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/fiveTenTime"
@@ -24,6 +212,7 @@
             android:layout_margin="5dp"
             android:layout_marginEnd="77dp"
             android:layout_weight="1"
+            android:contentDescription="5-10 min"
             app:cardBackgroundColor="#CDD9D9D9"
             app:cardCornerRadius="30dp"
             app:cardElevation="0dp"
@@ -55,6 +244,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
+            android:contentDescription="10-30 min"
             app:cardBackgroundColor="#CDD9D9D9"
             app:cardCornerRadius="30dp"
             app:cardElevation="0dp"
@@ -86,6 +276,7 @@
             android:layout_margin="5dp"
             android:layout_marginStart="115dp"
             android:layout_weight="1"
+            android:contentDescription="30-60 min"
             app:cardBackgroundColor="#CDD9D9D9"
             app:cardCornerRadius="30dp"
             app:cardElevation="0dp"
@@ -117,6 +308,7 @@
             android:layout_margin="5dp"
             android:layout_marginStart="58dp"
             android:layout_weight="1"
+            android:contentDescription="60+ min"
             app:cardBackgroundColor="#CDD9D9D9"
             app:cardCornerRadius="30dp"
             app:cardElevation="0dp"
@@ -146,8 +338,11 @@
         android:id="@+id/home_recipe_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
+    </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

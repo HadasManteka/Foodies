@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,12 +18,16 @@ import com.example.foodies.databinding.HomePageBinding;
 import com.example.foodies.model.recipe.Recipe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class HomePageFragment extends Fragment {
     RecipeRecyclerAdapter adapter;
     HomePageBinding binding;
     CardView currentTimeFilter;
+    CardView currentCategoryFilter;
+    String searchQuery = "";
 
     public HomePageFragment() {
         super(R.layout.home_page);
@@ -34,35 +39,79 @@ public class HomePageFragment extends Fragment {
         adapter = new RecipeRecyclerAdapter(getLayoutInflater(), new ArrayList<>());
     }
 
-    private void setTimeFilters(View view) {
-        setCurrentTimeFilter(view, R.id.fiveTenTime, "5-10 min");
-        setCurrentTimeFilter(view, R.id.tenThirtyTime, "10-30 min");
-        setCurrentTimeFilter(view, R.id.thirtySixtyTime, "30-60 min");
-        setCurrentTimeFilter(view, R.id.sixtyPlusTime, "60+ min");
+    private void setFilters(View view) {
+        List<CardView> timeCards = Arrays.asList(view.findViewById(R.id.fiveTenTime), view.findViewById(R.id.tenThirtyTime),
+                view.findViewById(R.id.thirtySixtyTime), view.findViewById(R.id.sixtyPlusTime));
+        timeCards.forEach(timeCard -> setCurrentFilter(timeCard, "time"));
+
+        List<CardView> categoryCards = Arrays.asList(view.findViewById(R.id.bakingCard), view.findViewById(R.id.cookCard),
+                view.findViewById(R.id.saladCard), view.findViewById(R.id.drinkCard));
+        categoryCards.forEach(categoryCard -> setCurrentFilter(categoryCard, "category"));
+
+        setSearchFilter(view);
     }
 
-    private void setCurrentTimeFilter(View view, int id, String timeFilter) {
-        CardView card = view.findViewById(id);
-        card.setOnClickListener(view1 -> {
-            if (currentTimeFilter != null) {
-                currentTimeFilter.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.clock_background));
+    private void setSearchFilter(View view) {
+        SearchView searchView = view.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return true;
             }
-            if (currentTimeFilter == card) {
-                adapter.setData(adapter.getAllRecipes());
-                currentTimeFilter = null;
-            } else {
-                filterDataByTime(timeFilter);
-                card.setCardBackgroundColor(ContextCompat.getColor(getContext(), com.google.android.material.R.color.cardview_dark_background));
-                currentTimeFilter = card;
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                searchQuery = s;
+                filterData(Objects.nonNull(currentTimeFilter) ? (String) currentTimeFilter.getContentDescription() : "",
+                        Objects.nonNull(currentCategoryFilter) ? (String) currentCategoryFilter.getContentDescription() : "",
+                        searchQuery);
+                return true;
             }
         });
     }
 
-    private void filterDataByTime(String timeFilter) {
+    private void setCurrentFilter(CardView card, String type) {
+        card.setOnClickListener(view1 -> {
+            if (type.equals("time")) setTimeFilter(card);
+            if (type.equals("category")) setCategoryFilter(card);
+
+            filterData(Objects.nonNull(currentTimeFilter) ? (String) currentTimeFilter.getContentDescription() : "",
+                    Objects.nonNull(currentCategoryFilter) ? (String) currentCategoryFilter.getContentDescription() : "",
+                    searchQuery);
+        });
+    }
+
+    private void setTimeFilter(CardView card) {
+        if (Objects.nonNull(currentTimeFilter)) {
+            currentTimeFilter.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.clock_background));
+        }
+        if (currentTimeFilter == card) {
+            currentTimeFilter = null;
+        } else {
+            currentTimeFilter = card;
+            card.setCardBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.darker_gray));
+        }
+    }
+
+    private void setCategoryFilter(CardView card) {
+        if (Objects.nonNull(currentCategoryFilter)) {
+            currentCategoryFilter.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
+        if (currentCategoryFilter == card) {
+            currentCategoryFilter = null;
+        } else {
+            currentCategoryFilter = card;
+            card.setCardBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.darker_gray));
+        }
+    }
+
+    private void filterData(String timeFilter, String categoryFilter, String searchQuery) {
         List<Recipe> data = adapter.getAllRecipes();
         List<Recipe> newData = new ArrayList<>();
         for (Recipe recipe : data) {
-            if (recipe.time == timeFilter) {
+            if ((timeFilter.equals("") || recipe.time.equals(timeFilter)) &&
+                    (categoryFilter.equals("") || recipe.category.equals(categoryFilter)) &&
+                    (searchQuery.equals("") || (recipe.title.toLowerCase()).contains(searchQuery.toLowerCase()))) {
                 newData.add(recipe);
             }
         }
@@ -77,13 +126,14 @@ public class HomePageFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup
+            container, @Nullable Bundle savedInstanceState) {
         binding = HomePageBinding.inflate(inflater, container, false);
         initRecipeRecyclerView();
 
         View view = binding.getRoot();
 
-        setTimeFilters(view);
+        setFilters(view);
 
         adapter.setOnItemClickListener(pos -> {
             Log.d("TAG", "Row was clicked " + pos);
