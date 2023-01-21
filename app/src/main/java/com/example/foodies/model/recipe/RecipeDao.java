@@ -1,5 +1,6 @@
 package com.example.foodies.model.recipe;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,7 +13,7 @@ import java.util.List;
 @Dao
 public interface RecipeDao {
     @Query("select * from Recipe")
-    List<Recipe> getAll();
+    LiveData<List<Recipe>> getAll();
 
     @Query("select * from Recipe where id = :recipeId")
     Recipe getRecipeById(String recipeId);

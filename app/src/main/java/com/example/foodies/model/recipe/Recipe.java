@@ -1,5 +1,7 @@
 package com.example.foodies.model.recipe;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
@@ -7,29 +9,51 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.example.foodies.MyApplication;
+import com.example.foodies.model.user.User;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
+
 import java.io.Serializable;
 import java.sql.Blob;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Entity
 public class Recipe implements Serializable {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @NonNull
-    public Integer id;
+    public String id;
     public String title;
     public String category;
     public String time;
     public String ingredients;
     public String description;
-    @Ignore
     public String imgUrl;
-    public byte[] recipeImgBytes;
+    public Long lastUpdated;
+    public String creatorName;
 
     @Ignore
     public Recipe(){
+        this.id = UUID.randomUUID().toString();
     }
-    @Ignore
+
     public Recipe(String title, String category, String time, String ingredients,
                   String description, String imgUrl) {
+        this.title = title;
+        this.category = category;
+        this.time = time;
+        this.ingredients = ingredients;
+        this.description = description;
+        this.imgUrl = imgUrl;
+        this.id = UUID.randomUUID().toString();
+    }
+
+    @Ignore
+    public Recipe(String id, String title, String category, String time, String ingredients,
+                  String description, String imgUrl) {
+        this.id = id;
         this.title = title;
         this. category = category;
         this.time = time;
@@ -38,18 +62,61 @@ public class Recipe implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    public Recipe(String title, String category, String time, String ingredients,
-                  String description, byte[] recipeImgBytes) {
-        this.title = title;
-        this. category = category;
-        this.time = time;
-        this.ingredients = ingredients;
-        this.description = description;
-        this.recipeImgBytes = recipeImgBytes;
+    public static final String ID = "id";
+    static final String TITLE = "title";
+    static final String CATEGORY = "category";
+    static final String TIME = "time";
+    static final String IMG = "img";
+    static final String INGREDIENTS = "ingredients";
+    static final String DESCRIPTION = "description";
+    public static final String COLLECTION = "recipes";
+    public static final String LAST_UPDATED = "lastUpdated";
+    static final String LOCAL_LAST_UPDATED = "students_local_last_update";
+
+    public static Long getLocalLastUpdate() {
+        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        return sharedPref.getLong(LOCAL_LAST_UPDATED, 0);
+    }
+
+    public static void setLocalLastUpdate(Long time) {
+        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putLong(LOCAL_LAST_UPDATED,time);
+        editor.commit();
+    }
+
+    public static Recipe fromJson(Map<String,Object> json){
+        String id = (String)json.get(ID);
+        String title = (String) json.get(TITLE);
+        String category = (String)json.get(CATEGORY);
+        String madeTime = (String)json.get(TIME);
+        String img = (String)json.get(IMG);
+        String ingredients = (String) json.get(INGREDIENTS);
+        String description = (String) json.get(DESCRIPTION);
+        Recipe re = new Recipe(id, title, category, madeTime, ingredients, description,img);
+        try{
+            Timestamp time = (Timestamp) json.get(LAST_UPDATED);
+            re.setLastUpdated(time.getSeconds());
+        }catch(Exception e){
+        }
+        return re;
+    }
+
+    public Map<String,Object> toJson(){
+        Map<String, Object> json = new HashMap<>();
+        json.put(ID, getId());
+        json.put(TITLE, getTitle());
+        json.put(CATEGORY, getCategory());
+        json.put(TIME, getTime());
+        json.put(IMG, getImgUrl());
+        json.put(INGREDIENTS, getIngredients());
+        json.put(DESCRIPTION, getDescription());
+        json.put(LAST_UPDATED, FieldValue.serverTimestamp());
+        return json;
     }
 
     @NonNull
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -93,19 +160,19 @@ public class Recipe implements Serializable {
         this.description = description;
     }
 
-    public byte[] getRecipeImgBytes() {
-        return recipeImgBytes;
-    }
-
-    public void setRecipeImgBytes(byte[] recipeImgUrl) {
-        this.recipeImgBytes = recipeImgUrl;
-    }
-
     public String getImgUrl() {
         return imgUrl;
     }
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public Long getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Long lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 }
