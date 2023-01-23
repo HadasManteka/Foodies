@@ -11,7 +11,9 @@
         tools:layout="@layout/home_page">
         <action
             android:id="@+id/action_homePageFragment_to_recipeDetailsFragment"
-            app:destination="@id/recipeDetailsFragment" />
+            app:destination="@id/recipeDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_homePageFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
@@ -27,6 +29,6 @@
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="com.example.foodies.UserProfileFragment"
-        android:label="fragment_user_profile"
+        android:label="FragmentUserProfile"
         tools:layout="@layout/fragment_user_profile" />
 </navigation>

@@ -4,7 +4,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;
@@ -37,9 +41,17 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             recipe = (Recipe) bundle.getSerializable("recipe");
-            recipe = new Recipe("cookie", "bake", "5-10 min", "df", "sf", new byte[2]);
-
         }
+    }
+
+    private void setImg() {
+        ImageRequest ir = new ImageRequest(recipe.imgUrl, response -> {
+            baseBinding.recipeImg.setImageBitmap(response);
+        }, baseBinding.recipeImg.getMeasuredWidth(), baseBinding.recipeImg.getMeasuredHeight(),
+                null, null);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(baseBinding.recipeImg.getContext());
+        requestQueue.add(ir);
     }
 
     @Override
@@ -47,7 +59,8 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         baseBinding.recipeTitle.setText(recipe.title);
         baseBinding.recipeIngredients.setText(recipe.ingredients);
         baseBinding.recipeDescription.setText(recipe.description);
-        baseBinding.recipeImg.setImageBitmap(BitmapFactory.decodeByteArray(recipe.recipeImgBytes, 0, recipe.recipeImgBytes.length));
+        baseBinding.recipeImg.setImageResource(R.drawable.camera_img);
+        setImg();
 
         List<RecipeCategoryEnum> lstCat = new ArrayList<>(Arrays.asList(RecipeCategoryEnum.values().clone()));
         lstCat.add(0, RecipeCategoryEnum.getCategoryByText(recipe.category));

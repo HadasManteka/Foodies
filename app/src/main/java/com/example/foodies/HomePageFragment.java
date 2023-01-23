@@ -12,10 +12,14 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.example.foodies.databinding.HomePageBinding;
 import com.example.foodies.model.recipe.Recipe;
+import com.example.foodies.model.request.ApiRecipeModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,20 +27,44 @@ import java.util.List;
 import java.util.Objects;
 
 public class HomePageFragment extends Fragment {
-    RecipeRecyclerAdapter adapter;
+    RecipeRecyclerAdapter adapter = null;
     HomePageBinding binding;
     CardView currentTimeFilter;
     CardView currentCategoryFilter;
+    List<Recipe> tempData = null;
     String searchQuery = "";
 
     public HomePageFragment() {
         super(R.layout.home_page);
     }
 
+    public void getApiRecipes() {
+        RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
+        requestQueue.add(ApiRecipeModel.instance().getJsonObjectRequest(
+                response -> {
+                    this.setData(response);
+                }
+        ));
+    }
+
+
+    public void setData(List<Recipe> recipes) {
+        tempData = recipes;
+        if (adapter != null) {
+            adapter.setAllRecipes(tempData);
+            adapter.setData(tempData);
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getApiRecipes();
         adapter = new RecipeRecyclerAdapter(getLayoutInflater(), new ArrayList<>());
+        if (tempData != null) {
+            adapter.setAllRecipes(tempData);
+            adapter.setData(tempData);
+        }
     }
 
     private void setFilters(View view) {
@@ -138,12 +166,9 @@ public class HomePageFragment extends Fragment {
         adapter.setOnItemClickListener(pos -> {
             Log.d("TAG", "Row was clicked " + pos);
             Recipe recipe = adapter.getRecipes().get(pos);
-            List<Recipe> data = adapter.getRecipes();
 
-            adapter.setData(data.subList(pos, pos + 1));
-//            HomePageFragmentDirections.ActionHomePageFragmentToRecipeDetailsFragment action = HomePageFragmentDirections.actionHomePageFragmentToRecipeDetailsFragment(recipe);
-//            HomePageFragmentDirections.ActionHomePageFragmentToUserProfileFragment action = HomePageFragmentDirections.actionHomePageFragmentToUserProfileFragment();
-//            Navigation.findNavController(view).navigate(action);
+            HomePageFragmentDirections.ActionHomePageFragmentToRecipeDetailsFragment action = HomePageFragmentDirections.actionHomePageFragmentToRecipeDetailsFragment(recipe);
+            Navigation.findNavController(view).navigate(action);
         });
 
         return view;

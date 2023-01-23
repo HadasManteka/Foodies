@@ -5,61 +5,27 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-import com.example.foodies.model.request.ApiRecipeModel;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 public class MainActivity extends AppCompatActivity {
-    UserProfileFragment userProfileFragment;
-    HomePageFragment homePageFragment;
-    Fragment inDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getApiRecipes();
 
-
-        userProfileFragment = new UserProfileFragment();
-        homePageFragment = new HomePageFragment();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_hamburger_foreground));
         setSupportActionBar(toolbar);
-
-
-        displayFragment(homePageFragment);
-    }
-
-    private void displayFragment(Fragment fragment) {
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction tran = manager.beginTransaction();
-        if (inDisplay != null) tran.remove(inDisplay);
-        tran.add(R.id.nav_host_fragment, fragment);
-        tran.addToBackStack(String.valueOf(fragment.getId()));
-        tran.commit();
-        inDisplay = fragment;
-    }
-
-    public void getApiRecipes() {
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(ApiRecipeModel.instance().getJsonObjectRequest(
-                response -> {
-                    homePageFragment.adapter.setAllRecipes(response);
-                    homePageFragment.adapter.setData(response);
-                }
-        ));
     }
 
     @Override
@@ -78,12 +44,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        View view = findViewById(R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(view);
+        int currId = navController.getCurrentDestination().getId();
+
         switch (item.getItemId()) {
             case R.id.home_page_option:
-                displayFragment(homePageFragment);
+                if (currId != R.id.homePageFragment) {
+                    navController.navigate(R.id.homePageFragment);
+                }
                 break;
             case R.id.user_profile_option:
-                displayFragment(userProfileFragment);
+                if (currId != R.id.userProfileFragment) {
+                    navController.navigate(R.id.userProfileFragment);
+                }
                 break;
             case R.id.logout_option:
                 break;
