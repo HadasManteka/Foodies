@@ -1,10 +1,6 @@
 package com.example.foodies;
 
-import static com.example.foodies.util.FileActions.getBitmapAsByteArray;
-
 import android.app.AlertDialog;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import android.text.TextUtils;
@@ -24,6 +20,7 @@ import com.example.foodies.model.recipe.Recipe;
 
 abstract class BaseRecipeFragment extends Fragment {
 
+    AlertDialog.Builder alertDialog;
     protected FragmentBaseRecipeBinding baseBinding;
     String title;
     String category;
@@ -39,6 +36,7 @@ abstract class BaseRecipeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        alertDialog = new AlertDialog.Builder(getContext());
         Bundle bundle = getArguments();
         if (bundle != null){
             title = bundle.getString("title");
@@ -64,6 +62,7 @@ abstract class BaseRecipeFragment extends Fragment {
         baseBinding = FragmentBaseRecipeBinding.inflate(inflater, container, false);
         View view = baseBinding.getRoot();
 
+        deleteButVisibility(false);
 
         baseBinding.cameraButton.setOnClickListener(view1->{
             cameraLauncher.launch(null);
@@ -117,10 +116,8 @@ abstract class BaseRecipeFragment extends Fragment {
             baseBinding.recipeDescription.setError("Required.");
             return false;
         } else if (!isAvatarSelected) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-            alertDialog.setTitle("Hi chef,");
-            alertDialog.setMessage("Must select an image!");
-            alertDialog.show();
+            alertDialog.setTitle("Hi chef,")
+                    .setMessage("Must select an image!").show();
             return false;
         } else {
             return true;
@@ -147,19 +144,8 @@ abstract class BaseRecipeFragment extends Fragment {
         return recipe;
     }
 
-    protected Recipe getRecipe(Recipe recipe) {
-        String title = baseBinding.recipeTitle.getText().toString();
-        String time = baseBinding.recipeTime.getSelectedItem().toString();
-        String category = baseBinding.recipeCategory.getSelectedItem().toString();
-        String ingredients = baseBinding.recipeIngredients.getText().toString();
-        String description = baseBinding.recipeDescription.getText().toString();
-
-        recipe.setTitle(title);
-        recipe.setTime(time);
-        recipe.setCategory(category);
-        recipe.setDescription(description);
-        recipe.setIngredients(ingredients);
-        return recipe;
+    protected void deleteButVisibility(boolean visible) {
+        baseBinding.deleteBtn.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
     abstract void onClickAction();

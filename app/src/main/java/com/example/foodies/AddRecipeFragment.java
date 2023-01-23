@@ -41,7 +41,8 @@ public class AddRecipeFragment extends BaseRecipeFragment {
             }
 
             RecipeModel.instance().addRecipe(recipe, (unused) -> {
-                System.out.println("success");
+                alertDialog.setTitle("Recipe '" + recipe.getTitle() + "'")
+                        .setMessage("Created successfully.").show();
                 ProgressDialog.hideProgressDialog();
             });
         });
