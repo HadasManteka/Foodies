@@ -8,10 +8,12 @@ import android.widget.ArrayAdapter;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Display the selected recipe details
@@ -37,9 +39,10 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         Bundle bundle = getArguments();
         if (bundle != null){
             recipe = (Recipe) bundle.getSerializable("recipe");
-            recipe = new Recipe("cookie", "bake", "5-10 min", "df", "sf", new byte[2]);
 
         }
+        recipe = new Recipe("cookie", "bake", "5-10 min", "df", "sf","https://firebasestorage.googleapis.com/v0/b/my-firebase-42f34.appspot.com/o/images%2Fandroidx.appcompat.widget.AppCompatEditText%7B5097822%20VFED..CL.%20........%2021%2C546-571%2C664%20%237f080174%20app%3Aid%2Frecipe_title%20aid%3D1073741827%7D.jpg?alt=media&token=862f29d5-2f4f-4160-b836-7fa8597e1f5d");
+
     }
 
     @Override
@@ -47,7 +50,12 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         baseBinding.recipeTitle.setText(recipe.title);
         baseBinding.recipeIngredients.setText(recipe.ingredients);
         baseBinding.recipeDescription.setText(recipe.description);
-        baseBinding.recipeImg.setImageBitmap(BitmapFactory.decodeByteArray(recipe.recipeImgBytes, 0, recipe.recipeImgBytes.length));
+
+        if (!Objects.equals(recipe.getImgUrl(), "")) {
+            Picasso.get().load(recipe.getImgUrl()).placeholder(R.drawable.camera_img).into(baseBinding.recipeImg);
+        }else{
+            baseBinding.recipeImg.setImageResource(R.drawable.camera_img);
+        }
 
         List<RecipeCategoryEnum> lstCat = new ArrayList<>(Arrays.asList(RecipeCategoryEnum.values().clone()));
         lstCat.add(0, RecipeCategoryEnum.getCategoryByText(recipe.category));
@@ -70,20 +78,4 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
     public void onClickAction() {
         // Edit
     }
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        binding = FragmentRecipeDetailsBinding.inflate(inflater, container, false);
-//        View view = binding.getRoot();
-//
-////        Recipe re = new Recipe("cookie", "bake", "df", "df", "sf", new byte[2]);
-////        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-////        BaseRecipeFragment recipeFrag = BaseRecipeFragment.newInstance(re, false);
-//////            recipeFrag.setEditMode(false);
-//////            recipeFrag.setAddImgBtInvisible();
-////        ft.replace(binding.fragmentBaseRecipe2.getId(), recipeFrag);
-////        ft.commit();
-//        return view;
-//    }
 }
