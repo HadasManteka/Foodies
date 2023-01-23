@@ -1,32 +1,20 @@
 package com.example.foodies;
 
-import static com.example.foodies.util.ProgressDialog.hideProgressDialog;
-
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Lifecycle;
-import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.example.foodies.databinding.FragmentRegisterBinding;
 import com.example.foodies.model.user.User;
@@ -43,18 +31,6 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        FragmentActivity parentActivity = getActivity();
-//        parentActivity.addMenuProvider(new MenuProvider() {
-//            @Override
-//            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-//                menu.removeItem(R.id.addStudentFragment);
-//            }
-//
-//            @Override
-//            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-//                return false;
-//            }
-//        },this, Lifecycle.State.RESUMED);
 
         cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), result -> {
             if (result != null) {
@@ -84,21 +60,24 @@ public class RegisterFragment extends Fragment {
             }
 
             ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
-
-            String name = binding.nameEt.getText().toString();
-            String password = binding.passwordEt.getText().toString();
-            User user = new User(name,password,"");
             binding.avatarImg.setDrawingCacheEnabled(true);
             binding.avatarImg.buildDrawingCache();
-            Bitmap bitmap = ((BitmapDrawable) binding.avatarImg.getDrawable()).getBitmap();
-            UserModel.instance().uploadImage(name, bitmap, url->{
 
-                if (url != null) {
-                    user.setImgUrl(url);
-                }
-                UserModel.instance().addUser(user, (unused) -> {
-                    ProgressDialog.hideProgressDialog();
+            String name = binding.nameEt.getText().toString();
+            String email = binding.emailEt.getText().toString();
+            String password = binding.passwordEt.getText().toString();
+            User user = new User(name,email,password,"");
+
+            Bitmap bitmap = ((BitmapDrawable) binding.avatarImg.getDrawable()).getBitmap();
+            UserModel.instance().register(email, password, (Void) -> {
+                UserModel.instance().uploadProfileImage(email, bitmap, url -> {
+                    if (url != null) {
+                        user.setImgUrl(url);
+                    }
+                    UserModel.instance().addUser(user, (unused) -> {
+                        ProgressDialog.hideProgressDialog();
 //                        Navigation.findNavController(view1).popBackStack();
+                    });
                 });
             });
         });
@@ -116,14 +95,23 @@ public class RegisterFragment extends Fragment {
     }
 
     private boolean validateLinkForm() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         if (TextUtils.isEmpty(binding.nameEt.getText().toString())) {
             binding.nameEt.setError("Required.");
+            return false;
+        } else if (TextUtils.isEmpty(binding.emailEt.getText().toString())) {
+            binding.emailEt.setError("Required.");
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(binding.emailEt.getText().toString()).matches()) {
+            binding.emailEt.setError("Required an email.");
             return false;
         } else if (TextUtils.isEmpty(binding.passwordEt.getText().toString())) {
             binding.passwordEt.setError("Required.");
             return false;
+        }else if (binding.passwordEt.getText().toString().length() < 6){
+            binding.passwordEt.setError("Password must be >= 6 Characters");
+            return false;
         } else if (!isAvatarSelected) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             alertDialog.setTitle("Hi chef,");
             alertDialog.setMessage("Must select an image!");
             alertDialog.show();

@@ -60,12 +60,7 @@ public class ApiRecipeModel {
                 }
                 Log.i("the recipes is:", recipesFromApi.toString());
             },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.i("the res is error:", error.toString());
-                }
-            }
+                error -> Log.i("the res is error:", error.toString())
         );
     }
 

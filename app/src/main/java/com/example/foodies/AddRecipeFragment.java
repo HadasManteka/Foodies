@@ -1,16 +1,12 @@
 package com.example.foodies;
 
-import static com.example.foodies.util.FileActions.getBitmapAsByteArray;
-
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import com.example.foodies.model.recipe.RecipeModel;
-import com.example.foodies.model.recipe.Recipe;
-import com.example.foodies.model.user.User;
-import com.example.foodies.util.ProgressDialog;
 
-import java.io.ByteArrayOutputStream;
+import com.example.foodies.model.recipe.Recipe;
+import com.example.foodies.model.recipe.RecipeModel;
+import com.example.foodies.util.ProgressDialog;
 
 
 public class AddRecipeFragment extends BaseRecipeFragment {
@@ -34,14 +30,21 @@ public class AddRecipeFragment extends BaseRecipeFragment {
 
         ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
 
+        Recipe recipe = getRecipe();
+        baseBinding.recipeImg.setDrawingCacheEnabled(true);
+        baseBinding.recipeImg.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) baseBinding.recipeImg.getDrawable()).getBitmap();
+        RecipeModel.instance().uploadImage(recipe.getId(), bitmap, url-> {
 
-        RecipeModel.instance().addRecipe(getRecipe(), () -> {
-            System.out.println("success");
-            ProgressDialog.hideProgressDialog();
-//            RecipeModel.instance().getAllRecipes((stList)->{
-//                System.out.println(stList);
-////                binding.progressBar.setVisibility(View.GONE);
-//            });
+            if (url != null) {
+                recipe.setImgUrl(url);
+            }
+
+            RecipeModel.instance().addRecipe(recipe, (unused) -> {
+                alertDialog.setTitle("Recipe '" + recipe.getTitle() + "'")
+                        .setMessage("Created successfully.").show();
+                ProgressDialog.hideProgressDialog();
+            });
         });
 //              Navigation.findNavController(view1).popBackStack();
 //        }

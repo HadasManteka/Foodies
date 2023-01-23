@@ -12,10 +12,12 @@ import com.android.volley.toolbox.Volley;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Display the selected recipe details
@@ -59,8 +61,12 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         baseBinding.recipeTitle.setText(recipe.title);
         baseBinding.recipeIngredients.setText(recipe.ingredients);
         baseBinding.recipeDescription.setText(recipe.description);
-        baseBinding.recipeImg.setImageResource(R.drawable.camera_img);
-        setImg();
+
+        if (!Objects.equals(recipe.getImgUrl(), "")) {
+            Picasso.get().load(recipe.getImgUrl()).placeholder(R.drawable.camera_img).into(baseBinding.recipeImg);
+        }else{
+            baseBinding.recipeImg.setImageResource(R.drawable.camera_img);
+        }
 
         List<RecipeCategoryEnum> lstCat = new ArrayList<>(Arrays.asList(RecipeCategoryEnum.values().clone()));
         lstCat.add(0, RecipeCategoryEnum.getCategoryByText(recipe.category));
@@ -83,20 +89,4 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
     public void onClickAction() {
         // Edit
     }
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        binding = FragmentRecipeDetailsBinding.inflate(inflater, container, false);
-//        View view = binding.getRoot();
-//
-////        Recipe re = new Recipe("cookie", "bake", "df", "df", "sf", new byte[2]);
-////        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-////        BaseRecipeFragment recipeFrag = BaseRecipeFragment.newInstance(re, false);
-//////            recipeFrag.setEditMode(false);
-//////            recipeFrag.setAddImgBtInvisible();
-////        ft.replace(binding.fragmentBaseRecipe2.getId(), recipeFrag);
-////        ft.commit();
-//        return view;
-//    }
 }

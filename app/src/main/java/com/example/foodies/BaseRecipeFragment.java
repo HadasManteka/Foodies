@@ -1,11 +1,6 @@
 package com.example.foodies;
 
-import static com.example.foodies.util.FileActions.getBitmapAsByteArray;
-
 import android.app.AlertDialog;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import android.text.TextUtils;
@@ -13,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -23,12 +17,10 @@ import com.example.foodies.databinding.FragmentBaseRecipeBinding;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;
-import com.example.foodies.model.user.User;
-import com.example.foodies.model.user.UserModel;
-import com.example.foodies.util.ProgressDialog;
 
 abstract class BaseRecipeFragment extends Fragment {
 
+    AlertDialog.Builder alertDialog;
     protected FragmentBaseRecipeBinding baseBinding;
     String title;
     String category;
@@ -44,6 +36,7 @@ abstract class BaseRecipeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        alertDialog = new AlertDialog.Builder(getContext());
         Bundle bundle = getArguments();
         if (bundle != null){
             title = bundle.getString("title");
@@ -69,6 +62,7 @@ abstract class BaseRecipeFragment extends Fragment {
         baseBinding = FragmentBaseRecipeBinding.inflate(inflater, container, false);
         View view = baseBinding.getRoot();
 
+        deleteButVisibility(false);
 
         baseBinding.cameraButton.setOnClickListener(view1->{
             cameraLauncher.launch(null);
@@ -96,10 +90,6 @@ abstract class BaseRecipeFragment extends Fragment {
 //    public interface ImageListener {
 //        void onSelectImage();
 //    }
-//
-//    public void onImageSelected(Bitmap thumbnail) {
-//        baseBinding.recipeImg.setImageBitmap(thumbnail);
-//    }
 
     protected void setEditMode(boolean enabled) {
         baseBinding.recipeTitle.setEnabled(enabled);
@@ -111,7 +101,8 @@ abstract class BaseRecipeFragment extends Fragment {
     }
 
     protected void setAddImgBtInvisible() {
-//        baseBinding.recipeImg.setVisibility(View.INVISIBLE); // TODO: should disable button, not img
+        baseBinding.galleryButton.setVisibility(View.INVISIBLE);
+        baseBinding.cameraButton.setVisibility(View.INVISIBLE);
     }
 
     protected boolean validateLinkForm() {
@@ -125,10 +116,8 @@ abstract class BaseRecipeFragment extends Fragment {
             baseBinding.recipeDescription.setError("Required.");
             return false;
         } else if (!isAvatarSelected) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-            alertDialog.setTitle("Hi chef,");
-            alertDialog.setMessage("Must select an image!");
-            alertDialog.show();
+            alertDialog.setTitle("Hi chef,")
+                    .setMessage("Must select an image!").show();
             return false;
         } else {
             return true;
@@ -137,16 +126,26 @@ abstract class BaseRecipeFragment extends Fragment {
 
     protected Recipe getRecipe() {
         String title = baseBinding.recipeTitle.getText().toString();
-        String time = baseBinding.recipeTime.toString();
-        String category = baseBinding.recipeCategory.toString();
-        String ingredients = baseBinding.recipeIngredients.toString();
-        String desc = baseBinding.recipeDescription.toString();
+        String time = baseBinding.recipeTime.getSelectedItem().toString();
+        String category = baseBinding.recipeCategory.getSelectedItem().toString();
+        String ingredients = baseBinding.recipeIngredients.getText().toString();
+        String description = baseBinding.recipeDescription.getText().toString();
 
-        baseBinding.recipeImg.setDrawingCacheEnabled(true);
-        baseBinding.recipeImg.buildDrawingCache();
-        Bitmap chosenPhotoBm = ((BitmapDrawable)baseBinding.recipeImg.getDrawable()).getBitmap();
-        // binding
-        return new Recipe(title, category, time, ingredients, desc, getBitmapAsByteArray(chosenPhotoBm));
+//        baseBinding.recipeImg.setDrawingCacheEnabled(true);
+//        baseBinding.recipeImg.buildDrawingCache();
+//        Bitmap chosenPhotoBm = ((BitmapDrawable)baseBinding.recipeImg.getDrawable()).getBitmap();
+
+        Recipe recipe = new Recipe();
+        recipe.setTitle(title);
+        recipe.setTime(time);
+        recipe.setCategory(category);
+        recipe.setDescription(description);
+        recipe.setIngredients(ingredients);
+        return recipe;
+    }
+
+    protected void deleteButVisibility(boolean visible) {
+        baseBinding.deleteBtn.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
     abstract void onClickAction();

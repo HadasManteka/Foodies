@@ -46,13 +46,13 @@
                 android:layout_marginEnd="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/nameEt"
+                    android:id="@+id/emailEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:hint="Name:"
-                    app:layout_constraintTop_toBottomOf="@+id/login_txt"/>
+                    android:hint="Email:"
+                    app:layout_constraintTop_toBottomOf="@+id/login_txt" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

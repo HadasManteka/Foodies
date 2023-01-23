@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="111dp"
+    tools:layout_editor_absoluteY="13dp"
     android:background="@color/white">
 
     <FrameLayout
@@ -102,6 +104,7 @@
         android:layout_marginStart="8dp"
         android:height="30dp"
         android:ems="10"
+        android:hint="Title"
         android:inputType="textPersonName"
         android:text="Title"
         app:layout_constraintStart_toStartOf="parent"
@@ -130,5 +133,17 @@
         android:scrollbarStyle="insideOverlay"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <ImageButton
+        android:id="@+id/delete_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="#9FA9A7AA"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
