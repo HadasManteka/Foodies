@@ -43,6 +43,7 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
 
     @Override
     public void setRecipeViewField() {
+        deleteButVisibility(true);
         baseBinding.recipeTitle.setText(recipe.title);
         baseBinding.recipeIngredients.setText(recipe.ingredients);
         baseBinding.recipeDescription.setText(recipe.description);
@@ -67,6 +68,18 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
         baseBinding.recipeTime.setAdapter(new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, lstTime));
 
+
+        baseBinding.deleteBtn.setOnClickListener(v -> {
+            ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
+            recipe.setId("66a95aac-4ad4-4d01-b801-41b8757e97a5");
+            RecipeModel.instance().deleteRecipe(recipe, (unused) -> {
+                alertDialog.setTitle("Recipe '" + recipe.getTitle() + "'")
+                        .setMessage("Deleted successfully.").show();
+                ProgressDialog.hideProgressDialog();
+                // TODO BACK TO DETAILS WHEN DELETE
+            });
+        });
+
         baseBinding.recipeActionBtn.setText("SAVE");
     }
 
@@ -78,18 +91,24 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
         }
 
         ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
-        Recipe updatedRecipe = getRecipe(recipe);
+
+
+        String savedPrevId = recipe.getId();
+        recipe = getRecipe();
+        recipe.setId(savedPrevId);
+
         baseBinding.recipeImg.setDrawingCacheEnabled(true);
         baseBinding.recipeImg.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) baseBinding.recipeImg.getDrawable()).getBitmap();
         RecipeModel.instance().uploadImage(recipe.getId(), bitmap, url-> {
 
             if (url != null) {
-                updatedRecipe.setImgUrl(url);
+                recipe.setImgUrl(url);
             }
 
-            RecipeModel.instance().updateRecipe(updatedRecipe, (unused) -> {
-                System.out.println("success");
+            RecipeModel.instance().updateRecipe(recipe, (unused) -> {
+                alertDialog.setTitle("Recipe '" + recipe.getTitle() + "'")
+                        .setMessage("Updated successfully.").show();
                 ProgressDialog.hideProgressDialog();
             });
         });

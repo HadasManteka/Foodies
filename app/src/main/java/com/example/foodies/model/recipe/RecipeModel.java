@@ -82,6 +82,10 @@ public class RecipeModel {
         addRecipe(re, listener);
     }
 
+    public void deleteRecipe(Recipe re, Listener<Void> listener){
+        firebaseModel.deleteRecipe(re, listener);
+    }
+
     public void uploadImage(String id, Bitmap bitmap,Listener<String> listener) {
         firebaseModel.uploadRecipeImage(id,bitmap,listener);
     }

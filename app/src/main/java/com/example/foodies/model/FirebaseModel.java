@@ -79,6 +79,16 @@ public class FirebaseModel{
         });
     }
 
+    public void deleteRecipe(Recipe recipe, Listener<Void> listener) {
+        db.collection(Recipe.COLLECTION).document(recipe.getId()).delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        listener.onComplete(null);
+                    }
+                });
+    }
+
     public void addUser(User user, Listener<Void> listener) {
         db.collection(User.COLLECTION).document(user.getId()).set(user.toJson())
             .addOnCompleteListener(new OnCompleteListener<Void>() {
