@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -92,11 +93,16 @@ abstract class BaseRecipeFragment extends Fragment {
 //    }
 
     protected void setEditMode(boolean enabled) {
-        baseBinding.recipeTitle.setEnabled(enabled);
+        baseBinding.recipeTitle.setFocusableInTouchMode(enabled);
+        baseBinding.recipeTitle.clearFocus();
+        baseBinding.recipeIngredients.setFocusableInTouchMode(enabled);
+        baseBinding.recipeIngredients.clearFocus();
+        baseBinding.recipeDescription.setFocusableInTouchMode(enabled);
+        baseBinding.recipeDescription.clearFocus();
+
         baseBinding.recipeCategory.setEnabled(enabled);
         baseBinding.recipeTime.setEnabled(enabled);
-        baseBinding.recipeIngredients.setEnabled(enabled);
-        baseBinding.recipeDescription.setEnabled(enabled);
+
 //        baseBinding.recipeImg.setEnabled(enabled); // TODO: should disable button, not img
     }
 
