@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.foodies.IRecipeApiListener;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;
@@ -33,7 +34,7 @@ public class ApiRecipeModel {
         return recipesFromApi;
     }
 
-    public JsonObjectRequest getJsonObjectRequest() {
+    public JsonObjectRequest getJsonObjectRequest(IRecipeApiListener listener) {
         return new JsonObjectRequest (
             Request.Method.GET,
             Constants.RECIPE_API,
@@ -52,6 +53,8 @@ public class ApiRecipeModel {
                                 ingredients, recipe.getSummary(), recipe.getImage());
                         recipesFromApi.add(re);
                     });
+
+                    listener.onSuccess(recipesFromApi);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

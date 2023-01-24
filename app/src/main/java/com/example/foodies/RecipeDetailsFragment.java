@@ -4,7 +4,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;
@@ -25,10 +29,10 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
     public RecipeDetailsFragment() {
     }
 
-    public static RecipeDetailsFragment newInstance(Recipe recipe){
+    public static RecipeDetailsFragment newInstance(Recipe recipe) {
         RecipeDetailsFragment frag = new RecipeDetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("recipe",recipe);
+        bundle.putSerializable("recipe", recipe);
         frag.setArguments(bundle);
         return frag;
     }
@@ -37,12 +41,19 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        if (bundle != null){
+        if (bundle != null) {
             recipe = (Recipe) bundle.getSerializable("recipe");
-
         }
-        recipe = new Recipe("cookie", "bake", "5-10 min", "df", "sf","https://firebasestorage.googleapis.com/v0/b/my-firebase-42f34.appspot.com/o/images%2Fandroidx.appcompat.widget.AppCompatEditText%7B5097822%20VFED..CL.%20........%2021%2C546-571%2C664%20%237f080174%20app%3Aid%2Frecipe_title%20aid%3D1073741827%7D.jpg?alt=media&token=862f29d5-2f4f-4160-b836-7fa8597e1f5d");
+    }
 
+    private void setImg() {
+        ImageRequest ir = new ImageRequest(recipe.imgUrl, response -> {
+            baseBinding.recipeImg.setImageBitmap(response);
+        }, baseBinding.recipeImg.getMeasuredWidth(), baseBinding.recipeImg.getMeasuredHeight(),
+                null, null);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(baseBinding.recipeImg.getContext());
+        requestQueue.add(ir);
     }
 
     @Override

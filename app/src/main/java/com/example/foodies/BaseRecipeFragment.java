@@ -97,7 +97,7 @@ abstract class BaseRecipeFragment extends Fragment {
         baseBinding.recipeTime.setEnabled(enabled);
         baseBinding.recipeIngredients.setEnabled(enabled);
         baseBinding.recipeDescription.setEnabled(enabled);
-        baseBinding.recipeImg.setEnabled(enabled);
+//        baseBinding.recipeImg.setEnabled(enabled); // TODO: should disable button, not img
     }
 
     protected void setAddImgBtInvisible() {
