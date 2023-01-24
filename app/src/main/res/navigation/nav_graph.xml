@@ -30,5 +30,5 @@
         android:id="@+id/userProfileFragment"
         android:name="com.example.foodies.UserProfileFragment"
         android:label="FragmentUserProfile"
-        tools:layout="@layout/fragment_user_profile" />
+        tools:layout="@layout/fragment_base_user_profile" />
 </navigation>

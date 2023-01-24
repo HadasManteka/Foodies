@@ -131,10 +131,6 @@ abstract class BaseRecipeFragment extends Fragment {
         String ingredients = baseBinding.recipeIngredients.getText().toString();
         String description = baseBinding.recipeDescription.getText().toString();
 
-//        baseBinding.recipeImg.setDrawingCacheEnabled(true);
-//        baseBinding.recipeImg.buildDrawingCache();
-//        Bitmap chosenPhotoBm = ((BitmapDrawable)baseBinding.recipeImg.getDrawable()).getBitmap();
-
         Recipe recipe = new Recipe();
         recipe.setTitle(title);
         recipe.setTime(time);
