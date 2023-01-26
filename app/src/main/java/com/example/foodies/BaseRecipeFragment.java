@@ -18,41 +18,33 @@ import com.example.foodies.databinding.FragmentBaseRecipeBinding;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;
+import com.example.foodies.model.user.User;
 
 abstract class BaseRecipeFragment extends Fragment {
 
     AlertDialog.Builder alertDialog;
     protected FragmentBaseRecipeBinding baseBinding;
-    String title;
-    String category;
-    String time;
-    String ingredients;
-    String description;
-    String recipeImgUrl;
 //    private ImageListener mListener;
     ActivityResultLauncher<Void> cameraLauncher;
     ActivityResultLauncher<String> galleryLauncher;
-    boolean isAvatarSelected;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         alertDialog = new AlertDialog.Builder(getContext());
-        Bundle bundle = getArguments();
-        if (bundle != null){
-            title = bundle.getString("title");
-        }
+//        Bundle bundle = getArguments();
+//        if (bundle != null){
+//            title = bundle.getString("title");
+//        }
 
         cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), result -> {
             if (result != null) {
                 baseBinding.recipeImg.setImageBitmap(result);
-                isAvatarSelected = true;
             }
         });
         galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
             if (result != null){
                 baseBinding.recipeImg.setImageURI(result);
-                isAvatarSelected = true;
             }
         });
     }
@@ -80,9 +72,7 @@ abstract class BaseRecipeFragment extends Fragment {
         baseBinding.recipeTime.setAdapter(new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, RecipeMadeTimeEnum.values()));
 
-        baseBinding.recipeActionBtn.setOnClickListener(v -> {
-            onClickAction();
-        });
+        baseBinding.recipeActionBtn.setOnClickListener(v -> onClickAction());
 
         setRecipeViewField();
         return view;
@@ -121,7 +111,7 @@ abstract class BaseRecipeFragment extends Fragment {
         } else if (TextUtils.isEmpty(baseBinding.recipeDescription.getText().toString())) {
             baseBinding.recipeDescription.setError("Required.");
             return false;
-        } else if (!isAvatarSelected) {
+        } else if (baseBinding.recipeImg.getDrawable() == null) {
             alertDialog.setTitle("Hi chef,")
                     .setMessage("Must select an image!").show();
             return false;
@@ -147,6 +137,7 @@ abstract class BaseRecipeFragment extends Fragment {
         recipe.setCategory(category);
         recipe.setDescription(description);
         recipe.setIngredients(ingredients);
+        recipe.setUserID(User.getUser().getId());
         return recipe;
     }
 

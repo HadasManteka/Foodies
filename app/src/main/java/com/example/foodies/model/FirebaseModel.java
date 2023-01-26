@@ -174,23 +174,10 @@ public class FirebaseModel{
         // Not working yet
         //TODO
         db.collection(User.COLLECTION).whereEqualTo("email", email).get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    User user = null;
-                    if (task.isSuccessful()) {
-                        QuerySnapshot document = task.getResult();
-//                        if (document.exists()) {
-//                            user = User.fromJson(document.getData());
-//                        } else {
-//                            Log.d(TAG, "No such document");
-//                        }
-                    } else {
-                        Log.d(TAG, "get failed with ", task.getException());
-                    }
-
-                    listener.onComplete(user);
-                }
+            .addOnSuccessListener((OnSuccessListener<QuerySnapshot>) task -> {
+                User user = User.fromJson(task.getDocuments().get(0).getData());
+                Log.d(TAG, "user successfully selected");
+                listener.onComplete(user);
             });
     }
 }

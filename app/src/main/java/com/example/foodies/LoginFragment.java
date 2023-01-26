@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -35,36 +37,52 @@ public class LoginFragment extends Fragment {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        binding.loginBtn.setOnClickListener(view1 -> {
-            if (!validateLinkForm()) {
-                return;
-            }
+        if(User.getUser() != null) {
+            NavHostFragment.findNavController(this).navigate(
+                    LoginFragmentDirections.actionLoginFragmentToHomePageFragment());
+        } else {
 
-            ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
-            String email = binding.emailEt.getText().toString();
-            String password = binding.passwordEt.getText().toString();
+            binding.registerBtn.setOnClickListener(view1 -> {
+                Navigation.findNavController(binding.getRoot()).navigate(
+                        LoginFragmentDirections.actionLoginFragmentToRegisterFragment());
 
-            UserModel.instance().login(email, password, (response) -> {
-                if (AuthenticationEnum.AUTHORIZED.equals(response)) {
-//                    UserModel.instance().getUser(email, (user)-> {
-//                        User currentUser = user;
-//                        // get user
-//                        ProgressDialog.hideProgressDialog();
-//                    });
-                    ProgressDialog.hideProgressDialog();
-                } else {
-                    ProgressDialog.hideProgressDialog();
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-                    alertDialog.setTitle("Sorry,");
-                    alertDialog.setMessage("you are unauthorized.");
-                    alertDialog.show();
-                }
             });
+
+            binding.loginBtn.setOnClickListener(view1 -> {
+                if (!validateLinkForm()) {
+                    return;
+                }
+
+                ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
+                String email = binding.emailEt.getText().toString();
+                String password = binding.passwordEt.getText().toString();
+
+                UserModel.instance().login(email, password, (response) -> {
+                    if (AuthenticationEnum.AUTHORIZED.equals(response)) {
+                        UserModel.instance().getUser(email, (user) -> {
+                            ProgressDialog.hideProgressDialog();
+                            User.setUser(user);
+                            getActivity().invalidateOptionsMenu();
+                            Navigation.findNavController(binding.getRoot()).navigate(
+                                    LoginFragmentDirections.actionLoginFragmentToHomePageFragment());
+
+                        });
+                        ProgressDialog.hideProgressDialog();
+                    } else {
+                        ProgressDialog.hideProgressDialog();
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                        alertDialog.setTitle("Sorry,");
+                        alertDialog.setMessage("you are unauthorized.");
+                        alertDialog.show();
+                    }
+                });
 
 //        binding.cancellBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).popBackStack(R.id.studentsListFragment,false));
 
-        });
+            });
 
+
+        }
         return view;
     }
 

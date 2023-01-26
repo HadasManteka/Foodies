@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homePageFragment">
+    app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/homePageFragment"
         android:name="com.example.foodies.HomePageFragment"
@@ -25,10 +25,55 @@
         <argument
             android:name="recipe"
             app:argType="com.example.foodies.model.recipe.Recipe" />
+        <action
+            android:id="@+id/action_recipeDetailsFragment_to_updateRecipeFragment"
+            app:destination="@id/updateRecipeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="com.example.foodies.UserProfileFragment"
         android:label="FragmentUserProfile"
         tools:layout="@layout/fragment_user_profile" />
+    <fragment
+        android:id="@+id/updateRecipeFragment"
+        android:name="com.example.foodies.UpdateRecipeFragment"
+        android:label="FragmentUpdateRecipe">
+        <argument
+            android:name="recipe"
+            app:argType="com.example.foodies.model.recipe.Recipe" />
+        <action
+            android:id="@+id/action_recipeUpdateFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.foodies.LoginFragment"
+        android:label="FragmentLogin"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_homePageFragment"
+            app:destination="@id/homePageFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.foodies.RegisterFragment"
+        android:label="FragmentRegister"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
 </navigation>
