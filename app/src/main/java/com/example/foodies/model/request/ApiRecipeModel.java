@@ -1,5 +1,7 @@
 package com.example.foodies.model.request;
 
+import static com.example.foodies.model.user.User.getUser;
+
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -50,7 +52,7 @@ public class ApiRecipeModel {
                         category = RecipeCategoryEnum.getCategoryByText(category).getCategory();
                         String time = RecipeMadeTimeEnum.getTextByTime( recipe.getPreparationMinutes());
                         Recipe re = new Recipe(recipe.getTitle(), category, time,
-                                ingredients, recipe.getSummary(), recipe.getImage());
+                                ingredients, recipe.getSummary(), recipe.getImage(), "api");
                         recipesFromApi.add(re);
                     });
 

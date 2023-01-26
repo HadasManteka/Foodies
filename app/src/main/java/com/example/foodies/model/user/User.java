@@ -1,8 +1,14 @@
 package com.example.foodies.model.user;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.example.foodies.MyApplication;
+import com.google.gson.Gson;
 
 import java.net.NetworkInterface;
 import java.util.HashMap;
@@ -15,7 +21,7 @@ public class User {
     public String id="";
     public String nickName;
     public String email;
-    public String password;
+//    public String password;
     public String imgUrl;
 
     @Ignore
@@ -23,11 +29,19 @@ public class User {
         this.id = UUID.randomUUID().toString();
     }
 
-    public User(String nickName, String email, String password, String imgUrl) {
+    public User(String nickName, String email, String imgUrl) {
         this.id = UUID.randomUUID().toString();
         this.nickName = nickName;
         this.email = email;
-        this.password = password;
+//        this.password = password;
+        this.imgUrl = imgUrl;
+    }
+
+    public User(String id, String nickName, String email, String imgUrl) {
+        this.id = id;
+        this.nickName = nickName;
+        this.email = email;
+//        this.password = password;
         this.imgUrl = imgUrl;
     }
 
@@ -41,19 +55,42 @@ public class User {
         String nickName = (String)json.get(NAME);
         String name = (String)json.get(EMAIL);
         String img = (String)json.get(IMG);
-        String password = (String) json.get(PASSWORD);
-        return new User(nickName, name,password,img);
+//        String password = (String) json.get(PASSWORD);
+        return new User(nickName, name,img);
     }
 
     public Map<String,Object> toJson(){
         Map<String, Object> json = new HashMap<>();
         json.put(NAME, getNickName());
         json.put(EMAIL, getEmail());
-        json.put(PASSWORD, getPassword());
+//        json.put(PASSWORD, getPassword());
         json.put(IMG, getImgUrl());
         return json;
     }
 
+    public static User getUser() {
+        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPref.getString("user", "");
+        return gson.fromJson(json, User.class);
+    }
+
+    public static void setUser(User user) {
+        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Gson gson = new Gson();
+        editor.putString("user", gson.toJson(user));
+        editor.commit();
+    }
+
+    public static void logout() {
+        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove("user");
+        editor.commit();
+    }
+
+    @NonNull
     public String getId() {
         return id;
     }
@@ -64,14 +101,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getImgUrl() {

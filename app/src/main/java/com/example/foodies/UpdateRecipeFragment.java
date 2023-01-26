@@ -5,6 +5,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 
+import androidx.navigation.Navigation;
+
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;
@@ -35,10 +37,7 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
         Bundle bundle = getArguments();
         if (bundle != null){
             recipe = (Recipe) bundle.getSerializable("recipe");
-
         }
-        recipe = new Recipe("cookie", "bake", "5-10 min", "df", "sf", "");
-
     }
 
     @Override
@@ -71,12 +70,11 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
 
         baseBinding.deleteBtn.setOnClickListener(v -> {
             ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
-            recipe.setId("66a95aac-4ad4-4d01-b801-41b8757e97a5");
             RecipeModel.instance().deleteRecipe(recipe, (unused) -> {
                 alertDialog.setTitle("Recipe '" + recipe.getTitle() + "'")
                         .setMessage("Deleted successfully.").show();
                 ProgressDialog.hideProgressDialog();
-                // TODO BACK TO DETAILS WHEN DELETE
+                navigateBackToDetails();
             });
         });
 
@@ -91,7 +89,6 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
         }
 
         ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
-
 
         String savedPrevId = recipe.getId();
         recipe = getRecipe();
@@ -110,8 +107,15 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
                 alertDialog.setTitle("Recipe '" + recipe.getTitle() + "'")
                         .setMessage("Updated successfully.").show();
                 ProgressDialog.hideProgressDialog();
+                navigateBackToDetails();
             });
         });
+    }
+
+    private void navigateBackToDetails() {
+        Navigation.findNavController(baseBinding.getRoot()).popBackStack();
+//        UpdateRecipeFragmentDirections.ActionRecipeUpdateFragmentToRecipeDetailsFragment action = UpdateRecipeFragmentDirections.actionRecipeUpdateFragmentToRecipeDetailsFragment(recipe);
+//        Navigation.findNavController(baseBinding.getRoot()).navigate(action);
     }
 
 

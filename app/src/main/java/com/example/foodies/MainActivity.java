@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.foodies.model.user.User;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -22,28 +24,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_hamburger_foreground));
         setSupportActionBar(toolbar);
+
+
     }
 
     @Override
     @SuppressLint("RestrictedApi")
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        if (menu instanceof MenuBuilder) {
-            MenuBuilder m = (MenuBuilder) menu;
-            m.setOptionalIconsVisible(true);
-        }
+        if(User.getUser() != null) {
+            MenuInflater inflater = getMenuInflater();
+            if (menu instanceof MenuBuilder) {
+                MenuBuilder m = (MenuBuilder) menu;
+                    m.setOptionalIconsVisible(true);
+                }
 
-        inflater.inflate(R.menu.menu, menu);
+            inflater.inflate(R.menu.menu, menu);
+        }
         return true;
     }
 
     @Override
     @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        this.invalidateOptionsMenu();
         View view = findViewById(R.id.nav_host_fragment);
         NavController navController = Navigation.findNavController(view);
         int currId = navController.getCurrentDestination().getId();
@@ -60,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.logout_option:
+                User.logout();
+                navController.navigate(R.id.loginFragment);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

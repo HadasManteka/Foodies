@@ -20,7 +20,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             android:orientation="vertical">
 
             <FrameLayout
@@ -30,7 +30,7 @@
                 <ImageView
                     android:id="@+id/avatarImg"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="230dp"
                     android:layout_marginTop="8dp"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/user_avatar" />
@@ -133,7 +133,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="25dp"
         android:text="Register"
         android:textColor="#090909"
         android:textSize="16sp"

@@ -33,6 +33,7 @@ public class Recipe implements Serializable {
     public String imgUrl;
     public Long lastUpdated;
     public String creatorName;
+    public String userId;
 
     @Ignore
     public Recipe(){
@@ -40,7 +41,7 @@ public class Recipe implements Serializable {
     }
 
     public Recipe(String title, String category, String time, String ingredients,
-                  String description, String imgUrl) {
+                  String description, String imgUrl, String userId) {
         this.title = title;
         this.category = category;
         this.time = time;
@@ -48,11 +49,12 @@ public class Recipe implements Serializable {
         this.description = description;
         this.imgUrl = imgUrl;
         this.id = UUID.randomUUID().toString();
+        this.userId = userId;
     }
 
     @Ignore
     public Recipe(String id, String title, String category, String time, String ingredients,
-                  String description, String imgUrl) {
+                  String description, String imgUrl, String userId) {
         this.id = id;
         this.title = title;
         this. category = category;
@@ -60,6 +62,7 @@ public class Recipe implements Serializable {
         this.ingredients = ingredients;
         this.description = description;
         this.imgUrl = imgUrl;
+        this.userId = userId;
     }
 
     public static final String ID = "id";
@@ -72,6 +75,7 @@ public class Recipe implements Serializable {
     public static final String COLLECTION = "recipes";
     public static final String LAST_UPDATED = "lastUpdated";
     static final String LOCAL_LAST_UPDATED = "students_local_last_update";
+    static final String USER = "user";
 
     public static Long getLocalLastUpdate() {
         SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
@@ -93,7 +97,8 @@ public class Recipe implements Serializable {
         String img = (String)json.get(IMG);
         String ingredients = (String) json.get(INGREDIENTS);
         String description = (String) json.get(DESCRIPTION);
-        Recipe re = new Recipe(id, title, category, madeTime, ingredients, description,img);
+        String userId = (String) json.get(USER);
+        Recipe re = new Recipe(id, title, category, madeTime, ingredients, description, img, userId);
         try{
             Timestamp time = (Timestamp) json.get(LAST_UPDATED);
             re.setLastUpdated(time.getSeconds());
@@ -112,6 +117,7 @@ public class Recipe implements Serializable {
         json.put(INGREDIENTS, getIngredients());
         json.put(DESCRIPTION, getDescription());
         json.put(LAST_UPDATED, FieldValue.serverTimestamp());
+        json.put(USER, getUserID());
         return json;
     }
 
@@ -178,5 +184,13 @@ public class Recipe implements Serializable {
 
     public void setLastUpdated(Long lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public String getUserID() {
+        return userId;
+    }
+
+    public void setUserID(String userId) {
+        this.userId = userId;
     }
 }
