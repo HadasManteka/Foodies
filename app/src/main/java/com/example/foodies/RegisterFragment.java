@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -66,7 +67,7 @@ public class RegisterFragment extends Fragment {
             String name = binding.nameEt.getText().toString();
             String email = binding.emailEt.getText().toString();
             String password = binding.passwordEt.getText().toString();
-            User user = new User(name,email,password,"");
+            User user = new User(name,email,"");
 
             Bitmap bitmap = ((BitmapDrawable) binding.avatarImg.getDrawable()).getBitmap();
             UserModel.instance().register(email, password, (Void) -> {
@@ -76,6 +77,9 @@ public class RegisterFragment extends Fragment {
                     }
                     UserModel.instance().addUser(user, (unused) -> {
                         ProgressDialog.hideProgressDialog();
+                        Navigation.findNavController(binding.getRoot()).navigate(
+                                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment());
+
 //                        Navigation.findNavController(view1).popBackStack();
                     });
                 });

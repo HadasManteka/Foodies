@@ -6,12 +6,15 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import androidx.navigation.Navigation;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;
+import com.example.foodies.model.user.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -46,16 +49,6 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         }
     }
 
-    private void setImg() {
-        ImageRequest ir = new ImageRequest(recipe.imgUrl, response -> {
-            baseBinding.recipeImg.setImageBitmap(response);
-        }, baseBinding.recipeImg.getMeasuredWidth(), baseBinding.recipeImg.getMeasuredHeight(),
-                null, null);
-
-        RequestQueue requestQueue = Volley.newRequestQueue(baseBinding.recipeImg.getContext());
-        requestQueue.add(ir);
-    }
-
     @Override
     public void setRecipeViewField() {
         baseBinding.recipeTitle.setText(recipe.title);
@@ -80,13 +73,20 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
 
         setAddImgBtInvisible();
         setEditMode(false);
-        baseBinding.recipeActionBtn.setText("Edit");
+
+        if (Objects.nonNull(User.getUser()) && User.getUser().getId().equals(recipe.getUserID())) {
+            baseBinding.recipeActionBtn.setText("Edit");
+        } else {
+            baseBinding.recipeActionBtn.setVisibility(View.INVISIBLE);
+        }
+
         baseBinding.galleryButton.setVisibility(View.INVISIBLE);
         baseBinding.cameraButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onClickAction() {
-        // Edit
+        RecipeDetailsFragmentDirections.ActionRecipeDetailsFragmentToUpdateRecipeFragment action = RecipeDetailsFragmentDirections.actionRecipeDetailsFragmentToUpdateRecipeFragment(recipe);
+        Navigation.findNavController(baseBinding.getRoot()).navigate(action);
     }
 }
