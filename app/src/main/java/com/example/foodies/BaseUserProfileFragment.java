@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,10 +16,13 @@ import android.widget.ArrayAdapter;
 
 import com.example.foodies.databinding.FragmentBaseRecipeBinding;
 import com.example.foodies.databinding.FragmentBaseUserProfileBinding;
+import com.example.foodies.databinding.FragmentLoginBinding;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.user.User;
+
+import java.util.Objects;
 
 abstract class BaseUserProfileFragment extends Fragment {
 
@@ -28,6 +32,7 @@ abstract class BaseUserProfileFragment extends Fragment {
     protected FragmentBaseUserProfileBinding baseBinding;
     boolean isAvatarSelected;
     ActivityResultLauncher<String> galleryLauncher;
+    User currentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,8 @@ abstract class BaseUserProfileFragment extends Fragment {
                 isAvatarSelected = true;
             }
         });
+
+        currentUser = User.getUser();
     }
 
     @Override

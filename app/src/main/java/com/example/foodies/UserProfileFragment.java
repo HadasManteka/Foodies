@@ -3,6 +3,8 @@ package com.example.foodies;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,32 +24,31 @@ import java.util.Objects;
 
 public class UserProfileFragment extends BaseUserProfileFragment {
 
-    private User user;
-
     public UserProfileFragment(){}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            user = (User) bundle.getSerializable("user");
-        }
     }
 
     @Override
     public void setUserViewField() {
-        if(Objects.nonNull(user)) {
-            baseBinding.userNameView.setText(user.nickName);
+        if(Objects.nonNull(currentUser)) {
+            baseBinding.userNameView.setText(currentUser.nickName);
 
-            if (!Objects.equals(user.getImgUrl(), "")) {
-                Picasso.get().load(user.getImgUrl()).placeholder(R.drawable.camera_img).into(baseBinding.userImageInput);
+            if (!Objects.equals(currentUser.getImgUrl(), "")) {
+                Picasso.get().load(currentUser.getImgUrl()).placeholder(R.drawable.camera_img).into(baseBinding.userImageInput);
             } else {
                 baseBinding.userImageInput.setImageResource(R.drawable.camera_img);
             }
         }
 
         setEditMode(false);
+
+        baseBinding.newRecipeButton.setOnClickListener(view -> {
+            NavHostFragment.findNavController(UserProfileFragment.this).navigate(
+                    UserProfileFragmentDirections.actionUserProfileFragmentToAddRecipeFragment());
+        });
     }
 
     @Override

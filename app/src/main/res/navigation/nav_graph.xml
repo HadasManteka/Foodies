@@ -8,7 +8,7 @@
         android:id="@+id/homePageFragment"
         android:name="com.example.foodies.HomePageFragment"
         android:label="HomePageFragment"
-        tools:layout="@layout/home_page">
+        tools:layout="@layout/fragment_all_recipes">
         <action
             android:id="@+id/action_homePageFragment_to_recipeDetailsFragment"
             app:destination="@id/recipeDetailsFragment"
@@ -36,7 +36,13 @@
         android:id="@+id/userProfileFragment"
         android:name="com.example.foodies.UserProfileFragment"
         android:label="FragmentUserProfile"
-        tools:layout="@layout/fragment_base_user_profile" />
+        tools:layout="@layout/fragment_base_user_profile" >
+        <action
+            android:id="@+id/action_userProfileFragment_to_addRecipeFragment"
+            app:destination="@id/addRecipeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
 
     <fragment
         android:id="@+id/updateRecipeFragment"
@@ -78,4 +84,8 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+    <fragment
+        android:id="@+id/addRecipeFragment"
+        android:name="com.example.foodies.AddRecipeFragment"
+        android:label="AddRecipeFragment" />
 </navigation>
