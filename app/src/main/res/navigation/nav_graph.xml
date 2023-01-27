@@ -42,6 +42,9 @@
             app:destination="@id/addRecipeFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"/>
+        <action
+            android:id="@+id/action_userProfileFragment_to_editUserProfileFragment"
+            app:destination="@id/editUserProfileFragment" />
     </fragment>
 
     <fragment
@@ -88,4 +91,8 @@
         android:id="@+id/addRecipeFragment"
         android:name="com.example.foodies.AddRecipeFragment"
         android:label="AddRecipeFragment" />
+    <fragment
+        android:id="@+id/editUserProfileFragment"
+        android:name="com.example.foodies.EditUserProfileFragment"
+        android:label="EditUserProfileFragment" />
 </navigation>

@@ -1,25 +1,13 @@
 package com.example.foodies;
 
 import android.os.Bundle;
+import android.view.View;
 
-import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-
-import com.example.foodies.enums.RecipeCategoryEnum;
-import com.example.foodies.enums.RecipeMadeTimeEnum;
-import com.example.foodies.model.recipe.Recipe;
-import com.example.foodies.model.user.User;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 public class UserProfileFragment extends BaseUserProfileFragment {
@@ -49,10 +37,16 @@ public class UserProfileFragment extends BaseUserProfileFragment {
             NavHostFragment.findNavController(UserProfileFragment.this).navigate(
                     UserProfileFragmentDirections.actionUserProfileFragmentToAddRecipeFragment());
         });
+
+        baseBinding.buttonEditProfile.setOnClickListener(v -> {
+//            setEditMode(true);
+
+            Navigation.findNavController(this.getView()).navigate(UserProfileFragmentDirections.actionUserProfileFragmentToEditUserProfileFragment());
+        });
     }
 
-    @Override
-    public void onClickAction() {
-        setEditMode(true);
-    }
+//    @Override
+//    public void onClickAction() {
+//        setEditMode(true);
+//    }
 }

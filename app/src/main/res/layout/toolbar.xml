@@ -8,6 +8,7 @@
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     android:gravity="center_vertical|start"
     app:titleTextColor="@android:color/transparent"
+    app:navigationIcon="?attr/homeAsUpIndicator"
     >
 
     <TextView
