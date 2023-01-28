@@ -1,5 +1,6 @@
 package com.example.foodies;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,14 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-import com.example.foodies.databinding.HomePageBinding;
+import com.example.foodies.databinding.FragmentHomePageBinding;
 import com.example.foodies.model.recipe.Recipe;
-import com.example.foodies.model.request.ApiRecipeModel;
+import com.example.foodies.model.recipe.RecipeModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,44 +28,11 @@ import java.util.Objects;
 
 public class HomePageFragment extends Fragment {
     RecipeRecyclerAdapter adapter = null;
-    HomePageBinding binding;
+    FragmentHomePageBinding binding;
     CardView currentTimeFilter;
     CardView currentCategoryFilter;
-    List<Recipe> tempData = null;
     String searchQuery = "";
-
-    public HomePageFragment() {
-        super(R.layout.home_page);
-    }
-
-    public void getApiRecipes() {
-        RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
-        requestQueue.add(ApiRecipeModel.instance().getJsonObjectRequest(
-                response -> {
-                    this.setData(response);
-                }
-        ));
-    }
-
-
-    public void setData(List<Recipe> recipes) {
-        tempData = recipes;
-        if (adapter != null) {
-            adapter.setAllRecipes(tempData);
-            adapter.setData(tempData);
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getApiRecipes();
-        adapter = new RecipeRecyclerAdapter(getLayoutInflater(), new ArrayList<>());
-        if (tempData != null) {
-            adapter.setAllRecipes(tempData);
-            adapter.setData(tempData);
-        }
-    }
+    RecipeListFragmentViewModel viewModel;
 
     private void setFilters(View view) {
         List<CardView> timeCards = Arrays.asList(view.findViewById(R.id.fiveTenTime), view.findViewById(R.id.tenThirtyTime),
@@ -134,7 +101,8 @@ public class HomePageFragment extends Fragment {
     }
 
     private void filterData(String timeFilter, String categoryFilter, String searchQuery) {
-        List<Recipe> data = adapter.getAllRecipes();
+        List<Recipe> data = viewModel.getData().getValue();
+        data.addAll(viewModel.getApiRecipes().getValue());
         List<Recipe> newData = new ArrayList<>();
         for (Recipe recipe : data) {
             if ((timeFilter.equals("") || recipe.time.equals(timeFilter)) &&
@@ -147,29 +115,62 @@ public class HomePageFragment extends Fragment {
     }
 
     private void initRecipeRecyclerView() {
-        binding.homeRecipeView.setHasFixedSize(true);
-        binding.homeRecipeView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.homeRecipeView.setAdapter(adapter);
+        binding.homeRecyclerView.setHasFixedSize(true);
+        binding.homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        adapter = new RecipeRecyclerAdapter(getLayoutInflater(),viewModel.getData().getValue());
+        binding.homeRecyclerView.setAdapter(adapter);
     }
 
-    @Nullable
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(RecipeListFragmentViewModel.class);
+    }
+
+    void reloadData(){
+        RecipeModel.instance().refreshAllRecipes();
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup
             container, @Nullable Bundle savedInstanceState) {
-        binding = HomePageBinding.inflate(inflater, container, false);
+        binding = FragmentHomePageBinding.inflate(inflater, container, false);
         initRecipeRecyclerView();
-
+        
         View view = binding.getRoot();
 
         setFilters(view);
 
         adapter.setOnItemClickListener(pos -> {
             Log.d("TAG", "Row was clicked " + pos);
-            Recipe recipe = adapter.getRecipes().get(pos);
+            Recipe recipe = viewModel.getData().getValue().get(pos);
 
             HomePageFragmentDirections.ActionHomePageFragmentToRecipeDetailsFragment action = HomePageFragmentDirections.actionHomePageFragmentToRecipeDetailsFragment(recipe);
             Navigation.findNavController(view).navigate(action);
         });
+
+        viewModel.getData().observe(getViewLifecycleOwner(),list->{
+            if (viewModel.getApiRecipes().getValue() != null) {
+                list.addAll(viewModel.getApiRecipes().getValue());
+            }
+
+            adapter.setData(list);
+        });
+
+        viewModel.getApiRecipes().observe(getViewLifecycleOwner(),list->{
+            if (viewModel.getData().getValue() != null) {
+                viewModel.getData().getValue().addAll(list);
+            }
+
+            adapter.setData(viewModel.getData().getValue());
+        });
+
+        RecipeModel.instance().EventRecipesListLoadingState.observe(getViewLifecycleOwner(), status->{
+            binding.swipeRefresh.setRefreshing(status == RecipeModel.LoadingState.LOADING);
+        });
+
+        binding.swipeRefresh.setOnRefreshListener(this::reloadData);
 
         return view;
     }

@@ -16,9 +16,8 @@ import java.util.concurrent.Executors;
 public class RecipeModel {
     private static final RecipeModel _instance = new RecipeModel();
 
-    private Executor executor = Executors.newSingleThreadExecutor();
-//    private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
-    private FirebaseModel firebaseModel = new FirebaseModel();
+    private final Executor executor = Executors.newSingleThreadExecutor();
+    private final FirebaseModel firebaseModel = new FirebaseModel();
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();
 
     public static RecipeModel instance(){
@@ -27,11 +26,11 @@ public class RecipeModel {
     private RecipeModel(){
     }
 
-//    public enum LoadingState{
-//        LOADING,
-//        NOT_LOADING
-//    }
-//    final public MutableLiveData<LoadingState> EventStudentsListLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
+    public enum LoadingState{
+        LOADING,
+        NOT_LOADING
+    }
+    final public MutableLiveData<LoadingState> EventRecipesListLoadingState = new MutableLiveData<>(LoadingState.NOT_LOADING);
 
 
     private LiveData<List<Recipe>> recipeList;
@@ -44,29 +43,28 @@ public class RecipeModel {
     }
 
     public void refreshAllRecipes(){
-//        EventStudentsListLoadingState.setValue(LoadingState.LOADING);
-        // get local last update
+        EventRecipesListLoadingState.setValue(LoadingState.LOADING);
         Long localLastUpdate = Recipe.getLocalLastUpdate();
         // get all updated recorde from firebase since local last update
         firebaseModel.getAllRecipesSince(localLastUpdate,list->{
             executor.execute(()->{
                 Log.d("TAG", " firebase return : " + list.size());
                 Long time = localLastUpdate;
-                for(Recipe st:list){
+                for(Recipe recipe:list){
                     // insert new records into ROOM
-                    localDb.recipeDao().insertAll(st);
-                    if (time < st.getLastUpdated()){
-                        time = st.getLastUpdated();
+                    localDb.recipeDao().insertAll(recipe);
+                    if (time < recipe.getLastUpdated()){
+                        time = recipe.getLastUpdated();
                     }
                 }
-//                try {
-//                    Thread.sleep(3000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 // update local last update
                 Recipe.setLocalLastUpdate(time);
-//                EventStudentsListLoadingState.postValue(LoadingState.NOT_LOADING);
+                EventRecipesListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
         });
     }

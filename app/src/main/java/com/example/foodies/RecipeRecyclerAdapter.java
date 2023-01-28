@@ -8,22 +8,23 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.foodies.model.recipe.Recipe;
+import com.example.foodies.model.request.RecipeApiModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Objects;
 
 
 class RecipeViewHolder extends RecyclerView.ViewHolder {
     TextView titleTv;
     TextView timeTv;
     ImageView imgView;
+    List<Recipe> data;
 
-    public RecipeViewHolder(@NonNull View itemView, RecipeRecyclerAdapter.OnItemClickListener listener) {
+    public RecipeViewHolder(@NonNull View itemView, RecipeRecyclerAdapter.OnItemClickListener listener, List<Recipe> data) {
         super(itemView);
+        this.data = data;
         titleTv = itemView.findViewById(R.id.recipe_item_title);
         timeTv = itemView.findViewById(R.id.recipe_item_time);
         imgView = itemView.findViewById(R.id.recipe_item_image);
@@ -38,21 +39,18 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         titleTv.setText(recipe.title);
         timeTv.setText(recipe.time);
 
-        imgView.setImageResource(R.drawable.camera_img);
-        ImageRequest ir = new ImageRequest(recipe.imgUrl, response -> {
-            imgView.setImageBitmap(response);
-        },
-                imgView.getMeasuredWidth(), imgView.getMeasuredHeight(), null, null);
-
-        RequestQueue requestQueue = Volley.newRequestQueue(imgView.getContext());
-        requestQueue.add(ir);
+        if (!Objects.equals(recipe.getImgUrl(), "")) {
+            Picasso.get().load(recipe.getImgUrl()).placeholder(R.drawable.camera_img).into(imgView);
+        }else{
+            imgView.setImageResource(R.drawable.camera_img);
+        }
     }
 }
 
 public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     OnItemClickListener listener;
 
-    public static interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(int pos);
     }
 
@@ -65,7 +63,7 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder
         notifyDataSetChanged();
     }
 
-    public List<Recipe> getRecipes() {
+    public List<Recipe> getData() {
         return this.data;
     }
 
@@ -90,7 +88,7 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.homepage_recipe_item_row, parent, false);
-        return new RecipeViewHolder(view, listener);
+        return new RecipeViewHolder(view, listener, data);
     }
 
     @Override
@@ -101,6 +99,7 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder
 
     @Override
     public int getItemCount() {
+        if (data == null) return 0;
         return data.size();
     }
 }
