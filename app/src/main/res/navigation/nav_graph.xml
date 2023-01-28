@@ -8,7 +8,7 @@
         android:id="@+id/homePageFragment"
         android:name="com.example.foodies.HomePageFragment"
         android:label="HomePageFragment"
-        tools:layout="@layout/home_page">
+        tools:layout="@layout/fragment_home_page">
         <action
             android:id="@+id/action_homePageFragment_to_recipeDetailsFragment"
             app:destination="@id/recipeDetailsFragment"
