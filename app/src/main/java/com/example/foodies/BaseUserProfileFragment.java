@@ -2,13 +2,11 @@ package com.example.foodies;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import com.example.foodies.databinding.FragmentBaseUserProfileBinding;
@@ -17,7 +15,6 @@ import com.example.foodies.model.user.User;
 abstract class BaseUserProfileFragment extends Fragment {
 
     AlertDialog.Builder alertDialog;
-    String userName;
     ActivityResultLauncher<Void> cameraLauncher;
     protected FragmentBaseUserProfileBinding baseBinding;
     boolean isAvatarSelected;
@@ -28,23 +25,6 @@ abstract class BaseUserProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         alertDialog = new AlertDialog.Builder(getContext());
-//        Bundle bundle = getArguments();
-//        if (bundle != null) {
-//            userName = bundle.getString("userName");
-//        }
-
-//        cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), result -> {
-//            if (result != null) {
-//                baseBinding.userImageInput.setImageBitmap(result);
-//                isAvatarSelected = true;
-//            }
-//        });
-//        galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
-//            if (result != null) {
-//                baseBinding.userImageInput.setImageURI(result);
-//                isAvatarSelected = true;
-//            }
-//        });
 
         currentUser = User.getUser();
     }
@@ -88,28 +68,6 @@ abstract class BaseUserProfileFragment extends Fragment {
         baseBinding.cancelButton.setVisibility((enabled) ? View.VISIBLE : View.GONE);
     }
 
-    protected boolean validateLinkForm() {
-        if (TextUtils.isEmpty(baseBinding.userNameInput.getText().toString())) {
-            baseBinding.userNameInput.setError("Required.");
-            return false;
-        } else if (!isAvatarSelected) {
-            alertDialog.setTitle("Hi chef,")
-                    .setMessage("Must select an image!").show();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    protected User getUser() {
-        String nickname = baseBinding.userNameInput.getText().toString();
-        String imgUrl = baseBinding.userImageInput.getDrawable().toString();
-
-        User user = new User();
-        user.setNickName(nickname);
-        user.setImgUrl(imgUrl);
-        return user;
-    }
 
     protected void deleteButVisibility(boolean visible) {
 //        baseBinding.deleteBtn.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);

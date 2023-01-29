@@ -8,9 +8,6 @@ import android.widget.ImageView;
 
 import androidx.navigation.Navigation;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;

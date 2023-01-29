@@ -39,14 +39,7 @@ public class UserProfileFragment extends BaseUserProfileFragment {
         });
 
         baseBinding.buttonEditProfile.setOnClickListener(v -> {
-//            setEditMode(true);
-
             Navigation.findNavController(this.getView()).navigate(UserProfileFragmentDirections.actionUserProfileFragmentToEditUserProfileFragment());
         });
     }
-
-//    @Override
-//    public void onClickAction() {
-//        setEditMode(true);
-//    }
 }

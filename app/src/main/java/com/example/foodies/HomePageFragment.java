@@ -1,12 +1,19 @@
 package com.example.foodies;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.navigation.Navigation;
+
+import com.example.foodies.databinding.FragmentAllRecipesBinding;
 import com.example.foodies.model.FirebaseModel;
 import com.example.foodies.model.recipe.Recipe;
-import com.example.foodies.model.request.ApiRecipeModel;
+import com.example.foodies.model.recipe.RecipeModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,26 +28,46 @@ public class HomePageFragment extends AllRecipesFragment {
         super.onCreate(savedInstanceState);
     }
 
-    public void getApiRecipes() {
-        RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
-        requestQueue.add(ApiRecipeModel.instance().getJsonObjectRequest(
-                response -> {
-                    allData.addAll(response);
-                    setData(allData);
-                }
-        ));
-    }
-
-    public void getUsersRecipes() {
-
-    }
-
     @Override
-    public void setPageDataField() {
-        getApiRecipes();
-        firebaseModel.getAllRecipes((recipesList) -> {
-            allData.addAll(recipesList);
-            setData(allData);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup
+            container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentAllRecipesBinding.inflate(inflater, container, false);
+        initRecipeRecyclerView();
+
+        View view = binding.getRoot();
+
+        setFilters(view);
+
+        adapter.setOnItemClickListener(pos -> {
+            Log.d("TAG", "Row was clicked " + pos);
+            Recipe recipe = viewModel.getData().getValue().get(pos);
+
+            HomePageFragmentDirections.ActionHomePageFragmentToRecipeDetailsFragment action = HomePageFragmentDirections.actionHomePageFragmentToRecipeDetailsFragment(recipe);
+            Navigation.findNavController(view).navigate(action);
         });
+
+        viewModel.getData().observe(getViewLifecycleOwner(), list -> {
+            if (viewModel.getApiRecipes().getValue() != null) {
+                list.addAll(viewModel.getApiRecipes().getValue());
+            }
+
+            adapter.setData(list);
+        });
+
+        viewModel.getApiRecipes().observe(getViewLifecycleOwner(), list -> {
+            if (viewModel.getData().getValue() != null) {
+                viewModel.getData().getValue().addAll(list);
+            }
+
+            adapter.setData(viewModel.getData().getValue());
+        });
+
+        RecipeModel.instance().EventRecipesListLoadingState.observe(getViewLifecycleOwner(), status -> {
+            binding.swipeRefresh.setRefreshing(status == RecipeModel.LoadingState.LOADING);
+        });
+
+        binding.swipeRefresh.setOnRefreshListener(this::reloadData);
+
+        return view;
     }
 }

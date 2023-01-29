@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homePageFragment">
+    app:startDestination="@id/loginFragment">
+
     <fragment
         android:id="@+id/homePageFragment"
         android:name="com.example.foodies.HomePageFragment"
@@ -16,8 +17,11 @@
             app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_homePageFragment_to_userProfileFragment"
-            app:destination="@id/userProfileFragment" />
+            app:destination="@id/userProfileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"  />
     </fragment>
+
     <fragment
         android:id="@+id/recipeDetailsFragment"
         android:name="com.example.foodies.RecipeDetailsFragment"
@@ -39,9 +43,7 @@
         tools:layout="@layout/fragment_base_user_profile" >
         <action
             android:id="@+id/action_userProfileFragment_to_addRecipeFragment"
-            app:destination="@id/addRecipeFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"/>
+            app:destination="@id/addRecipeFragment" />
         <action
             android:id="@+id/action_userProfileFragment_to_editUserProfileFragment"
             app:destination="@id/editUserProfileFragment" />
@@ -60,6 +62,7 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.foodies.LoginFragment"
@@ -76,6 +79,7 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.foodies.RegisterFragment"
@@ -95,4 +99,5 @@
         android:id="@+id/editUserProfileFragment"
         android:name="com.example.foodies.EditUserProfileFragment"
         android:label="EditUserProfileFragment" />
+
 </navigation>

@@ -1,25 +1,25 @@
 package com.example.foodies;
 
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.example.foodies.databinding.FragmentAllRecipesBinding;
 import com.example.foodies.model.recipe.Recipe;
-import com.example.foodies.model.request.ApiRecipeModel;
+import com.example.foodies.model.recipe.RecipeModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,9 +27,10 @@ import java.util.List;
 import java.util.Objects;
 
 abstract class AllRecipesFragment extends Fragment {
+    RecipeListFragmentViewModel viewModel;
 
     RecipeRecyclerAdapter adapter = null;
-    com.example.foodies.databinding.FragmentAllRecipesBinding binding;
+    FragmentAllRecipesBinding binding;
     CardView currentTimeFilter;
     CardView currentCategoryFilter;
     List<Recipe> tempData = null;
@@ -38,7 +39,6 @@ abstract class AllRecipesFragment extends Fragment {
     public AllRecipesFragment() {
         super(R.layout.fragment_all_recipes);
     }
-
 
 
     public void setData(List<Recipe> recipes) {
@@ -59,7 +59,7 @@ abstract class AllRecipesFragment extends Fragment {
         }
     }
 
-    private void setFilters(View view) {
+    protected void setFilters(View view) {
         List<CardView> timeCards = Arrays.asList(view.findViewById(R.id.fiveTenTime), view.findViewById(R.id.tenThirtyTime),
                 view.findViewById(R.id.thirtySixtyTime), view.findViewById(R.id.sixtyPlusTime));
         timeCards.forEach(timeCard -> setCurrentFilter(timeCard, "time"));
@@ -126,7 +126,8 @@ abstract class AllRecipesFragment extends Fragment {
     }
 
     private void filterData(String timeFilter, String categoryFilter, String searchQuery) {
-        List<Recipe> data = adapter.getAllRecipes();
+        List<Recipe> data = viewModel.getData().getValue();
+
         List<Recipe> newData = new ArrayList<>();
         for (Recipe recipe : data) {
             if ((timeFilter.equals("") || recipe.time.equals(timeFilter)) &&
@@ -138,20 +139,28 @@ abstract class AllRecipesFragment extends Fragment {
         adapter.setData(newData);
     }
 
-    private void initRecipeRecyclerView() {
-        binding.homeRecipeView.setHasFixedSize(true);
-        binding.homeRecipeView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.homeRecipeView.setAdapter(adapter);
+    protected void initRecipeRecyclerView() {
+        binding.homeRecyclerView.setHasFixedSize(true);
+        binding.homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        adapter = new RecipeRecyclerAdapter(getLayoutInflater(), viewModel.getData().getValue());
+        binding.homeRecyclerView.setAdapter(adapter);
     }
 
-    @Nullable
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(RecipeListFragmentViewModel.class);
+    }
+
+    void reloadData() {
+        RecipeModel.instance().refreshAllRecipes();
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup
             container, @Nullable Bundle savedInstanceState) {
-
-        setPageDataField();
-
-        binding = com.example.foodies.databinding.FragmentAllRecipesBinding.inflate(inflater, container, false);
+        binding = FragmentAllRecipesBinding.inflate(inflater, container, false);
         initRecipeRecyclerView();
 
         View view = binding.getRoot();
@@ -160,7 +169,7 @@ abstract class AllRecipesFragment extends Fragment {
 
         adapter.setOnItemClickListener(pos -> {
             Log.d("TAG", "Row was clicked " + pos);
-            Recipe recipe = adapter.getRecipes().get(pos);
+            Recipe recipe = viewModel.getData().getValue().get(pos);
 
             HomePageFragmentDirections.ActionHomePageFragmentToRecipeDetailsFragment action = HomePageFragmentDirections.actionHomePageFragmentToRecipeDetailsFragment(recipe);
             Navigation.findNavController(view).navigate(action);
@@ -168,6 +177,4 @@ abstract class AllRecipesFragment extends Fragment {
 
         return view;
     }
-
-    abstract void setPageDataField();
 }
