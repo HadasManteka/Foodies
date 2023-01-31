@@ -10,9 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.example.foodies.enums.AuthenticationEnum;
 import com.example.foodies.model.recipe.Recipe;
-import com.example.foodies.model.recipe.RecipeModel;
 import com.example.foodies.model.user.User;
-import com.example.foodies.model.user.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,7 +21,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -109,6 +106,22 @@ public class FirebaseModel{
         uploadImage(ProfilePath, bitmap, listener);
     }
 
+    public void deleteRecipeImage(String id, Listener<String> listener) {
+        String ProfilePath = "recipe/" + id;
+        deleteImage(ProfilePath, listener);
+    }
+
+    private void deleteImage(String id, Listener<String> listener) {
+        StorageReference storageRef = storage.getReference();
+        StorageReference imagesRef = storageRef.child("images/" + id + ".jpg");
+        imagesRef.delete().addOnCompleteListener((OnCompleteListener<Void>) task -> {
+            if (task.isSuccessful()) {
+                listener.onComplete(null);
+            } else {
+            }
+        });
+    }
+
     private void uploadImage(String id, Bitmap bitmap, Listener<String> listener){
         StorageReference storageRef = storage.getReference();
         StorageReference imagesRef = storageRef.child("images/" + id + ".jpg");
@@ -133,7 +146,6 @@ public class FirebaseModel{
                 });
             }
         });
-
     }
 
     public void fireBaseRegister(String email, String password, Listener<Void> listener) {
@@ -171,13 +183,20 @@ public class FirebaseModel{
     }
 
     public void getUser(String email, Listener<User> listener) {
-        // Not working yet
-        //TODO
         db.collection(User.COLLECTION).whereEqualTo("email", email).get()
             .addOnSuccessListener((OnSuccessListener<QuerySnapshot>) task -> {
                 User user = User.fromJson(task.getDocuments().get(0).getData());
                 Log.d(TAG, "user successfully selected");
                 listener.onComplete(user);
             });
+    }
+
+    public void doesEmailExists(String email, Listener<Boolean> listener) {
+        db.collection(User.COLLECTION).whereEqualTo("email", email).get()
+                .addOnSuccessListener((OnSuccessListener<QuerySnapshot>) task -> {
+                    boolean isExists = task.getDocuments().size() > 0;
+                    Log.d(TAG, "email " + email + isExists);
+                    listener.onComplete(isExists);
+                });
     }
 }

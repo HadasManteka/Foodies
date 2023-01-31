@@ -41,4 +41,8 @@ public class UserModel {
     public void login(String name, String password, Listener<AuthenticationEnum> listener) {
         firebaseModel.fireBaseLogin(name, password, listener);
     }
+
+    public void doesEmailExists(String email, Listener<Boolean> listener) {
+        firebaseModel.doesEmailExists(email, listener);
+    }
 }
