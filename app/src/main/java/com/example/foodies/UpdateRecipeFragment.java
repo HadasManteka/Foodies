@@ -70,13 +70,13 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
 
         baseBinding.deleteBtn.setOnClickListener(v -> {
             ProgressDialog.showProgressDialog(getContext(), getString(R.string.loading));
-            RecipeModel.instance().deleteRecipe(recipe, (unused) -> {
-                // TODO DELETE IMAGE FROM STORAGE
-                alertDialog.setTitle("Recipe '" + recipe.getTitle() + "'")
-                        .setMessage("Deleted successfully.").show();
-                ProgressDialog.hideProgressDialog();
-                navigateBackToDetails();
-            });
+            RecipeModel.instance().deleteRecipe(recipe, (unused) ->
+                RecipeModel.instance().deleteRecipeImage(recipe.getId(), (uu) -> {
+                    alertDialog.setTitle("Recipe '" + recipe.getTitle() + "'")
+                            .setMessage("Deleted successfully.").show();
+                    ProgressDialog.hideProgressDialog();
+                    navigateBackToDetails();
+            }));
         });
 
         baseBinding.recipeActionBtn.setText("SAVE");

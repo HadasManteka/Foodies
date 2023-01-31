@@ -106,6 +106,22 @@ public class FirebaseModel{
         uploadImage(ProfilePath, bitmap, listener);
     }
 
+    public void deleteRecipeImage(String id, Listener<String> listener) {
+        String ProfilePath = "recipe/" + id;
+        deleteImage(ProfilePath, listener);
+    }
+
+    private void deleteImage(String id, Listener<String> listener) {
+        StorageReference storageRef = storage.getReference();
+        StorageReference imagesRef = storageRef.child("images/" + id + ".jpg");
+        imagesRef.delete().addOnCompleteListener((OnCompleteListener<Void>) task -> {
+            if (task.isSuccessful()) {
+                listener.onComplete(null);
+            } else {
+            }
+        });
+    }
+
     private void uploadImage(String id, Bitmap bitmap, Listener<String> listener){
         StorageReference storageRef = storage.getReference();
         StorageReference imagesRef = storageRef.child("images/" + id + ".jpg");
@@ -130,7 +146,6 @@ public class FirebaseModel{
                 });
             }
         });
-
     }
 
     public void fireBaseRegister(String email, String password, Listener<Void> listener) {
