@@ -5,16 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:layout_editor_absoluteX="111dp"
-    tools:layout_editor_absoluteY="13dp"
-    android:background="@color/white">
+    tools:layout_editor_absoluteY="13dp">
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/recipeImg"
@@ -106,7 +102,6 @@
         android:ems="10"
         android:hint="Title"
         android:inputType="textPersonName"
-        android:text="Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 

@@ -186,6 +186,7 @@ public class FirebaseModel{
         db.collection(User.COLLECTION).whereEqualTo("email", email).get()
             .addOnSuccessListener((OnSuccessListener<QuerySnapshot>) task -> {
                 User user = User.fromJson(task.getDocuments().get(0).getData());
+                user.id = task.getDocuments().get(0).getId();
                 Log.d(TAG, "user successfully selected");
                 listener.onComplete(user);
             });

@@ -110,8 +110,7 @@ public class User {
         return nickName;
     }
 
-    public void SetNickName(String nickName) {
+    public void setNickName(String nickName) {
         this.nickName = nickName;
     }
-
 }

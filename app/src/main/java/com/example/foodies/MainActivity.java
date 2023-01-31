@@ -17,6 +17,8 @@ import androidx.navigation.Navigation;
 
 import com.example.foodies.model.user.User;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -27,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_hamburger_foreground));
         setSupportActionBar(toolbar);
-
-
     }
 
     @Override
@@ -43,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
             inflater.inflate(R.menu.menu, menu);
         }
+
+        View view = findViewById(R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(view);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        toolbar.setNavigationOnClickListener(view1 -> navController.popBackStack());
         return true;
     }
 
@@ -52,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         this.invalidateOptionsMenu();
         View view = findViewById(R.id.nav_host_fragment);
         NavController navController = Navigation.findNavController(view);
-        int currId = navController.getCurrentDestination().getId();
+        int currId = (Objects.nonNull(navController.getCurrentDestination())) ? navController.getCurrentDestination().getId() : 0;
 
         switch (item.getItemId()) {
             case R.id.home_page_option:

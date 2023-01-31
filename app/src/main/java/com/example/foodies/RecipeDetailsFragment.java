@@ -71,7 +71,7 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         setAddImgBtInvisible();
         setEditMode(false);
 
-        if (User.getUser().getId().equals(recipe.getUserID())) {
+        if (Objects.nonNull(User.getUser()) && User.getUser().getId().equals(recipe.getUserID())) {
             baseBinding.recipeActionBtn.setText("Edit");
         } else {
             baseBinding.recipeActionBtn.setVisibility(View.INVISIBLE);

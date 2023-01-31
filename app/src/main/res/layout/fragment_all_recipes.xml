@@ -59,7 +59,7 @@
             android:layout_height="71dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:contentDescription="bake"
+            android:contentDescription="Bake"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
@@ -94,7 +94,7 @@
             android:layout_height="71dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:contentDescription="cook"
+            android:contentDescription="Cook"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
@@ -130,7 +130,7 @@
             android:layout_height="71dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:contentDescription="salad"
+            android:contentDescription="Salad"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
@@ -163,7 +163,7 @@
             android:layout_height="71dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:contentDescription="drink"
+            android:contentDescription="Drink"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
@@ -226,6 +226,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+
                 android:gravity="center_horizontal|center_vertical|center"
                 android:text="5-10"
                 android:textColor="#CC000000" />
@@ -338,24 +339,52 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/titleLabel"
         app:layout_constraintVertical_bias="0.0">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/titleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="casual"
+        android:text="titleLabel"
+        android:textColor="#441D57"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <TextView
+        android:id="@+id/noRecipes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="casual"
+        android:text="There are no recipes yet"
+        android:textColor="@color/black"
+        android:textSize="35sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleLabel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

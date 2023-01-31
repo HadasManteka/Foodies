@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
+
     <fragment
         android:id="@+id/homePageFragment"
         android:name="com.example.foodies.HomePageFragment"
         android:label="HomePageFragment"
-        tools:layout="@layout/fragment_home_page">
+        tools:layout="@layout/fragment_all_recipes">
         <action
             android:id="@+id/action_homePageFragment_to_recipeDetailsFragment"
             app:destination="@id/recipeDetailsFragment"
@@ -16,8 +17,11 @@
             app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_homePageFragment_to_userProfileFragment"
-            app:destination="@id/userProfileFragment" />
+            app:destination="@id/userProfileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"  />
     </fragment>
+
     <fragment
         android:id="@+id/recipeDetailsFragment"
         android:name="com.example.foodies.RecipeDetailsFragment"
@@ -31,11 +35,26 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="com.example.foodies.UserProfileFragment"
         android:label="FragmentUserProfile"
-        tools:layout="@layout/fragment_user_profile" />
+        tools:layout="@layout/fragment_base_user_profile" >
+        <action
+            android:id="@+id/action_userProfileFragment_to_addRecipeFragment"
+            app:destination="@id/addRecipeFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_editUserProfileFragment"
+            app:destination="@id/editUserProfileFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_myRecipesFragment"
+            app:destination="@id/myRecipesFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/updateRecipeFragment"
         android:name="com.example.foodies.UpdateRecipeFragment"
@@ -49,6 +68,7 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.foodies.LoginFragment"
@@ -65,6 +85,7 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.foodies.RegisterFragment"
@@ -76,4 +97,31 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+    <fragment
+        android:id="@+id/addRecipeFragment"
+        android:name="com.example.foodies.AddRecipeFragment"
+        android:label="AddRecipeFragment" />
+    <fragment
+        android:id="@+id/editUserProfileFragment"
+        android:name="com.example.foodies.EditUserProfileFragment"
+        android:label="EditUserProfileFragment" >
+        <action
+            android:id="@+id/action_editUserProfileFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myRecipesFragment"
+        android:name="com.example.foodies.MyRecipesFragment"
+        android:label="MyRecipesFragment" >
+        <argument
+            android:name="userId"
+            app:argType="string" />
+        <argument
+            android:name="userName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_myRecipesFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment" />
+    </fragment>
+
 </navigation>
