@@ -21,7 +21,6 @@ public class User {
     public String id="";
     public String nickName;
     public String email;
-//    public String password;
     public String imgUrl;
 
     @Ignore
@@ -33,7 +32,6 @@ public class User {
         this.id = UUID.randomUUID().toString();
         this.nickName = nickName;
         this.email = email;
-//        this.password = password;
         this.imgUrl = imgUrl;
     }
 
@@ -41,7 +39,6 @@ public class User {
         this.id = id;
         this.nickName = nickName;
         this.email = email;
-//        this.password = password;
         this.imgUrl = imgUrl;
     }
 
@@ -55,7 +52,6 @@ public class User {
         String nickName = (String)json.get(NAME);
         String name = (String)json.get(EMAIL);
         String img = (String)json.get(IMG);
-//        String password = (String) json.get(PASSWORD);
         return new User(nickName, name,img);
     }
 
@@ -63,7 +59,6 @@ public class User {
         Map<String, Object> json = new HashMap<>();
         json.put(NAME, getNickName());
         json.put(EMAIL, getEmail());
-//        json.put(PASSWORD, getPassword());
         json.put(IMG, getImgUrl());
         return json;
     }

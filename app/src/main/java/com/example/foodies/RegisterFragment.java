@@ -55,8 +55,7 @@ public class RegisterFragment extends Fragment {
         View view = binding.getRoot();
 
         binding.signUpBtn.setOnClickListener(view1 -> {
-
-            if(!validateLinkForm()) {
+            if (!validateLinkForm()) {
                 return;
             }
 
@@ -67,26 +66,34 @@ public class RegisterFragment extends Fragment {
             String name = binding.nameEt.getText().toString();
             String email = binding.emailEt.getText().toString();
             String password = binding.passwordEt.getText().toString();
-            User user = new User(name,email,"");
+            User user = new User(name, email, "");
 
             Bitmap bitmap = ((BitmapDrawable) binding.avatarImg.getDrawable()).getBitmap();
-            UserModel.instance().register(email, password, (Void) -> {
-                UserModel.instance().uploadProfileImage(email, bitmap, url -> {
-                    if (url != null) {
-                        user.setImgUrl(url);
-                    }
-                    UserModel.instance().addUser(user, (unused) -> {
-                        ProgressDialog.hideProgressDialog();
-                        Navigation.findNavController(binding.getRoot()).navigate(
-                                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment());
 
-//                        Navigation.findNavController(view1).popBackStack();
+            UserModel.instance().doesEmailExists(email, (isExists) -> {
+                if (isExists) {
+                    ProgressDialog.hideProgressDialog();
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Error")
+                            .setMessage("Email " + email + " already exists").show();
+                } else {
+                    UserModel.instance().register(email, password, (Void) -> {
+                        UserModel.instance().uploadProfileImage(email, bitmap, url -> {
+                            if (url != null) {
+                                user.setImgUrl(url);
+                            }
+                            UserModel.instance().addUser(user, (unused) -> {
+                                ProgressDialog.hideProgressDialog();
+                                Navigation.findNavController(binding.getRoot()).navigate(
+                                        RegisterFragmentDirections.actionRegisterFragmentToLoginFragment());
+
+                                //                        Navigation.findNavController(view1).popBackStack();
+                            });
+                        });
                     });
-                });
+                }
             });
         });
-
-//        binding.cancellBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).popBackStack(R.id.studentsListFragment,false));
 
         binding.cameraButton.setOnClickListener(view1->{
             cameraLauncher.launch(null);
