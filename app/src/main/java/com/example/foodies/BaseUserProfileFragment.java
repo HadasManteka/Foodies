@@ -6,27 +6,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.fragment.app.Fragment;
 
 import com.example.foodies.databinding.FragmentBaseUserProfileBinding;
 import com.example.foodies.model.user.User;
+import com.example.foodies.model.user.UserModel;
 
 abstract class BaseUserProfileFragment extends Fragment {
 
     AlertDialog.Builder alertDialog;
-    ActivityResultLauncher<Void> cameraLauncher;
     protected FragmentBaseUserProfileBinding baseBinding;
-    boolean isAvatarSelected;
-    ActivityResultLauncher<String> galleryLauncher;
     User currentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        alertDialog = new AlertDialog.Builder(getContext());
 
-        currentUser = User.getUser();
+        UserModel.instance().getUser(User.getUser().getEmail(), (user) -> {
+            currentUser = user;
+            setUserViewField();
+        });
+
+        alertDialog = new AlertDialog.Builder(getContext());
     }
 
     @Override
@@ -34,16 +35,6 @@ abstract class BaseUserProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         baseBinding = FragmentBaseUserProfileBinding.inflate(inflater, container, false);
         View view = baseBinding.getRoot();
-
-        deleteButVisibility(false);
-
-        baseBinding.cameraButtonUser.setOnClickListener(view1 -> {
-            cameraLauncher.launch(null);
-        });
-
-        baseBinding.galleryButtonUser.setOnClickListener(view1 -> {
-            galleryLauncher.launch("image/*");
-        });
 
         setUserViewField();
         return view;
@@ -57,8 +48,8 @@ abstract class BaseUserProfileFragment extends Fragment {
         baseBinding.newRecipeButton.setVisibility((enabled) ? View.GONE : View.VISIBLE);
         baseBinding.logoutButton.setVisibility((enabled) ? View.GONE : View.VISIBLE);
 
-        baseBinding.userNameInput.setVisibility((enabled) ? View.VISIBLE : View.GONE);
-        baseBinding.userNameInput.setEnabled(enabled);
+        baseBinding.userNicknameInput.setVisibility((enabled) ? View.VISIBLE : View.GONE);
+        baseBinding.userNicknameInput.setEnabled(enabled);
         baseBinding.profileEditingTag.setVisibility((enabled) ? View.VISIBLE : View.GONE);
         baseBinding.cameraButtonUser.setVisibility((enabled) ? View.VISIBLE : View.GONE);
         baseBinding.cameraButtonUser.setClickable(enabled);
@@ -67,13 +58,6 @@ abstract class BaseUserProfileFragment extends Fragment {
         baseBinding.saveUserButton.setVisibility((enabled) ? View.VISIBLE : View.GONE);
         baseBinding.cancelButton.setVisibility((enabled) ? View.VISIBLE : View.GONE);
     }
-
-
-    protected void deleteButVisibility(boolean visible) {
-//        baseBinding.deleteBtn.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
-    }
-
-//    abstract void onClickAction();
 
     abstract void setUserViewField();
 }

@@ -69,18 +69,10 @@ public class User {
     }
 
     public static User getUser() {
-        // Temp code need to delete
-        User noa = new User();
-        noa.setNickName("Noa");
-        noa.setEmail("noa@gmail.com");
-        noa.setImgUrl("https://spoonacular.com/recipeImages/782585-312x231.jpg");
-
-        return noa;
-
-//        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
-//        Gson gson = new Gson();
-//        String json = sharedPref.getString("user", "");
-//        return gson.fromJson(json, User.class);
+        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPref.getString("user", "");
+        return gson.fromJson(json, User.class);
     }
 
     public static void setUser(User user) {

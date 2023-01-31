@@ -47,6 +47,12 @@
         <action
             android:id="@+id/action_userProfileFragment_to_editUserProfileFragment"
             app:destination="@id/editUserProfileFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_myRecipesFragment"
+            app:destination="@id/myRecipesFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <fragment
@@ -98,6 +104,24 @@
     <fragment
         android:id="@+id/editUserProfileFragment"
         android:name="com.example.foodies.EditUserProfileFragment"
-        android:label="EditUserProfileFragment" />
+        android:label="EditUserProfileFragment" >
+        <action
+            android:id="@+id/action_editUserProfileFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myRecipesFragment"
+        android:name="com.example.foodies.MyRecipesFragment"
+        android:label="MyRecipesFragment" >
+        <argument
+            android:name="userId"
+            app:argType="string" />
+        <argument
+            android:name="userName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_myRecipesFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment" />
+    </fragment>
 
 </navigation>

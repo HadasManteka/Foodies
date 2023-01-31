@@ -1,18 +1,19 @@
 package com.example.foodies;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.foodies.model.user.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
 public class UserProfileFragment extends BaseUserProfileFragment {
 
-    public UserProfileFragment(){}
+    public UserProfileFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,7 @@ public class UserProfileFragment extends BaseUserProfileFragment {
 
     @Override
     public void setUserViewField() {
-        if(Objects.nonNull(currentUser)) {
+        if (Objects.nonNull(currentUser)) {
             baseBinding.userNameView.setText(currentUser.nickName);
 
             if (!Objects.equals(currentUser.getImgUrl(), "")) {
@@ -33,9 +34,20 @@ public class UserProfileFragment extends BaseUserProfileFragment {
 
         setEditMode(false);
 
+        baseBinding.myRecipesButton.setOnClickListener(view -> {
+            NavHostFragment.findNavController(UserProfileFragment.this).navigate(
+                    UserProfileFragmentDirections.actionUserProfileFragmentToMyRecipesFragment(currentUser.id, currentUser.nickName));
+        });
+
         baseBinding.newRecipeButton.setOnClickListener(view -> {
             NavHostFragment.findNavController(UserProfileFragment.this).navigate(
                     UserProfileFragmentDirections.actionUserProfileFragmentToAddRecipeFragment());
+        });
+
+        baseBinding.logoutButton.setOnClickListener(view -> {
+            User.logout();
+            NavHostFragment.findNavController(UserProfileFragment.this).navigate(
+                    UserProfileFragmentDirections.actionUserProfileFragmentToLoginFragment());
         });
 
         baseBinding.buttonEditProfile.setOnClickListener(v -> {

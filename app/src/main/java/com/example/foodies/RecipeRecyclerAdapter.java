@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.foodies.model.recipe.Recipe;
-import com.example.foodies.model.request.RecipeApiModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -41,7 +41,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
 
         if (!Objects.equals(recipe.getImgUrl(), "")) {
             Picasso.get().load(recipe.getImgUrl()).placeholder(R.drawable.camera_img).into(imgView);
-        }else{
+        } else {
             imgView.setImageResource(R.drawable.camera_img);
         }
     }
@@ -56,23 +56,10 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder
 
     LayoutInflater inflater;
     List<Recipe> data;
-    List<Recipe> allRecipes;
 
     public void setData(List<Recipe> data) {
         this.data = data;
         notifyDataSetChanged();
-    }
-
-    public List<Recipe> getData() {
-        return this.data;
-    }
-
-    public List<Recipe> getAllRecipes() {
-        return this.allRecipes;
-    }
-
-    public void setAllRecipes(List<Recipe> allRecipes) {
-        this.allRecipes = allRecipes;
     }
 
     public RecipeRecyclerAdapter(LayoutInflater inflater, List<Recipe> data) {

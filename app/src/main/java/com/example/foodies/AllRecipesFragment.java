@@ -2,19 +2,14 @@ package com.example.foodies;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.foodies.databinding.FragmentAllRecipesBinding;
@@ -33,30 +28,16 @@ abstract class AllRecipesFragment extends Fragment {
     FragmentAllRecipesBinding binding;
     CardView currentTimeFilter;
     CardView currentCategoryFilter;
-    List<Recipe> tempData = null;
     String searchQuery = "";
 
     public AllRecipesFragment() {
         super(R.layout.fragment_all_recipes);
     }
 
-
-    public void setData(List<Recipe> recipes) {
-        tempData = recipes;
-        if (adapter != null) {
-            adapter.setAllRecipes(tempData);
-            adapter.setData(tempData);
-        }
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new RecipeRecyclerAdapter(getLayoutInflater(), new ArrayList<>());
-        if (tempData != null) {
-            adapter.setAllRecipes(tempData);
-            adapter.setData(tempData);
-        }
     }
 
     protected void setFilters(View view) {
@@ -125,8 +106,8 @@ abstract class AllRecipesFragment extends Fragment {
         }
     }
 
-    private void filterData(String timeFilter, String categoryFilter, String searchQuery) {
-        List<Recipe> data = viewModel.getData().getValue();
+    protected void filterData(String timeFilter, String categoryFilter, String searchQuery) {
+        List<Recipe> data = getAllData();
 
         List<Recipe> newData = new ArrayList<>();
         for (Recipe recipe : data) {
@@ -137,13 +118,15 @@ abstract class AllRecipesFragment extends Fragment {
             }
         }
         adapter.setData(newData);
+
+        binding.noRecipes.setVisibility((newData.isEmpty()) ? View.VISIBLE : View.INVISIBLE);
     }
 
     protected void initRecipeRecyclerView() {
         binding.homeRecyclerView.setHasFixedSize(true);
         binding.homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new RecipeRecyclerAdapter(getLayoutInflater(), viewModel.getData().getValue());
+        adapter = new RecipeRecyclerAdapter(getLayoutInflater(), getAllData());
         binding.homeRecyclerView.setAdapter(adapter);
     }
 
@@ -157,24 +140,5 @@ abstract class AllRecipesFragment extends Fragment {
         RecipeModel.instance().refreshAllRecipes();
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup
-            container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentAllRecipesBinding.inflate(inflater, container, false);
-        initRecipeRecyclerView();
-
-        View view = binding.getRoot();
-
-        setFilters(view);
-
-        adapter.setOnItemClickListener(pos -> {
-            Log.d("TAG", "Row was clicked " + pos);
-            Recipe recipe = viewModel.getData().getValue().get(pos);
-
-            HomePageFragmentDirections.ActionHomePageFragmentToRecipeDetailsFragment action = HomePageFragmentDirections.actionHomePageFragmentToRecipeDetailsFragment(recipe);
-            Navigation.findNavController(view).navigate(action);
-        });
-
-        return view;
-    }
+    abstract List<Recipe> getAllData();
 }

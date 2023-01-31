@@ -7,8 +7,8 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/user_image_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_marginTop="30dp"
             app:cardCornerRadius="60dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -17,8 +17,8 @@
 
             <ImageView
                 android:id="@+id/user_image_input"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:foregroundGravity="center_horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,15 +59,15 @@
             app:layout_constraintTop_toBottomOf="@+id/user_image_card">
 
             <EditText
-                android:id="@+id/user_name_input"
+                android:id="@+id/user_nickname_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:height="30dp"
                 android:ems="10"
                 android:enabled="false"
-                android:hint="User Name"
+                android:hint="Nickname"
                 android:inputType="textPersonName"
-                android:text="User Name" />
+                android:text="Nickname" />
 
             <TextView
                 android:id="@+id/user_name_view"
@@ -108,7 +108,7 @@
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/user_name_input" />
+                app:layout_constraintTop_toBottomOf="@id/user_nickname_input" />
 
         </FrameLayout>
 

@@ -8,24 +8,36 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.foodies.databinding.FragmentAllRecipesBinding;
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.recipe.RecipeModel;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-public class HomePageFragment extends AllRecipesFragment {
+public class MyRecipesFragment extends AllRecipesFragment {
+    private String userId;
+    private String userName;
+    List<Recipe> allUserData = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            userId = (String) bundle.getSerializable("userId");
+            userName = (String) bundle.getSerializable("userName");
+        }
     }
 
     @Override
     public List<Recipe> getAllData() {
-        return viewModel.getData().getValue();
+        return allUserData;
     }
 
     @Override
@@ -36,7 +48,7 @@ public class HomePageFragment extends AllRecipesFragment {
 
         View view = binding.getRoot();
 
-        binding.titleLabel.setText("All Recipes");
+        binding.titleLabel.setText(userName + "'s Recipes");
 
         setFilters(view);
 
@@ -44,24 +56,13 @@ public class HomePageFragment extends AllRecipesFragment {
             Log.d("TAG", "Row was clicked " + pos);
             Recipe recipe = adapter.data.get(pos);
 
-            HomePageFragmentDirections.ActionHomePageFragmentToRecipeDetailsFragment action = HomePageFragmentDirections.actionHomePageFragmentToRecipeDetailsFragment(recipe);
-            Navigation.findNavController(view).navigate(action);
+            NavHostFragment.findNavController(MyRecipesFragment.this).navigate(
+                    MyRecipesFragmentDirections.actionMyRecipesFragmentToRecipeDetailsFragment(recipe));
         });
 
         viewModel.getData().observe(getViewLifecycleOwner(), list -> {
-            if (viewModel.getApiRecipes().getValue() != null) {
-                list.addAll(viewModel.getApiRecipes().getValue());
-            }
-
-            adapter.setData(list);
-        });
-
-        viewModel.getApiRecipes().observe(getViewLifecycleOwner(), list -> {
-            if (viewModel.getData().getValue() != null) {
-                viewModel.getData().getValue().addAll(list);
-            }
-
-            adapter.setData(viewModel.getData().getValue());
+            allUserData = list.stream().filter(recipe -> (Objects.nonNull(recipe.userId)) ? recipe.userId.equals(userId) : false).collect(Collectors.toList());
+            adapter.setData(allUserData);
         });
 
         RecipeModel.instance().EventRecipesListLoadingState.observe(getViewLifecycleOwner(), status -> {

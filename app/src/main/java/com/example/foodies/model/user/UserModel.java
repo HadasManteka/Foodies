@@ -27,7 +27,9 @@ public class UserModel {
     }
 
     public void addUser(User user, Listener<Void> listener) {
-        firebaseModel.addUser(user, listener);
+        firebaseModel.addUser(user, (Void) -> {
+            listener.onComplete(null);
+        });
     }
 
     public void updateUser(User user, Listener<Void> listener) {
