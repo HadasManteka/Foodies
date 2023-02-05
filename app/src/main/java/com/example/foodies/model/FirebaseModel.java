@@ -6,17 +6,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.example.foodies.enums.AuthenticationEnum;
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.user.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -100,7 +94,6 @@ public class FirebaseModel{
         imagesRef.delete().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 listener.onComplete(null);
-            } else {
             }
         });
     }

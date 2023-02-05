@@ -1,4 +1,4 @@
-package com.example.foodies;
+package com.example.foodies.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.foodies.R;
+import com.example.foodies.RecipeListFragmentViewModel;
+import com.example.foodies.RecipeRecyclerAdapter;
 import com.example.foodies.databinding.FragmentAllRecipesBinding;
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.recipe.RecipeModel;

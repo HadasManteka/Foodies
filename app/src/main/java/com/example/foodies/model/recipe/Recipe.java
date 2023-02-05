@@ -9,6 +9,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.example.foodies.MainActivity;
+import com.example.foodies.MyApplication;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
@@ -75,12 +76,12 @@ public class Recipe implements Serializable {
     static final String USER = "user";
 
     public static Long getLocalLastUpdate() {
-        SharedPreferences sharedPref = MainActivity.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
         return sharedPref.getLong(LOCAL_LAST_UPDATED, 0);
     }
 
     public static void setLocalLastUpdate(Long time) {
-        SharedPreferences sharedPref = MainActivity.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putLong(LOCAL_LAST_UPDATED,time);
         editor.commit();

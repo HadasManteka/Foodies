@@ -2,7 +2,6 @@ package com.example.foodies.model.request;
 
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.foodies.enums.RecipeCategoryEnum;

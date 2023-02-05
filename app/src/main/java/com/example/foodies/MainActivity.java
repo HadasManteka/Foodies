@@ -24,17 +24,10 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    static private Context context;
-
-    public static Context getMyContext(){
-        return context;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = getApplicationContext();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_hamburger_foreground));

@@ -1,4 +1,4 @@
-package com.example.foodies;
+package com.example.foodies.fragments.profile;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
