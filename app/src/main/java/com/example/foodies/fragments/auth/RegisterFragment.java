@@ -1,4 +1,4 @@
-package com.example.foodies;
+package com.example.foodies.fragments.auth;
 
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.foodies.R;
 import com.example.foodies.databinding.FragmentRegisterBinding;
 import com.example.foodies.model.user.User;
 import com.example.foodies.model.user.UserModel;

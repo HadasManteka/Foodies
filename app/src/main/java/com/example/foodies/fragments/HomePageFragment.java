@@ -1,4 +1,4 @@
-package com.example.foodies;
+package com.example.foodies.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,36 +8,24 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.Navigation;
 
 import com.example.foodies.databinding.FragmentAllRecipesBinding;
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.recipe.RecipeModel;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
-public class MyRecipesFragment extends AllRecipesFragment {
-    private String userId;
-    private String userName;
-    List<Recipe> allUserData = new ArrayList<>();
+public class HomePageFragment extends AllRecipesFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            userId = (String) bundle.getSerializable("userId");
-            userName = (String) bundle.getSerializable("userName");
-        }
     }
 
     @Override
     public List<Recipe> getAllData() {
-        return allUserData;
+        return viewModel.getData().getValue();
     }
 
     @Override
@@ -48,21 +36,32 @@ public class MyRecipesFragment extends AllRecipesFragment {
 
         View view = binding.getRoot();
 
-        binding.titleLabel.setText(userName + "'s Recipes");
+        binding.titleLabel.setText("All Recipes");
 
         setFilters(view);
 
         adapter.setOnItemClickListener(pos -> {
             Log.d("TAG", "Row was clicked " + pos);
-            Recipe recipe = adapter.data.get(pos);
+            Recipe recipe = adapter.getData().get(pos);
 
-            NavHostFragment.findNavController(MyRecipesFragment.this).navigate(
-                    MyRecipesFragmentDirections.actionMyRecipesFragmentToRecipeDetailsFragment(recipe));
+            HomePageFragmentDirections.ActionHomePageFragmentToRecipeDetailsFragment action = HomePageFragmentDirections.actionHomePageFragmentToRecipeDetailsFragment(recipe);
+            Navigation.findNavController(view).navigate(action);
         });
 
         viewModel.getData().observe(getViewLifecycleOwner(), list -> {
-            allUserData = list.stream().filter(recipe -> (Objects.nonNull(recipe.userId)) ? recipe.userId.equals(userId) : false).collect(Collectors.toList());
-            adapter.setData(allUserData);
+            if (viewModel.getApiRecipes().getValue() != null) {
+                list.addAll(viewModel.getApiRecipes().getValue());
+            }
+
+            adapter.setData(list);
+        });
+
+        viewModel.getApiRecipes().observe(getViewLifecycleOwner(), list -> {
+            if (viewModel.getData().getValue() != null) {
+                viewModel.getData().getValue().addAll(list);
+            }
+
+            adapter.setData(viewModel.getData().getValue());
         });
 
         RecipeModel.instance().EventRecipesListLoadingState.observe(getViewLifecycleOwner(), status -> {

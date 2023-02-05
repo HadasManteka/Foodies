@@ -62,12 +62,16 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder
         notifyDataSetChanged();
     }
 
+    public List<Recipe> getData() {
+        return data;
+    }
+
     public RecipeRecyclerAdapter(LayoutInflater inflater, List<Recipe> data) {
         this.inflater = inflater;
         this.data = data;
     }
 
-    void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 

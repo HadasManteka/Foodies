@@ -15,11 +15,11 @@ public class RecipeListFragmentViewModel extends ViewModel {
     private LiveData<List<Recipe>> data = RecipeModel.instance().getAllRecipes();
     private MutableLiveData<List<Recipe>> apiRecipes = RecipeApiModel.instance().getApiRecipes();
 
-    MutableLiveData<List<Recipe>> getApiRecipes(){
+    public MutableLiveData<List<Recipe>> getApiRecipes(){
         return apiRecipes;
     }
 
-    LiveData<List<Recipe>> getData(){
+    public LiveData<List<Recipe>> getData(){
         return data;
     }
 }

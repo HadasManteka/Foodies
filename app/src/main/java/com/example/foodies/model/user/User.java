@@ -7,10 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.example.foodies.MainActivity;
 import com.example.foodies.MyApplication;
 import com.google.gson.Gson;
 
-import java.net.NetworkInterface;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

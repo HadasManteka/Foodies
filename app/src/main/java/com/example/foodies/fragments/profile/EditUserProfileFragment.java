@@ -1,21 +1,19 @@
-package com.example.foodies;
+package com.example.foodies.fragments.profile;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.foodies.model.user.User;
+import com.example.foodies.R;
 import com.example.foodies.model.user.UserModel;
 import com.example.foodies.util.ProgressDialog;
 import com.squareup.picasso.Picasso;

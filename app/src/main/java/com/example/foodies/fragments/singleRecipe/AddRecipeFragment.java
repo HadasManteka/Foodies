@@ -1,9 +1,9 @@
-package com.example.foodies;
+package com.example.foodies.fragments.singleRecipe;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-
+import com.example.foodies.R;
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.recipe.RecipeModel;
 import com.example.foodies.util.ProgressDialog;

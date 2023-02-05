@@ -1,13 +1,12 @@
-package com.example.foodies;
+package com.example.foodies.fragments.singleRecipe;
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 
 import androidx.navigation.Navigation;
 
+import com.example.foodies.R;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;

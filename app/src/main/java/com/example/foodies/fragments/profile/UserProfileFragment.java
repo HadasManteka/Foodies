@@ -1,10 +1,11 @@
-package com.example.foodies;
+package com.example.foodies.fragments.profile;
 
 import android.os.Bundle;
 
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.foodies.R;
 import com.example.foodies.model.user.User;
 import com.squareup.picasso.Picasso;
 

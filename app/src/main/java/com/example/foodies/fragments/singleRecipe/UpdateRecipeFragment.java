@@ -1,4 +1,4 @@
-package com.example.foodies;
+package com.example.foodies.fragments.singleRecipe;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 
 import androidx.navigation.Navigation;
 
+import com.example.foodies.R;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;

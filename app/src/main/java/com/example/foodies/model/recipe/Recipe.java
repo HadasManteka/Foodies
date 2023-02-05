@@ -2,20 +2,18 @@ package com.example.foodies.model.recipe;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.example.foodies.MainActivity;
 import com.example.foodies.MyApplication;
-import com.example.foodies.model.user.User;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
 import java.io.Serializable;
-import java.sql.Blob;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
