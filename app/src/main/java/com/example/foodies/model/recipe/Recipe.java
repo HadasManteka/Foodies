@@ -2,20 +2,17 @@ package com.example.foodies.model.recipe;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.example.foodies.MyApplication;
-import com.example.foodies.model.user.User;
+import com.example.foodies.MainActivity;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
 import java.io.Serializable;
-import java.sql.Blob;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -78,12 +75,12 @@ public class Recipe implements Serializable {
     static final String USER = "user";
 
     public static Long getLocalLastUpdate() {
-        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = MainActivity.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
         return sharedPref.getLong(LOCAL_LAST_UPDATED, 0);
     }
 
     public static void setLocalLastUpdate(Long time) {
-        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = MainActivity.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putLong(LOCAL_LAST_UPDATED,time);
         editor.commit();

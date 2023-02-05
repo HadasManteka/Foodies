@@ -7,10 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.example.foodies.MyApplication;
+import com.example.foodies.MainActivity;
 import com.google.gson.Gson;
 
-import java.net.NetworkInterface;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -64,14 +63,14 @@ public class User {
     }
 
     public static User getUser() {
-        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = MainActivity.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPref.getString("user", "");
         return gson.fromJson(json, User.class);
     }
 
     public static void setUser(User user) {
-        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = MainActivity.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Gson gson = new Gson();
         editor.putString("user", gson.toJson(user));
@@ -79,7 +78,7 @@ public class User {
     }
 
     public static void logout() {
-        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = MainActivity.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.remove("user");
         editor.commit();

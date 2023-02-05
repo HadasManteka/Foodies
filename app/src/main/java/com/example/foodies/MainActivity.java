@@ -2,6 +2,7 @@ package com.example.foodies;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,10 +24,17 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+    static private Context context;
+
+    public static Context getMyContext(){
+        return context;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = getApplicationContext();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_hamburger_foreground));
