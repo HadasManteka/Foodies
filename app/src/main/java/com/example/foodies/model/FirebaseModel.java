@@ -29,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class FirebaseModel{
     FirebaseFirestore db;
@@ -50,50 +51,32 @@ public class FirebaseModel{
         db.collection(Recipe.COLLECTION)
                 .whereGreaterThanOrEqualTo(Recipe.LAST_UPDATED, new Timestamp(since,0))
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        List<Recipe> list = new LinkedList<>();
-                        if (task.isSuccessful()){
-                            QuerySnapshot jsonsList = task.getResult();
-                            for (DocumentSnapshot json: jsonsList){
-                                Recipe recipe = Recipe.fromJson(json.getData());
-                                list.add(recipe);
-                            }
+                .addOnCompleteListener(task -> {
+                    List<Recipe> list = new LinkedList<>();
+                    if (task.isSuccessful()){
+                        QuerySnapshot jsonsList = task.getResult();
+                        for (DocumentSnapshot json: jsonsList){
+                            Recipe recipe = Recipe.fromJson(json.getData());
+                            list.add(recipe);
                         }
-                        callback.onComplete(list);
                     }
+                    callback.onComplete(list);
                 });
     }
 
     public void addRecipe(Recipe recipe, Listener<Void> listener) {
         db.collection(Recipe.COLLECTION).document(recipe.getId()).set(recipe.toJson())
-            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    listener.onComplete(null);
-                }
-        });
+            .addOnCompleteListener(task -> listener.onComplete(null));
     }
 
     public void deleteRecipe(Recipe recipe, Listener<Void> listener) {
         db.collection(Recipe.COLLECTION).document(recipe.getId()).delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        listener.onComplete(null);
-                    }
-                });
+                .addOnCompleteListener(task -> listener.onComplete(null));
     }
 
     public void addUser(User user, Listener<Void> listener) {
         db.collection(User.COLLECTION).document(user.getId()).set(user.toJson())
-            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    listener.onComplete(null);
-                }
-            });
+            .addOnCompleteListener(task -> listener.onComplete(null));
     }
 
     public void uploadProfileImage(String id, Bitmap bitmap, Listener<String> listener) {
@@ -114,7 +97,7 @@ public class FirebaseModel{
     private void deleteImage(String id, Listener<String> listener) {
         StorageReference storageRef = storage.getReference();
         StorageReference imagesRef = storageRef.child("images/" + id + ".jpg");
-        imagesRef.delete().addOnCompleteListener((OnCompleteListener<Void>) task -> {
+        imagesRef.delete().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 listener.onComplete(null);
             } else {
@@ -130,38 +113,20 @@ public class FirebaseModel{
         byte[] data = baos.toByteArray();
 
         UploadTask uploadTask = imagesRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
+        uploadTask.addOnFailureListener(exception -> listener.onComplete(null)).addOnSuccessListener(taskSnapshot -> imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onFailure(@NonNull Exception exception) {
-                listener.onComplete(null);
+            public void onSuccess(Uri uri) {
+                listener.onComplete(uri.toString());
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        listener.onComplete(uri.toString());
-                    }
-                });
-            }
-        });
+        }));
     }
 
     public void fireBaseRegister(String email, String password, Listener<Void> listener) {
         FirebaseAuth.getInstance()
             .createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        listener.onComplete(null);
-//                            mOnLoginListener.onSuccess(task.getResult().toString());
-                        // To login
-                    }
-                    else {
-//                            mOnLoginListener.onFailure(task.getException().toString());
-                    }
+            .addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    listener.onComplete(null);
                 }
             });
     }
@@ -169,23 +134,20 @@ public class FirebaseModel{
     public void fireBaseLogin(String email, String password, Listener<AuthenticationEnum> listener) {
         FirebaseAuth.getInstance()
             .signInWithEmailAndPassword(email,password)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        listener.onComplete(AuthenticationEnum.AUTHORIZED);
-                    }
-                    else {
-                       listener.onComplete(AuthenticationEnum.UNAUTHORIZED);
-                    }
+            .addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    listener.onComplete(AuthenticationEnum.AUTHORIZED);
+                }
+                else {
+                   listener.onComplete(AuthenticationEnum.UNAUTHORIZED);
                 }
             });
     }
 
     public void getUser(String email, Listener<User> listener) {
         db.collection(User.COLLECTION).whereEqualTo("email", email).get()
-            .addOnSuccessListener((OnSuccessListener<QuerySnapshot>) task -> {
-                User user = User.fromJson(task.getDocuments().get(0).getData());
+            .addOnSuccessListener(task -> {
+                User user = User.fromJson(Objects.requireNonNull(task.getDocuments().get(0).getData()));
                 user.id = task.getDocuments().get(0).getId();
                 Log.d(TAG, "user successfully selected");
                 listener.onComplete(user);
@@ -194,7 +156,7 @@ public class FirebaseModel{
 
     public void doesEmailExists(String email, Listener<Boolean> listener) {
         db.collection(User.COLLECTION).whereEqualTo("email", email).get()
-                .addOnSuccessListener((OnSuccessListener<QuerySnapshot>) task -> {
+                .addOnSuccessListener(task -> {
                     boolean isExists = task.getDocuments().size() > 0;
                     Log.d(TAG, "email " + email + isExists);
                     listener.onComplete(isExists);
