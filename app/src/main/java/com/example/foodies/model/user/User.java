@@ -50,9 +50,9 @@ public class User {
 
     public static User fromJson(Map<String,Object> json){
         String nickName = (String)json.get(NAME);
-        String name = (String)json.get(EMAIL);
+        String email = (String)json.get(EMAIL);
         String img = (String)json.get(IMG);
-        return new User(nickName, name,img);
+        return new User(nickName, email, img);
     }
 
     public Map<String,Object> toJson(){

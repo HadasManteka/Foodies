@@ -2,8 +2,6 @@ package com.example.foodies;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,12 +35,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     @SuppressLint("RestrictedApi")
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(User.getUser() != null) {
+        if (User.getUser() != null) {
             MenuInflater inflater = getMenuInflater();
             if (menu instanceof MenuBuilder) {
                 MenuBuilder m = (MenuBuilder) menu;
-                    m.setOptionalIconsVisible(true);
-                }
+                m.setOptionalIconsVisible(true);
+            }
 
             inflater.inflate(R.menu.menu, menu);
         }

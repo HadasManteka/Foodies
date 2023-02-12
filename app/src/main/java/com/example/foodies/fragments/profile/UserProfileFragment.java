@@ -37,7 +37,7 @@ public class UserProfileFragment extends BaseUserProfileFragment {
 
         baseBinding.myRecipesButton.setOnClickListener(view -> {
             NavHostFragment.findNavController(UserProfileFragment.this).navigate(
-                    UserProfileFragmentDirections.actionUserProfileFragmentToMyRecipesFragment(currentUser.id, currentUser.nickName));
+                    UserProfileFragmentDirections.actionUserProfileFragmentToMyRecipesFragment());
         });
 
         baseBinding.newRecipeButton.setOnClickListener(view -> {

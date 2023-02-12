@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.Navigation;
 
+import com.example.foodies.R;
 import com.example.foodies.databinding.FragmentAllRecipesBinding;
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.recipe.RecipeModel;
 
+import java.util.Collections;
 import java.util.List;
 
 public class HomePageFragment extends AllRecipesFragment {
@@ -49,6 +52,7 @@ public class HomePageFragment extends AllRecipesFragment {
         });
 
         viewModel.getData().observe(getViewLifecycleOwner(), list -> {
+            Collections.sort(list, Collections.reverseOrder());
             if (viewModel.getApiRecipes().getValue() != null) {
                 list.addAll(viewModel.getApiRecipes().getValue());
             }

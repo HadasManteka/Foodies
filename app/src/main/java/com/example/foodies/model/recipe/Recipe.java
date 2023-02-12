@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Entity
-public class Recipe implements Serializable {
+public class Recipe implements Serializable, Comparable<Recipe>{
     @PrimaryKey
     @NonNull
     public String id;
@@ -190,5 +190,10 @@ public class Recipe implements Serializable {
 
     public void setUserID(String userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public int compareTo(Recipe recipe) {
+        return getLastUpdated().compareTo(recipe.lastUpdated);
     }
 }

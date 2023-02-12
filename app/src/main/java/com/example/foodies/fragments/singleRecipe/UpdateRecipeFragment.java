@@ -116,9 +116,5 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
 
     private void navigateBackToDetails() {
         Navigation.findNavController(baseBinding.getRoot()).popBackStack();
-//        UpdateRecipeFragmentDirections.ActionRecipeUpdateFragmentToRecipeDetailsFragment action = UpdateRecipeFragmentDirections.actionRecipeUpdateFragmentToRecipeDetailsFragment(recipe);
-//        Navigation.findNavController(baseBinding.getRoot()).navigate(action);
     }
-
-
 }
