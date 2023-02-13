@@ -33,6 +33,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        View view = findViewById(R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(view);
+        navController.navigate(R.id.homePageFragment);
+    }
+
+    @Override
     @SuppressLint("RestrictedApi")
     public boolean onCreateOptionsMenu(Menu menu) {
         if (User.getUser() != null) {
@@ -85,11 +94,29 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Exit")
-                .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", (dialog, whichButton) -> finish())
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                .create().show();
+        View view = findViewById(R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(view);
+        int currentId = navController.getCurrentDestination().getId();
+        if (Objects.equals(currentId, R.id.homePageFragment) || Objects.equals(currentId, R.id.loginFragment)) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Exit")
+                    .setMessage("Are you sure you want to exit?")
+                    .setPositiveButton("Yes", (dialog, whichButton) -> finish())
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                    .create().show();
+        } else {
+            navController.popBackStack();
+        }
+    }
+
+    public void enableNavigationIcon(boolean enable) {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (Objects.nonNull(toolbar)) {
+            if (enable) {
+                toolbar.setNavigationIcon(R.drawable.back_icon_foreground);
+            } else {
+                toolbar.setNavigationIcon(null);
+            }
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.example.foodies.fragments.singleRecipe;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
+import com.example.foodies.MainActivity;
 import com.example.foodies.databinding.FragmentBaseRecipeBinding;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
@@ -23,7 +23,7 @@ abstract class BaseRecipeFragment extends Fragment {
 
     AlertDialog.Builder alertDialog;
     protected FragmentBaseRecipeBinding baseBinding;
-//    private ImageListener mListener;
+    //    private ImageListener mListener;
     ActivityResultLauncher<Void> cameraLauncher;
     ActivityResultLauncher<String> galleryLauncher;
 
@@ -31,10 +31,6 @@ abstract class BaseRecipeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         alertDialog = new AlertDialog.Builder(getContext());
-//        Bundle bundle = getArguments();
-//        if (bundle != null){
-//            title = bundle.getString("title");
-//        }
 
         cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), result -> {
             if (result != null) {
@@ -42,7 +38,7 @@ abstract class BaseRecipeFragment extends Fragment {
             }
         });
         galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
-            if (result != null){
+            if (result != null) {
                 baseBinding.recipeImg.setImageURI(result);
             }
         });
@@ -51,16 +47,20 @@ abstract class BaseRecipeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.enableNavigationIcon(true);
+
         baseBinding = FragmentBaseRecipeBinding.inflate(inflater, container, false);
         View view = baseBinding.getRoot();
 
         deleteButVisibility(false);
 
-        baseBinding.cameraButton.setOnClickListener(view1->{
+        baseBinding.cameraButton.setOnClickListener(view1 -> {
             cameraLauncher.launch(null);
         });
 
-        baseBinding.galleryButton.setOnClickListener(view1->{
+        baseBinding.galleryButton.setOnClickListener(view1 -> {
             galleryLauncher.launch("image/*");
         });
 
@@ -77,10 +77,6 @@ abstract class BaseRecipeFragment extends Fragment {
         return view;
     }
 
-//    public interface ImageListener {
-//        void onSelectImage();
-//    }
-
     protected void setEditMode(boolean enabled) {
         baseBinding.recipeTitle.setFocusableInTouchMode(enabled);
         baseBinding.recipeTitle.clearFocus();
@@ -91,8 +87,6 @@ abstract class BaseRecipeFragment extends Fragment {
 
         baseBinding.recipeCategory.setEnabled(enabled);
         baseBinding.recipeTime.setEnabled(enabled);
-
-//        baseBinding.recipeImg.setEnabled(enabled); // TODO: should disable button, not img
     }
 
     protected void setAddImgBtInvisible() {
@@ -141,6 +135,6 @@ abstract class BaseRecipeFragment extends Fragment {
     }
 
     abstract void onClickAction();
-    abstract void setRecipeViewField();
 
+    abstract void setRecipeViewField();
 }

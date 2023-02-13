@@ -8,7 +8,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.example.foodies.MainActivity;
 import com.example.foodies.MyApplication;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
@@ -16,6 +15,7 @@ import com.google.firebase.firestore.FieldValue;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -194,6 +194,6 @@ public class Recipe implements Serializable, Comparable<Recipe>{
 
     @Override
     public int compareTo(Recipe recipe) {
-        return getLastUpdated().compareTo(recipe.lastUpdated);
+        return (Objects.nonNull(recipe.lastUpdated)) ? getLastUpdated().compareTo(recipe.lastUpdated) : 0;
     }
 }

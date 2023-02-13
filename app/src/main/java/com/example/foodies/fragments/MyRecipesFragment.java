@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.foodies.MainActivity;
 import com.example.foodies.databinding.FragmentAllRecipesBinding;
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.recipe.RecipeModel;
@@ -42,6 +43,10 @@ public class MyRecipesFragment extends AllRecipesFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup
             container, @Nullable Bundle savedInstanceState) {
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.enableNavigationIcon(true);
+
         binding = FragmentAllRecipesBinding.inflate(inflater, container, false);
         initRecipeRecyclerView();
 

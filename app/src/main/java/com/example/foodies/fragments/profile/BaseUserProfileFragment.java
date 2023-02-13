@@ -1,16 +1,14 @@
 package com.example.foodies.fragments.profile;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import com.example.foodies.R;
+import com.example.foodies.MainActivity;
 import com.example.foodies.databinding.FragmentBaseUserProfileBinding;
 import com.example.foodies.model.user.User;
 import com.example.foodies.model.user.UserModel;
@@ -21,12 +19,8 @@ abstract class BaseUserProfileFragment extends Fragment {
     protected FragmentBaseUserProfileBinding baseBinding;
     User currentUser;
 
-    @SuppressLint("ResourceType")
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Toolbar toolbar = ((Toolbar)getActivity().findViewById(R.id.toolbar));
-         toolbar.setNavigationIcon();
-
         super.onCreate(savedInstanceState);
 
         UserModel.instance().getUser(User.getUser().getEmail(), (user) -> {
@@ -40,6 +34,10 @@ abstract class BaseUserProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.enableNavigationIcon(true);
+
         baseBinding = FragmentBaseUserProfileBinding.inflate(inflater, container, false);
         View view = baseBinding.getRoot();
 
