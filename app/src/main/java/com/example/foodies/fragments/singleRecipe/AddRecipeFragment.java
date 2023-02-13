@@ -3,6 +3,9 @@ package com.example.foodies.fragments.singleRecipe;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+
+import androidx.navigation.Navigation;
+
 import com.example.foodies.R;
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.recipe.RecipeModel;
@@ -24,7 +27,7 @@ public class AddRecipeFragment extends BaseRecipeFragment {
 
     @Override
     void onClickAction() {
-        if(!validateLinkForm()) {
+        if (!validateLinkForm()) {
             return;
         }
 
@@ -34,7 +37,7 @@ public class AddRecipeFragment extends BaseRecipeFragment {
         baseBinding.recipeImg.setDrawingCacheEnabled(true);
         baseBinding.recipeImg.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) baseBinding.recipeImg.getDrawable()).getBitmap();
-        RecipeModel.instance().uploadImage(recipe.getId(), bitmap, url-> {
+        RecipeModel.instance().uploadImage(recipe.getId(), bitmap, url -> {
 
             if (url != null) {
                 recipe.setImgUrl(url);
@@ -46,8 +49,8 @@ public class AddRecipeFragment extends BaseRecipeFragment {
                 ProgressDialog.hideProgressDialog();
             });
         });
-//              Navigation.findNavController(view1).popBackStack();
-//        }
+
+        Navigation.findNavController(this.getView()).navigate(AddRecipeFragmentDirections.actionAddRecipeFragmentToMyRecipesFragment());
     }
 
 

@@ -10,10 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
 
+import com.example.foodies.MainActivity;
 import com.example.foodies.databinding.FragmentAllRecipesBinding;
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.recipe.RecipeModel;
 
+import java.util.Collections;
 import java.util.List;
 
 public class HomePageFragment extends AllRecipesFragment {
@@ -31,6 +33,10 @@ public class HomePageFragment extends AllRecipesFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup
             container, @Nullable Bundle savedInstanceState) {
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.enableNavigationIcon(false);
+
         binding = FragmentAllRecipesBinding.inflate(inflater, container, false);
         initRecipeRecyclerView();
 
@@ -49,6 +55,7 @@ public class HomePageFragment extends AllRecipesFragment {
         });
 
         viewModel.getData().observe(getViewLifecycleOwner(), list -> {
+            Collections.sort(list, Collections.reverseOrder());
             if (viewModel.getApiRecipes().getValue() != null) {
                 list.addAll(viewModel.getApiRecipes().getValue());
             }

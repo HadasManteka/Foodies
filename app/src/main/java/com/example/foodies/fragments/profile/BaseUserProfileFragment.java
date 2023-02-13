@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.foodies.MainActivity;
 import com.example.foodies.databinding.FragmentBaseUserProfileBinding;
 import com.example.foodies.model.user.User;
 import com.example.foodies.model.user.UserModel;
@@ -33,6 +34,10 @@ abstract class BaseUserProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.enableNavigationIcon(true);
+
         baseBinding = FragmentBaseUserProfileBinding.inflate(inflater, container, false);
         View view = baseBinding.getRoot();
 

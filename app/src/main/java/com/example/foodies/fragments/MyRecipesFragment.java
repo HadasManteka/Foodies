@@ -10,11 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.foodies.MainActivity;
 import com.example.foodies.databinding.FragmentAllRecipesBinding;
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.recipe.RecipeModel;
+import com.example.foodies.model.user.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -28,11 +31,8 @@ public class MyRecipesFragment extends AllRecipesFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            userId = (String) bundle.getSerializable("userId");
-            userName = (String) bundle.getSerializable("userName");
-        }
+        userId = User.getUser().getId();
+        userName = User.getUser().nickName;
     }
 
     @Override
@@ -43,6 +43,10 @@ public class MyRecipesFragment extends AllRecipesFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup
             container, @Nullable Bundle savedInstanceState) {
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.enableNavigationIcon(true);
+
         binding = FragmentAllRecipesBinding.inflate(inflater, container, false);
         initRecipeRecyclerView();
 
@@ -62,6 +66,7 @@ public class MyRecipesFragment extends AllRecipesFragment {
 
         viewModel.getData().observe(getViewLifecycleOwner(), list -> {
             allUserData = list.stream().filter(recipe -> (Objects.nonNull(recipe.userId)) ? recipe.userId.equals(userId) : false).collect(Collectors.toList());
+            Collections.sort(allUserData, Collections.reverseOrder());
             adapter.setData(allUserData);
         });
 

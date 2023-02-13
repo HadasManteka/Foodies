@@ -74,18 +74,18 @@ public class FirebaseModel{
     }
 
     public void uploadProfileImage(String id, Bitmap bitmap, Listener<String> listener) {
-        String ProfilePath = "profile/" + id;
-        uploadImage(ProfilePath, bitmap, listener);
+        String ProfileImagePath = "profile/" + id;
+        uploadImage(ProfileImagePath, bitmap, listener);
     }
 
     public void uploadRecipeImage(String id, Bitmap bitmap, Listener<String> listener) {
-        String ProfilePath = "recipe/" + id;
-        uploadImage(ProfilePath, bitmap, listener);
+        String recipeImagePath = "recipe/" + id;
+        uploadImage(recipeImagePath, bitmap, listener);
     }
 
     public void deleteRecipeImage(String id, Listener<String> listener) {
-        String ProfilePath = "recipe/" + id;
-        deleteImage(ProfilePath, listener);
+        String recipeImagePath = "recipe/" + id;
+        deleteImage(recipeImagePath, listener);
     }
 
     private void deleteImage(String id, Listener<String> listener) {

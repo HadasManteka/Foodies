@@ -100,7 +100,11 @@
     <fragment
         android:id="@+id/addRecipeFragment"
         android:name="com.example.foodies.fragments.singleRecipe.AddRecipeFragment"
-        android:label="AddRecipeFragment" />
+        android:label="AddRecipeFragment" >
+        <action
+            android:id="@+id/action_addRecipeFragment_to_myRecipesFragment"
+            app:destination="@id/myRecipesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/editUserProfileFragment"
         android:name="com.example.foodies.fragments.profile.EditUserProfileFragment"
@@ -113,12 +117,6 @@
         android:id="@+id/myRecipesFragment"
         android:name="com.example.foodies.fragments.MyRecipesFragment"
         android:label="MyRecipesFragment" >
-        <argument
-            android:name="userId"
-            app:argType="string" />
-        <argument
-            android:name="userName"
-            app:argType="string" />
         <action
             android:id="@+id/action_myRecipesFragment_to_recipeDetailsFragment"
             app:destination="@id/recipeDetailsFragment" />

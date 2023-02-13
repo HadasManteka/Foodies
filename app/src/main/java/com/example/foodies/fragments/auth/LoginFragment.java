@@ -2,16 +2,16 @@ package com.example.foodies.fragments.auth;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+
+import com.example.foodies.MainActivity;
 import com.example.foodies.R;
 import com.example.foodies.databinding.FragmentLoginBinding;
 import com.example.foodies.enums.AuthenticationEnum;
@@ -35,10 +35,14 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.enableNavigationIcon(false);
+
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        if(User.getUser() != null) {
+        if (User.getUser() != null) {
             NavHostFragment.findNavController(this).navigate(
                     LoginFragmentDirections.actionLoginFragmentToHomePageFragment());
         } else {
@@ -77,13 +81,9 @@ public class LoginFragment extends Fragment {
                         alertDialog.show();
                     }
                 });
-
-//        binding.cancellBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).popBackStack(R.id.studentsListFragment,false));
-
             });
-
-
         }
+
         return view;
     }
 

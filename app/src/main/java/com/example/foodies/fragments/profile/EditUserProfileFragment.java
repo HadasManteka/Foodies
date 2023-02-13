@@ -14,6 +14,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.foodies.R;
+import com.example.foodies.model.recipe.RecipeModel;
+import com.example.foodies.model.user.User;
 import com.example.foodies.model.user.UserModel;
 import com.example.foodies.util.ProgressDialog;
 import com.squareup.picasso.Picasso;
@@ -94,7 +96,7 @@ public class EditUserProfileFragment extends BaseUserProfileFragment {
             baseBinding.userImageInput.setDrawingCacheEnabled(true);
             baseBinding.userImageInput.buildDrawingCache();
             Bitmap bitmap = ((BitmapDrawable) baseBinding.userImageInput.getDrawable()).getBitmap();
-            UserModel.instance().uploadProfileImage(currentUser.getId(), bitmap, url -> {
+            UserModel.instance().uploadProfileImage(currentUser.getEmail(), bitmap, url -> {
                 if (url != null) {
                     currentUser.setImgUrl(url);
                 }
@@ -103,6 +105,7 @@ public class EditUserProfileFragment extends BaseUserProfileFragment {
         currentUser.setNickName(baseBinding.userNicknameInput.getText().toString());
 
         UserModel.instance().updateUser(currentUser, (unused) -> {
+            User.setUser(currentUser);
             alertDialog.setTitle("User '" + currentUser.getNickName() + "'")
                     .setMessage("Updated successfully.").show();
             ProgressDialog.hideProgressDialog();
