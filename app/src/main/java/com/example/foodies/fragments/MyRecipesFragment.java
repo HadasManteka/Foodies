@@ -61,7 +61,7 @@ public class MyRecipesFragment extends AllRecipesFragment {
             Recipe recipe = adapter.getData().get(pos);
 
             NavHostFragment.findNavController(MyRecipesFragment.this).navigate(
-                    MyRecipesFragmentDirections.actionMyRecipesFragmentToRecipeDetailsFragment(recipe.id));
+                    MyRecipesFragmentDirections.actionMyRecipesFragmentToRecipeDetailsFragment(recipe));
         });
 
         viewModel.getData().observe(getViewLifecycleOwner(), list -> {

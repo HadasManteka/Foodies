@@ -3,9 +3,6 @@ package com.example.foodies.fragments.singleRecipe;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.navigation.Navigation;
 
@@ -26,14 +23,6 @@ public class AddRecipeFragment extends BaseRecipeFragment {
     public void setRecipeViewField() {
         baseBinding.recipeActionBtn.setText("Create");
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View response = super.onCreateView(inflater, container, savedInstanceState);
-        setRecipeViewField();
-
-        return response;
     }
 
     @Override

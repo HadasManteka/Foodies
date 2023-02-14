@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
 
         if (checkFirstTime && User.getUser() != null) {
             View view = findViewById(R.id.nav_host_fragment);

@@ -14,7 +14,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.foodies.R;
-import com.example.foodies.model.recipe.RecipeModel;
 import com.example.foodies.model.user.User;
 import com.example.foodies.model.user.UserModel;
 import com.example.foodies.util.ProgressDialog;
