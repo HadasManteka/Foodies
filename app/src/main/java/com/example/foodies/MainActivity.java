@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (checkFirstTime) {
+        if (checkFirstTime && User.getUser() != null) {
             View view = findViewById(R.id.nav_host_fragment);
             NavController navController = Navigation.findNavController(view);
             navController.navigate(R.id.homePageFragment);
