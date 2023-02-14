@@ -22,13 +22,17 @@ abstract class BaseUserProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        alertDialog = new AlertDialog.Builder(getContext());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         UserModel.instance().getUser(User.getUser().getEmail(), (user) -> {
             currentUser = user;
             setUserViewField();
         });
-
-        alertDialog = new AlertDialog.Builder(getContext());
     }
 
     @Override

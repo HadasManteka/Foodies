@@ -127,7 +127,6 @@ public class EditUserProfileFragment extends BaseUserProfileFragment {
     }
 
     private void backToUserProfile() {
-        NavHostFragment.findNavController(EditUserProfileFragment.this).navigate(
-                EditUserProfileFragmentDirections.actionEditUserProfileFragmentToUserProfileFragment());
+        Navigation.findNavController(baseBinding.getRoot()).popBackStack();
     }
 }
