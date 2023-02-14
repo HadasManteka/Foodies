@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.room.Room;
 
 import com.example.foodies.firebase.FireBaseImageStorage;
 import com.example.foodies.firebase.fireBaseDb.FireBaseRecipeDB;
@@ -83,7 +84,13 @@ public class RecipeModel {
     }
 
     public void deleteRecipe(Recipe re, Listener<Void> listener){
-        fireBaseRecipeDB.deleteRecipe(re, listener);
+        fireBaseRecipeDB.deleteRecipe(re, (listen)->{
+            executor.execute(()->{
+                Log.d("TAG", " firebase delete : " + re.getId());
+                localDb.recipeDao().deleteRecipeById(re.getId());
+            });
+            listener.onComplete(null);
+        });
     }
 
     public void uploadImage(String id, Bitmap bitmap,Listener<String> listener) {
@@ -92,9 +99,5 @@ public class RecipeModel {
 
     public void deleteRecipeImage(String id, Listener<String> listener) {
         firebaseStorage.deleteRecipeImage(id,listener);
-    }
-
-    public void getRecipeById(String id, Listener<Recipe> callback) {
-        fireBaseRecipeDB.getRecipeById(id, callback);
     }
 }

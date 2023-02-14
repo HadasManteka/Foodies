@@ -27,6 +27,7 @@ public class RecipeApiModel {
     private static final RecipeApiModel _instance = new RecipeApiModel();
     Retrofit retrofit;
     IRecipeApi recipeApi;
+
     public static RecipeApiModel instance(){
         return _instance;
     }
