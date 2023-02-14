@@ -1,4 +1,4 @@
-package com.example.foodies.model.request;
+package com.example.foodies.model.api;
 
 import java.io.Serializable;
 import java.util.ArrayList;
