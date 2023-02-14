@@ -5,7 +5,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.foodies.R;
@@ -77,7 +76,7 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
                     alertDialog.setTitle("Recipe '" + recipe.getTitle() + "'")
                             .setMessage("Deleted successfully.").show();
                     ProgressDialog.hideProgressDialog();
-                    navigateAfterDelete();
+                    navigateBackToHomePage();
             }));
         });
 
@@ -110,19 +109,13 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
                 alertDialog.setTitle("Recipe '" + recipe.getTitle() + "'")
                         .setMessage("Updated successfully.").show();
                 ProgressDialog.hideProgressDialog();
-                navigateBackToDetails();
+                navigateBackToHomePage();
             });
         });
     }
 
-    private void navigateBackToDetails() {
-//        Navigation.findNavController(baseBinding.getRoot()).popBackStack();
+    private void navigateBackToHomePage() {
         NavHostFragment.findNavController(UpdateRecipeFragment.this).navigate(
-                UpdateRecipeFragmentDirections.actionUpdateRecipeFragmentToRecipeDetailsFragment(recipe));
-    }
-
-    private void navigateAfterDelete() {
-        Navigation.findNavController(baseBinding.getRoot()).popBackStack();
-        Navigation.findNavController(baseBinding.getRoot()).popBackStack();
+                UpdateRecipeFragmentDirections.actionUpdateRecipeFragmentToHomePageFragment());
     }
 }

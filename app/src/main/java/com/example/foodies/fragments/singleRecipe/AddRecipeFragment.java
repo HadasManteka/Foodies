@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.foodies.R;
 import com.example.foodies.model.recipe.Recipe;
@@ -50,8 +50,11 @@ public class AddRecipeFragment extends BaseRecipeFragment {
             });
         });
 
-        Navigation.findNavController(this.getView()).navigate(AddRecipeFragmentDirections.actionAddRecipeFragmentToMyRecipesFragment());
+        navigateBackToHomePage();
     }
 
-
+    private void navigateBackToHomePage() {
+        NavHostFragment.findNavController(AddRecipeFragment.this).navigate(
+                AddRecipeFragmentDirections.actionAddRecipeFragmentToHomePageFragment());
+    }
 }

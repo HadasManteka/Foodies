@@ -63,13 +63,8 @@
             android:name="recipe"
             app:argType="com.example.foodies.model.recipe.Recipe" />
         <action
-            android:id="@+id/action_recipeUpdateFragment_to_recipeDetailsFragment"
-            app:destination="@id/recipeDetailsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
-        <action
-            android:id="@+id/action_updateRecipeFragment_to_recipeDetailsFragment"
-            app:destination="@id/recipeDetailsFragment" />
+            android:id="@+id/action_updateRecipeFragment_to_homePageFragment"
+            app:destination="@id/homePageFragment" />
     </fragment>
 
     <fragment
@@ -105,8 +100,8 @@
         android:name="com.example.foodies.fragments.singleRecipe.AddRecipeFragment"
         android:label="AddRecipeFragment" >
         <action
-            android:id="@+id/action_addRecipeFragment_to_myRecipesFragment"
-            app:destination="@id/myRecipesFragment" />
+            android:id="@+id/action_addRecipeFragment_to_homePageFragment"
+            app:destination="@id/homePageFragment" />
     </fragment>
     <fragment
         android:id="@+id/editUserProfileFragment"
