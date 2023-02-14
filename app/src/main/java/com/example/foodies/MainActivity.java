@@ -98,19 +98,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        View view = findViewById(R.id.nav_host_fragment);
-        NavController navController = Navigation.findNavController(view);
-        int currentId = navController.getCurrentDestination().getId();
-        if (Objects.equals(currentId, R.id.homePageFragment) || Objects.equals(currentId, R.id.loginFragment)) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Exit")
-                    .setMessage("Are you sure you want to exit?")
-                    .setPositiveButton("Yes", (dialog, whichButton) -> finish())
-                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                    .create().show();
-        } else {
-            navController.popBackStack();
-        }
+        new AlertDialog.Builder(this)
+                .setTitle("Exit")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", (dialog, whichButton) -> finish())
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .create().show();
     }
 
     public void enableNavigationIcon(boolean enable) {
