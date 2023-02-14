@@ -28,14 +28,6 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
     public RecipeDetailsFragment() {
     }
 
-    public static RecipeDetailsFragment newInstance(Recipe recipe) {
-        RecipeDetailsFragment frag = new RecipeDetailsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("recipe", recipe);
-        frag.setArguments(bundle);
-        return frag;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

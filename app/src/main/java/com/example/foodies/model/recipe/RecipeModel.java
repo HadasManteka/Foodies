@@ -5,7 +5,6 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.room.Room;
 
 import com.example.foodies.firebase.FireBaseImageStorage;
 import com.example.foodies.firebase.fireBaseDb.FireBaseRecipeDB;
@@ -61,7 +60,7 @@ public class RecipeModel {
                     }
                 }
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
