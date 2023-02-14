@@ -6,10 +6,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.foodies.model.recipe.Recipe;
 import com.example.foodies.model.recipe.RecipeModel;
-import com.example.foodies.model.request.RecipeApiModel;
+import com.example.foodies.model.api.RecipeApiModel;
 
 import java.util.List;
-import java.util.Objects;
 
 public class RecipeListFragmentViewModel extends ViewModel {
     private LiveData<List<Recipe>> data = RecipeModel.instance().getAllRecipes();

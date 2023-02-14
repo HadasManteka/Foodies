@@ -6,7 +6,8 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.foodies.model.FirebaseModel;
+import com.example.foodies.firebase.FireBaseImageStorage;
+import com.example.foodies.firebase.fireBaseDb.FireBaseRecipeDB;
 import com.example.foodies.model.Listener;
 
 import java.util.List;
@@ -17,7 +18,8 @@ public class RecipeModel {
     private static final RecipeModel _instance = new RecipeModel();
 
     private final Executor executor = Executors.newSingleThreadExecutor();
-    private final FirebaseModel firebaseModel = new FirebaseModel();
+    private final FireBaseRecipeDB fireBaseRecipeDB = new FireBaseRecipeDB();
+    private FireBaseImageStorage firebaseStorage = new FireBaseImageStorage();
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();
 
     public static RecipeModel instance(){
@@ -46,7 +48,7 @@ public class RecipeModel {
         EventRecipesListLoadingState.setValue(LoadingState.LOADING);
         Long localLastUpdate = Recipe.getLocalLastUpdate();
         // get all updated recorde from firebase since local last update
-        firebaseModel.getAllRecipesSince(localLastUpdate,list->{
+        fireBaseRecipeDB.getAllRecipesSince(localLastUpdate,list->{
             executor.execute(()->{
                 Log.d("TAG", " firebase return : " + list.size());
                 Long time = localLastUpdate;
@@ -70,7 +72,7 @@ public class RecipeModel {
     }
 
     public void addRecipe(Recipe re, Listener<Void> listener){
-        firebaseModel.addRecipe(re,(Void)->{
+        fireBaseRecipeDB.addRecipe(re,(Void)->{
             refreshAllRecipes();
             listener.onComplete(null);
         });
@@ -81,14 +83,18 @@ public class RecipeModel {
     }
 
     public void deleteRecipe(Recipe re, Listener<Void> listener){
-        firebaseModel.deleteRecipe(re, listener);
+        fireBaseRecipeDB.deleteRecipe(re, listener);
     }
 
     public void uploadImage(String id, Bitmap bitmap,Listener<String> listener) {
-        firebaseModel.uploadRecipeImage(id,bitmap,listener);
+        firebaseStorage.uploadRecipeImage(id,bitmap,listener);
     }
 
     public void deleteRecipeImage(String id, Listener<String> listener) {
-        firebaseModel.deleteRecipeImage(id,listener);
+        firebaseStorage.deleteRecipeImage(id,listener);
+    }
+
+    public void getRecipeById(String id, Listener<Recipe> callback) {
+        fireBaseRecipeDB.getRecipeById(id, callback);
     }
 }
