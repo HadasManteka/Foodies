@@ -10,9 +10,11 @@ import android.widget.ArrayAdapter;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.foodies.MainActivity;
+import com.example.foodies.R;
 import com.example.foodies.databinding.FragmentBaseRecipeBinding;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
@@ -104,7 +106,8 @@ abstract class BaseRecipeFragment extends Fragment {
         } else if (TextUtils.isEmpty(baseBinding.recipeDescription.getText().toString())) {
             baseBinding.recipeDescription.setError("Required.");
             return false;
-        } else if (baseBinding.recipeImg.getDrawable() == null) {
+        } else if (baseBinding.recipeImg.getDrawable() == null ||
+                baseBinding.recipeImg.getDrawable().getConstantState().equals(ContextCompat.getDrawable(getContext(), R.drawable.camera_img).getConstantState())) {
             alertDialog.setTitle("Hi chef,")
                     .setMessage("Must select an image!").show();
             return false;
