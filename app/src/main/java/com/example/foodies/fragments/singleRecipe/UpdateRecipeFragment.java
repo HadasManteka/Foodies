@@ -3,6 +3,9 @@ package com.example.foodies.fragments.singleRecipe;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import androidx.navigation.Navigation;
@@ -42,6 +45,14 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View response = super.onCreateView(inflater, container, savedInstanceState);
+        setRecipeViewField();
+
+        return response;
+    }
+
+    @Override
     public void setRecipeViewField() {
         deleteButVisibility(true);
         baseBinding.recipeTitle.setText(recipe.title);
@@ -76,7 +87,7 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
                     alertDialog.setTitle("Recipe '" + recipe.getTitle() + "'")
                             .setMessage("Deleted successfully.").show();
                     ProgressDialog.hideProgressDialog();
-                    navigateBackToDetails();
+                    navigateAfterDelete();
             }));
         });
 
@@ -115,6 +126,11 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
     }
 
     private void navigateBackToDetails() {
+        Navigation.findNavController(baseBinding.getRoot()).popBackStack();
+    }
+
+    private void navigateAfterDelete() {
+        Navigation.findNavController(baseBinding.getRoot()).popBackStack();
         Navigation.findNavController(baseBinding.getRoot()).popBackStack();
     }
 }
