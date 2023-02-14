@@ -21,6 +21,7 @@ import com.example.foodies.model.user.User;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    static boolean checkFirstTime = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +37,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        View view = findViewById(R.id.nav_host_fragment);
-        NavController navController = Navigation.findNavController(view);
-        navController.navigate(R.id.homePageFragment);
+        if (checkFirstTime) {
+            View view = findViewById(R.id.nav_host_fragment);
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.homePageFragment);
+            checkFirstTime = false;
+        }
     }
 
     @Override

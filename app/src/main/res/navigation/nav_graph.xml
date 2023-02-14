@@ -26,14 +26,14 @@
         android:id="@+id/recipeDetailsFragment"
         android:name="com.example.foodies.fragments.singleRecipe.RecipeDetailsFragment"
         android:label="RecipeDetailsFragment" >
-        <argument
-            android:name="recipe"
-            app:argType="com.example.foodies.model.recipe.Recipe" />
         <action
             android:id="@+id/action_recipeDetailsFragment_to_updateRecipeFragment"
             app:destination="@id/updateRecipeFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="recipeId"
+            app:argType="string" />
     </fragment>
 
     <fragment

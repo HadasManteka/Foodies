@@ -10,6 +10,7 @@ import com.example.foodies.R;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;
+import com.example.foodies.model.recipe.RecipeModel;
 import com.example.foodies.model.user.User;
 import com.squareup.picasso.Picasso;
 
@@ -40,8 +41,13 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
+
         if (bundle != null) {
-            recipe = (Recipe) bundle.getSerializable("recipe");
+            String recipeId = (String) bundle.getSerializable("recipeId");
+            RecipeModel.instance().getRecipeById(recipeId, (recipe) -> {
+                this.recipe = recipe;
+                setRecipeViewField();
+            });
         }
     }
 
@@ -53,7 +59,7 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
 
         if (!Objects.equals(recipe.getImgUrl(), "")) {
             Picasso.get().load(recipe.getImgUrl()).placeholder(R.drawable.camera_img).into(baseBinding.recipeImg);
-        }else{
+        } else {
             baseBinding.recipeImg.setImageResource(R.drawable.camera_img);
         }
 

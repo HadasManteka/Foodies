@@ -73,7 +73,6 @@ abstract class BaseRecipeFragment extends Fragment {
 
         baseBinding.recipeActionBtn.setOnClickListener(v -> onClickAction());
 
-        setRecipeViewField();
         return view;
     }
 
