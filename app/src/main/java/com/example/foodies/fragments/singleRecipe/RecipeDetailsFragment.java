@@ -10,7 +10,6 @@ import com.example.foodies.R;
 import com.example.foodies.enums.RecipeCategoryEnum;
 import com.example.foodies.enums.RecipeMadeTimeEnum;
 import com.example.foodies.model.recipe.Recipe;
-import com.example.foodies.model.recipe.RecipeModel;
 import com.example.foodies.model.user.User;
 import com.squareup.picasso.Picasso;
 
@@ -43,11 +42,7 @@ public class RecipeDetailsFragment extends BaseRecipeFragment {
         Bundle bundle = getArguments();
 
         if (bundle != null) {
-            String recipeId = (String) bundle.getSerializable("recipeId");
-            RecipeModel.instance().getRecipeById(recipeId, (recipe) -> {
-                this.recipe = recipe;
-                setRecipeViewField();
-            });
+            recipe = (Recipe) bundle.getSerializable("recipe");
         }
     }
 

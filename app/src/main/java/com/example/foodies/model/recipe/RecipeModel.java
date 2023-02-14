@@ -69,10 +69,6 @@ public class RecipeModel {
         });
     }
 
-    public void getRecipeById(String id, Listener<Recipe> callback) {
-        firebaseModel.getRecipeById(id, callback);
-    }
-
     public void addRecipe(Recipe re, Listener<Void> listener){
         firebaseModel.addRecipe(re,(Void)->{
             refreshAllRecipes();

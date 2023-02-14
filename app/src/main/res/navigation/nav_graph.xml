@@ -32,8 +32,8 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
         <argument
-            android:name="recipeId"
-            app:argType="string" />
+            android:name="recipe"
+            app:argType="com.example.foodies.model.recipe.Recipe" />
     </fragment>
 
     <fragment
@@ -67,6 +67,9 @@
             app:destination="@id/recipeDetailsFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_updateRecipeFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment" />
     </fragment>
 
     <fragment

@@ -50,7 +50,7 @@ public class HomePageFragment extends AllRecipesFragment {
             Log.d("TAG", "Row was clicked " + pos);
             Recipe recipe = adapter.getData().get(pos);
 
-            HomePageFragmentDirections.ActionHomePageFragmentToRecipeDetailsFragment action = HomePageFragmentDirections.actionHomePageFragmentToRecipeDetailsFragment(recipe.id);
+            HomePageFragmentDirections.ActionHomePageFragmentToRecipeDetailsFragment action = HomePageFragmentDirections.actionHomePageFragmentToRecipeDetailsFragment(recipe);
             Navigation.findNavController(view).navigate(action);
         });
 

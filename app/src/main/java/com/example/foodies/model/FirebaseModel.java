@@ -58,15 +58,6 @@ public class FirebaseModel{
                 });
     }
 
-    public void getRecipeById(String id, Listener<Recipe> callback) {
-        db.collection(Recipe.COLLECTION).whereEqualTo("id", id).get()
-                .addOnSuccessListener(task -> {
-                    Recipe recipe = Recipe.fromJson(Objects.requireNonNull(task.getDocuments().get(0).getData()));
-                    Log.d(TAG, "recipe successfully selected");
-                    callback.onComplete(recipe);
-                });
-    }
-
     public void addRecipe(Recipe recipe, Listener<Void> listener) {
         db.collection(Recipe.COLLECTION).document(recipe.getId()).set(recipe.toJson())
             .addOnCompleteListener(task -> listener.onComplete(null));

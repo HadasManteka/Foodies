@@ -3,12 +3,10 @@ package com.example.foodies.fragments.singleRecipe;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.foodies.R;
 import com.example.foodies.enums.RecipeCategoryEnum;
@@ -42,14 +40,6 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
         if (bundle != null){
             recipe = (Recipe) bundle.getSerializable("recipe");
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View response = super.onCreateView(inflater, container, savedInstanceState);
-        setRecipeViewField();
-
-        return response;
     }
 
     @Override
@@ -126,7 +116,9 @@ public class UpdateRecipeFragment extends BaseRecipeFragment {
     }
 
     private void navigateBackToDetails() {
-        Navigation.findNavController(baseBinding.getRoot()).popBackStack();
+//        Navigation.findNavController(baseBinding.getRoot()).popBackStack();
+        NavHostFragment.findNavController(UpdateRecipeFragment.this).navigate(
+                UpdateRecipeFragmentDirections.actionUpdateRecipeFragmentToRecipeDetailsFragment(recipe));
     }
 
     private void navigateAfterDelete() {
