@@ -69,6 +69,27 @@ public class RecipeModel {
                 EventRecipesListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
         });
+
+        fireBaseRecipeDB.getAllDeletedSince(localLastUpdate,deleteList->{
+            EventRecipesListLoadingState.setValue(LoadingState.LOADING);
+            executor.execute(()->{
+                Log.d("TAG", " firebase return : " + deleteList.size());
+                for(Recipe recipe:deleteList) {
+                    // Delete deleted recipe from room
+                    if (localDb.recipeDao().getRecipeById(recipe.getId()) != null) {
+                        localDb.recipeDao().delete(recipe);
+                    }
+                }
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                EventRecipesListLoadingState.postValue(LoadingState.NOT_LOADING);
+            });
+        });
+
     }
 
     public void addRecipe(Recipe re, Listener<Void> listener){
@@ -83,13 +104,7 @@ public class RecipeModel {
     }
 
     public void deleteRecipe(Recipe re, Listener<Void> listener){
-        fireBaseRecipeDB.deleteRecipe(re, (listen)->{
-            executor.execute(()->{
-                Log.d("TAG", " firebase delete : " + re.getId());
-                localDb.recipeDao().deleteRecipeById(re.getId());
-            });
-            listener.onComplete(null);
-        });
+        fireBaseRecipeDB.deleteRecipe(re, listener);
     }
 
     public void uploadImage(String id, Bitmap bitmap,Listener<String> listener) {

@@ -18,6 +18,10 @@ public interface RecipeDao {
     @Query("DELETE FROM Recipe WHERE id = :recipeId")
     void deleteRecipeById(String recipeId);
 
+    @Query("SELECT * FROM Recipe WHERE id = :recipeId")
+    Recipe getRecipeById(String recipeId);
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Recipe... recipes);
 

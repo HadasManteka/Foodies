@@ -4,10 +4,15 @@ import static android.content.ContentValues.TAG;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.example.foodies.model.Listener;
 import com.example.foodies.model.recipe.Recipe;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.LinkedList;
@@ -30,10 +35,30 @@ public class FireBaseRecipeDB extends FirebaseDB{
                         }
                     }
                     callback.onComplete(list);
+                 });
+
+    }
+
+    public void getAllDeletedSince(Long since, Listener<List<Recipe>> callback) {
+        List<Recipe> list = new LinkedList<>();
+        db.collection(Recipe.COLLECTION)
+                .whereGreaterThanOrEqualTo(Recipe.LAST_UPDATED, new Timestamp(since,0))
+                .addSnapshotListener((snapshots, e) -> {
+                    for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                        switch (dc.getType()) {
+                            case REMOVED:
+                                Log.d(TAG, "Removed city: " + dc.getDocument().getData());
+                                System.out.println(Recipe.fromJson(dc.getDocument().getData()));
+                                list.add(Recipe.fromJson(dc.getDocument().getData()));
+                                break;
+                        }
+                    }
+
+                    callback.onComplete(list);
                 });
     }
 
-    public void addRecipe(Recipe recipe, Listener<Void> listener) {
+        public void addRecipe(Recipe recipe, Listener<Void> listener) {
         db.collection(Recipe.COLLECTION).document(recipe.getId()).set(recipe.toJson())
                 .addOnCompleteListener(task -> listener.onComplete(null));
     }
